@@ -20,12 +20,14 @@ SOURCES += \
     item.cpp \
     main.cpp \
     mainview.cpp \
+    map.cpp \
     randomizer.cpp
 
 HEADERS += \
     character.h \
     item.h \
     mainview.h \
+    map.h \
     randomizer.h
 
 FORMS += \
