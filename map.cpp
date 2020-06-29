@@ -3,7 +3,7 @@
 #include <cmath>
 #include <set>
 
-#include "colors.h"
+//#include "colors.h"
 
 using namespace std;
 
@@ -100,6 +100,7 @@ vector<vector<Tile>> Map::getMiniMap(int size) {
   return miniMap;
 } // funzione pronta
 
+/*
 void Map::printMap(vector<vector<Tile>> m, Coordinate pos) {
   for(int row = 0; row < m.size(); row++){
     for(int col = 0; col < m[row].size(); col++){
@@ -119,6 +120,8 @@ void Map::printMap(vector<vector<Tile>> m, Coordinate pos) {
     cout << endl;
   }
 }
+*/
+
 
 Coordinate Map::RandomPos() const {
   // vettore contenente le /possibili posizioni

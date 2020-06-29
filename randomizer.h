@@ -11,7 +11,7 @@ struct ScrapedInfo {
   QString name;
   int lvl;
   QString file;
-  ScrapedInfo(QString n, int l, Qstring f): name(n), lvl(l), file(f) {}
+  ScrapedInfo(QString n, int l, QString f): name(n), lvl(l), file(f) {}
 };
 
 
