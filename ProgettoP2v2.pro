@@ -16,11 +16,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    character.cpp \
     main.cpp \
     mainview.cpp \
     randomizer.cpp
 
 HEADERS += \
+    character.h \
     mainview.h \
     randomizer.h
 
