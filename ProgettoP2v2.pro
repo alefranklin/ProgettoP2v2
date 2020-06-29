@@ -17,10 +17,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    mainview.cpp
+    mainview.cpp \
+    randomizer.cpp
 
 HEADERS += \
-    mainview.h
+    mainview.h \
+    randomizer.h
 
 FORMS += \
     mainview.ui
