@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     character.cpp \
+    game.cpp \
     item.cpp \
     main.cpp \
     mainview.cpp \
@@ -25,6 +26,8 @@ SOURCES += \
 
 HEADERS += \
     character.h \
+    entity.h \
+    game.h \
     item.h \
     mainview.h \
     map.h \

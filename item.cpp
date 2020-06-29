@@ -1,7 +1,7 @@
 #include "item.h"
 #include <iostream>
 #include <vector>
-#include <string>
+#include <QString>
 #include "character.h"
 using namespace std;
 
