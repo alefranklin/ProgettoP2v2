@@ -308,12 +308,14 @@ QVector<Coordinate> Map::createLine(Coordinate p1, Coordinate p2, int thickness)
     // creo un quadrato di dimensione thicknessxthickness intorno ad ogni punto della linea
     QVector<Coordinate> v = createRectangle(*it, thickness, thickness);
     //points.insert(points.end(), v.begin(), v.end());
+    for(auto it = s.begin(); it != s.end(); ++it){ point << *it; }
   }
 
   // elimino tutti i punti duplicati
   set<Coordinate> s( points.begin(), points.end() );
   //points.assign( s.begin(), s.end() );
-
+  points.erase(point.begin(), point.end());
+  for(auto it = s.begin(); it != s.end(); ++it){ point << *it; }
   return points;
 
 }
