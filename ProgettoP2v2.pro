@@ -17,12 +17,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     character.cpp \
+    item.cpp \
     main.cpp \
     mainview.cpp \
     randomizer.cpp
 
 HEADERS += \
     character.h \
+    item.h \
     mainview.h \
     randomizer.h
 
