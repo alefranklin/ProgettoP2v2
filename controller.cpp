@@ -21,6 +21,7 @@ Controller::Controller(Game *g, MainView* v, QObject *parent) : QObject(parent),
 
 
     //aggiungo la musica
+    /*
     playlist = new QMediaPlaylist();
     playlist->addMedia(QUrl("qrc:/music/track1"));
     playlist->setCurrentIndex(1);
@@ -31,6 +32,7 @@ Controller::Controller(Game *g, MainView* v, QObject *parent) : QObject(parent),
     music->play();
     // connetto il segnale della view al cambio di volume
     connect(view, &MainView::volumeChanged, music, &QMediaPlayer::setVolume);
+    */
 
 
 }

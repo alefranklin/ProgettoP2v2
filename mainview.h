@@ -7,6 +7,7 @@
 
 #include <game.h>
 #include <choicebutton.h>
+#include <movementbutton.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainView; }
@@ -47,6 +48,8 @@ public slots:
     void onVolumeChanged(int volume);
     void onMute();
 
+    void movePressed(QString dir);
+
 
 private:
     Ui::MainView *ui;
@@ -54,6 +57,7 @@ private:
     Game* model;
 
     // volume musica
+    MovementButton *move;
     QSlider *volumeSlider;
     QPushButton *muteButton;
 };

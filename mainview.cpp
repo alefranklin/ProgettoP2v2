@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTextEdit>
 #include <QPushButton>
+#include <QDebug>
 
 MainView::MainView(Game *g, QWidget *parent)
     : QWidget(parent)
@@ -36,6 +37,10 @@ MainView::MainView(Game *g, QWidget *parent)
     muteButton = ui->muteButton;
     //muteButton = new QPushButton("mute");
     connect(muteButton, &QPushButton::clicked, this, &MainView::onMute);
+
+    move = new MovementButton(this);
+
+    connect(move, &MovementButton::buttonClicked, this, &MainView::movePressed);
 }
 
 MainView::~MainView()
@@ -77,5 +82,10 @@ void MainView::onVolumeChanged(int volume) {
 
 void MainView::onMute() {
     volumeSlider->setValue(0);
+}
+
+void MainView::movePressed(QString dir){
+    //codice per muovere
+    ui->textEdit->append(dir); //placeholder per test
 }
 
