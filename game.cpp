@@ -20,7 +20,9 @@ Game::~Game()
 void Game::dialog(QString s)
 {
     emit dialogOut(s);
-    emit choiceOut(Choice::escape());
+    QVector<Choice> c;
+    c << Choice::escape();
+    emit choiceOut(c);
 
 }
 

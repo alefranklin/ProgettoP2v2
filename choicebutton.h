@@ -17,13 +17,10 @@ public:
     }
 
 signals:
-    void buttonClicked(Game::Choice, ChoiceButton*);
+    void buttonClicked(Game::Choice);
 
 private slots:
-    void handleClick()
-    {
-        emit buttonClicked(choice, this);
-    }
+    void handleClick();
 
 private:
     Game::Choice choice;
