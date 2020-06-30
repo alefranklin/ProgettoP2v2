@@ -6,7 +6,8 @@
 #include <QPushButton>
 
 #include <game.h>
-#include <choicebutton.h>
+#include "choicebutton.h"
+#include <movewidget.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainView; }
@@ -47,11 +48,14 @@ public slots:
     void onVolumeChanged(int volume);
     void onMute();
 
+    void movePressed(char dir);
+
 
 private:
     Ui::MainView *ui;
 
     Game* model;
+    MoveWidget *moveWidget;
 
     // volume musica
     QSlider *volumeSlider;
