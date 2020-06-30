@@ -54,6 +54,11 @@ private:
     void createMusicSliderBox();
     void createMoveBox();
     void createChoiceBox();
+    void createDialogBox();
+    void createCharachterBox();
+    void createInventoryBox();
+    void createMapBox();
+    void createEnemyBox();
 
     //menu
     QMenuBar *menuBar;

@@ -25,6 +25,11 @@ MainView::MainView(Game *g, QWidget *parent)
     createMusicSliderBox();
     createMoveBox();
     createChoiceBox();
+    createDialogBox();
+    createCharachterBox();
+    createInventoryBox();
+    createMapBox();
+    createEnemyBox();
 
     //widget scelte
 
@@ -81,8 +86,8 @@ void MainView::createMenu()
     menuBar = new QMenuBar(this);
 
     fileMenu = new QMenu("&File", menuBar);
-    exitAction = new QAction("E&xit");
     saveAction = new QAction("&Save");
+    exitAction = new QAction("E&xit");
 
 
     //aggiungo le azioni al menu
@@ -133,7 +138,7 @@ void MainView::createMoveBox()
     layout->addWidget(moveWidget);
     moveBox->setLayout(layout);
 
-    moveBox->setGeometry(800, 350, 170, 150);
+    moveBox->setGeometry(800, 445, 170, 150);
 
     connect(moveWidget, &MoveWidget::emitDir, this, &MainView::movePressed);
 }
@@ -148,10 +153,80 @@ void MainView::createChoiceBox()
     layout->addWidget(choiceWidget);
     choiceBox->setLayout(layout);
 
-    choiceBox->setGeometry(360, 350, 300, 150);
+    choiceBox->setGeometry(360, 445, 300, 150);
     //choiceWidget->move(0,100); //non serve era solo per spostarlo che si sovrapponeva
 
     connect(choiceWidget, &ChoiceWidget::sendChoice, this, &MainView::choicePressed);
+}
+
+void MainView::createDialogBox()
+{
+    QTextEdit *prov = new QTextEdit(this);
+    prov->setPlainText("FINESTRA DI DIALOGO");
+
+    QGroupBox *characBox = new QGroupBox(this);
+    QHBoxLayout *layout = new QHBoxLayout;
+
+    layout->addWidget(prov);
+    characBox->setLayout(layout);
+
+    characBox->setGeometry(335, 335, 350, 150);
+}
+
+void MainView::createCharachterBox()
+{
+    QTextEdit *prov2 = new QTextEdit(this);
+    prov2->setPlainText("PERSONAGGIO");
+
+    QGroupBox *characBox = new QGroupBox(this);
+    QHBoxLayout *layout = new QHBoxLayout;
+
+    layout->addWidget(prov2);
+    characBox->setLayout(layout);
+
+    characBox->setGeometry(15, 15, 330, 360);
+}
+
+void MainView::createInventoryBox()
+{
+    QTextEdit *prov3 = new QTextEdit(this);
+    prov3->setPlainText("INVETARIO");
+
+    QGroupBox *characBox = new QGroupBox(this);
+    QHBoxLayout *layout = new QHBoxLayout;
+
+    layout->addWidget(prov3);
+    characBox->setLayout(layout);
+
+    characBox->setGeometry(15, 360, 330, 150);
+}
+
+void MainView::createMapBox()
+{
+    QTextEdit *prov4 = new QTextEdit(this);
+    prov4->setPlainText("MAPPA");
+
+    QGroupBox *characBox = new QGroupBox(this);
+    QHBoxLayout *layout = new QHBoxLayout;
+
+    layout->addWidget(prov4);
+    characBox->setLayout(layout);
+
+    characBox->setGeometry(335, 15, 350, 350);
+}
+
+void MainView::createEnemyBox()
+{
+    QTextEdit *prov5 = new QTextEdit(this);
+    prov5->setPlainText("NEMICO");
+
+    QGroupBox *characBox = new QGroupBox(this);
+    QHBoxLayout *layout = new QHBoxLayout;
+
+    layout->addWidget(prov5);
+    characBox->setLayout(layout);
+
+    characBox->setGeometry(680, 15, 330, 360);
 }
 
 
