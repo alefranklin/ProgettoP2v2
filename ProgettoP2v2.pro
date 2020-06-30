@@ -25,7 +25,8 @@ SOURCES += \
     mainview.cpp \
     map.cpp \
     mapwidget.cpp \
-    movementbutton.cpp \
+    movebutton.cpp \
+    movewidget.cpp \
     randomizer.cpp
 
 HEADERS += \
@@ -38,7 +39,8 @@ HEADERS += \
     mainview.h \
     map.h \
     mapwidget.h \
-    movementbutton.h \
+    movebutton.h \
+    movewidget.h \
     randomizer.h
 
 FORMS += \

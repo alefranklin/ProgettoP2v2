@@ -1,11 +1,11 @@
-#include "movementbutton.h"
+#include "movementbuttoncontainer.h"
 
 #include <QGridLayout>
 #include<QPushButton>
 #include <QDebug>
 
 #include <QSignalMapper>
-MovementButton::MovementButton(QWidget *parent) : QWidget(parent)
+MovementButtonContainer::MovementButtonContainer(QWidget *parent) : QWidget(parent)
 {
     //setto layout
     grid = new QGridLayout(this);
@@ -28,15 +28,15 @@ MovementButton::MovementButton(QWidget *parent) : QWidget(parent)
     connect (dir[2],SIGNAL(clicked()),signalMapper,SLOT(map()));
     connect (dir[3],SIGNAL(clicked()),signalMapper,SLOT(map()));
 
-    signalMapper->setMapping(dir[0],QString('u'));
-    signalMapper->setMapping(dir[1],QString('d'));
-    signalMapper->setMapping(dir[2],QString('l'));
-    signalMapper->setMapping(dir[3],QString('r'));
+    signalMapper->setMapping(dir[0],QString('w'));
+    signalMapper->setMapping(dir[1],QString('s'));
+    signalMapper->setMapping(dir[2],QString('a'));
+    signalMapper->setMapping(dir[3],QString('d'));
 
     connect(signalMapper, SIGNAL(mapped(QString)), this, SLOT(handleClick(QString)));
 }
 
 
-void MovementButton::handleClick(QString dir){
+void MovementButtonContainer::handleClick(QString dir){
     emit buttonClicked(dir);
 }

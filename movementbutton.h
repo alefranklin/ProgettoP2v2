@@ -1,15 +1,15 @@
-#ifndef MOVEMENTBUTTON_H
-#define MOVEMENTBUTTON_H
+#ifndef MOVEMENTBUTTONCONTAINER_H
+#define MOVEMENTBUTTONCONTAINER_H
 
 #include <QWidget>
 #include <QGridLayout>
 #include <QPushButton>
 
-class MovementButton: public QWidget
+class MovementButtonContainer: public QWidget
 {
     Q_OBJECT
 public:
-    MovementButton(QWidget *parent = nullptr);
+    MovementButtonContainer(QWidget *parent = nullptr);
 
 signals:
     void buttonClicked(QString dir);
@@ -19,8 +19,7 @@ private slots:
 
 private:
     QGridLayout *grid;
-    QString direction;
     QPushButton *dir[];
 };
 
-#endif // MOVEMENTBUTTON_H
+#endif // MOVEMENTBUTTONCONTAINER_H
