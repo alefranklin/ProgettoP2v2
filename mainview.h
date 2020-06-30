@@ -53,6 +53,7 @@ private:
     void createMenu();
     void createMusicSliderBox();
     void createMoveBox();
+    void createChoiceBox();
 
     //menu
     QMenuBar *menuBar;
@@ -63,13 +64,15 @@ private:
 
     Game* model;
     MoveWidget *moveWidget;
+
+    //widget scelte personaggio
     ChoiceWidget *choiceWidget;
-    // volume musica
+
+    // slider musica
     QSlider *volumeSlider;
+
+    //widget move
     QPushButton *muteButton;
-
-
-    QDialogButtonBox *buttonBox;
 
 
 };

@@ -24,11 +24,10 @@ MainView::MainView(Game *g, QWidget *parent)
     createMenu();
     createMusicSliderBox();
     createMoveBox();
+    createChoiceBox();
 
     //widget scelte
-    choiceWidget = new ChoiceWidget(this);
-    choiceWidget->move(0,100); //non serve era solo per spostarlo che si sovrapponeva
-    connect(choiceWidget, &ChoiceWidget::sendChoice, this, &MainView::choicePressed);
+
     //fine widget scelte
 }
 
@@ -134,9 +133,25 @@ void MainView::createMoveBox()
     layout->addWidget(moveWidget);
     moveBox->setLayout(layout);
 
-    moveBox->setGeometry(800, 350, 150, 130);
+    moveBox->setGeometry(800, 350, 170, 150);
 
     connect(moveWidget, &MoveWidget::emitDir, this, &MainView::movePressed);
+}
+
+void MainView::createChoiceBox()
+{
+    choiceWidget = new ChoiceWidget(this);
+
+    QGroupBox *choiceBox = new QGroupBox(this);
+    QHBoxLayout *layout = new QHBoxLayout;
+
+    layout->addWidget(choiceWidget);
+    choiceBox->setLayout(layout);
+
+    choiceBox->setGeometry(360, 350, 300, 150);
+    //choiceWidget->move(0,100); //non serve era solo per spostarlo che si sovrapponeva
+
+    connect(choiceWidget, &ChoiceWidget::sendChoice, this, &MainView::choicePressed);
 }
 
 
