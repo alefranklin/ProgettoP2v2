@@ -4,15 +4,13 @@
 #include <QWidget>
 #include <QSlider>
 #include <QPushButton>
+#include <QDialogButtonBox>
+#include <QMenuBar>
 
 #include <game.h>
 #include "choicebutton.h"
 #include <movewidget.h>
 #include <choicewidget.h>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainView; }
-QT_END_NAMESPACE
 
 class MainView : public QWidget
 {
@@ -36,7 +34,6 @@ public slots:
     // printo su textedit
     void printString(QString s);
 
-
     // gestisco e mostro le varie scelte diponibili
     void showChoice(QVector<Game::Choice> c);
     // gestisco la pressione del pulsante di scelta
@@ -53,7 +50,17 @@ public slots:
 
 
 private:
-    Ui::MainView *ui;
+    void createMenu();
+    void createMusicSliderBox();
+    void createMoveBox();
+    void createButtonBox();
+
+    //menu
+    QMenuBar *menuBar;
+    QMenu *fileMenu;
+    QAction *exitAction;
+    QAction *saveAction;
+
 
     Game* model;
     MoveWidget *moveWidget;
@@ -61,5 +68,10 @@ private:
     // volume musica
     QSlider *volumeSlider;
     QPushButton *muteButton;
+
+
+    QDialogButtonBox *buttonBox;
+
+
 };
 #endif // MAINVIEW_H

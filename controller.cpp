@@ -16,7 +16,7 @@ Controller::Controller(Game *g, MainView* v, QObject *parent) : QObject(parent),
     connect(view, &MainView::emitChoice, model, &Game::choiceDone);  // gestisco la scelta fatta da view a model
 
     // avvio il dialogo quando arriva il segnale da view
-    connect(view, &MainView::emitDialog, this, &Controller::avviaDialogo);
+    //connect(view, &MainView::emitDialog, this, &Controller::avviaDialogo);
 
 
 
@@ -43,7 +43,7 @@ Controller::~Controller()
     delete view;
 }
 
-void Controller::avviaDialogo()
-{
-    model->dialog("dialogo avviato");
-}
+//void Controller::avviaDialogo()
+//{
+//    model->dialog("dialogo avviato");
+//}
