@@ -30,6 +30,8 @@ MoveWidget::MoveWidget(QWidget *parent) : QWidget(parent)
     grid->addWidget(DOWN,1,1);
     grid->addWidget(LEFT,1,0);
     grid->addWidget(RIGHT,1,2);
+    
+    setLayout(grid);
 }
 
 void MoveWidget::dirPressed(char dir) {
