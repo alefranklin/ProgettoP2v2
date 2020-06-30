@@ -21,7 +21,8 @@ signals:
 
 public slots:
     // faccio partire la funzione che emette il dialogo (solo per test)
-    void avviaDialogo();
+    //void avviaDialogo();
+    //void exitWindow();
 
 private:
   Game* model;

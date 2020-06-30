@@ -2,7 +2,8 @@
 #define MOVEWIDGET_H
 
 #include <QWidget>
-#include <QGridLayout>
+#include <QGroupBox>
+#include <QLayout>
 #include "movebutton.h"
 
 class MoveWidget : public QWidget
@@ -26,7 +27,8 @@ private:
     MoveButton *DOWN;
     MoveButton *RIGHT;
     MoveButton *LEFT;
-    QGridLayout *grid;
 
+    QGridLayout *grid;
+    //QGroupBox *grid;
 };
 #endif // MOVEWIDGET_H

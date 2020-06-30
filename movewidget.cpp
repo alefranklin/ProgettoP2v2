@@ -1,10 +1,12 @@
+#include <QGridLayout>
 #include "movewidget.h"
 
-MoveWidget::MoveWidget(QWidget *parent) : QWidget(parent) {
+MoveWidget::MoveWidget(QWidget *parent) : QWidget(parent)
+{
 
     //creo griglia e imposto layout
     grid = new QGridLayout(this);
-    setLayout(grid);
+
 
     //creo bottoni e li connetto allo slot di MoveWidget
     UP = new MoveButton('W',this);
