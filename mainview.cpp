@@ -17,7 +17,6 @@ MainView::MainView(Game *g, QWidget *parent)
     //fisso la grandezza della finestra del programma
     setFixedSize(1024, 600);
 
-
     //setto il titolo della finestra
     setWindowTitle("Dungeons & Programmazione 2");
 
@@ -27,6 +26,9 @@ MainView::MainView(Game *g, QWidget *parent)
     createMoveBox();
     createButtonBox();
 
+    choiceWidget = new ChoiceWidget(this);
+    choiceWidget->move(0,100);
+    connect(choiceWidget, &ChoiceWidget::sendChoice, this, &MainView::choicePressed);
 }
 
 MainView::~MainView()
@@ -39,17 +41,15 @@ void MainView::printString(QString s)
     //ui->textEdit->append(s);
 }
 
-void MainView::showChoice(Game::Choice c)
+void MainView::showChoice(QVector<Game::Choice> c)
 {
-    //ui->choiceButton->setEnabled(true);
-    //ui->choiceButton->setHidden(false);
-    //ui->choiceButton->setChoice(c);
+    //mostriamo le scelte
+    choiceWidget->setChoices(c);
 }
 
-void MainView::choicePressed(Game::Choice c, ChoiceButton *cbt)
+void MainView::choicePressed(Game::Choice c)
 {
-    cbt->setEnabled(false);
-    cbt->setHidden(true);
+    choiceWidget->cleanGrid();
     emit emitChoice(c);
 }
 
@@ -146,5 +146,4 @@ void MainView::createButtonBox()
     //connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     buttonBox->setGeometry(840, 495, 170, 150);
 }
-
 

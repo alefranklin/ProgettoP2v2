@@ -12,7 +12,7 @@ class MoveWidget : public QWidget
 
 public:
     MoveWidget(QWidget *parent = nullptr);
-
+    ~MoveWidget();
 
 signals:
     // invio il segnale con la direzione scelta

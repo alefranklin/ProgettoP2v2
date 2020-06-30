@@ -10,6 +10,7 @@
 #include <game.h>
 #include "choicebutton.h"
 #include <movewidget.h>
+#include <choicewidget.h>
 
 class MainView : public QWidget
 {
@@ -34,9 +35,9 @@ public slots:
     void printString(QString s);
 
     // gestisco e mostro le varie scelte diponibili
-    void showChoice(Game::Choice c);
+    void showChoice(QVector<Game::Choice> c);
     // gestisco la pressione del pulsante di scelta
-    void choicePressed(Game::Choice c, ChoiceButton *cbt);
+    void choicePressed(Game::Choice c);
 
     //gestisco il click del pulsante di dialogo
     void onDialogPressed();
@@ -63,7 +64,7 @@ private:
 
     Game* model;
     MoveWidget *moveWidget;
-
+    ChoiceWidget *choiceWidget;
     // volume musica
     QSlider *volumeSlider;
     QPushButton *muteButton;
