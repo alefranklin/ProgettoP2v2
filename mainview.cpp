@@ -10,6 +10,10 @@ MainView::MainView(Game *g, QWidget *parent)
     , ui(new Ui::MainView)
     , model(g)
 {
+    // connetto i segnali per la mappa dal modello a view e viceversa
+    connect(model, &Game::posChanged, this, &MainView::onPosChanged);  // da model a view
+    connect(this, &MainView::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
+
     ui->setupUi(this);
 
     // nascondo il pulsante
@@ -19,7 +23,12 @@ MainView::MainView(Game *g, QWidget *parent)
     ChoiceButton* cbt = ui->choiceButton;
     connect(cbt, &ChoiceButton::buttonClicked, this, &MainView::choicePressed);
 
-    //solo per il dialogo
+    // connetto i segnali di MapWidget
+    MapWidget *mapWidget = ui->mapwidget;
+    connect(mapWidget, &MapWidget::setMiniMapSize, this, &MainView::onSetMiniMapSize);
+
+
+    //TODO solo per il dialogo
     QPushButton* bt = ui->dialogo;
     connect(bt, &QPushButton::clicked, this, &MainView::onDialogPressed);
 
@@ -49,7 +58,7 @@ void MainView::printString(QString s)
 }
 
 void MainView::showChoice(Game::Choice c)
-{
+{   
     ui->choiceButton->setEnabled(true);
     ui->choiceButton->setHidden(false);
     ui->choiceButton->setChoice(c);
@@ -77,5 +86,14 @@ void MainView::onVolumeChanged(int volume) {
 
 void MainView::onMute() {
     volumeSlider->setValue(0);
+}
+
+void MainView::onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos) {
+    MapWidget *mapWidget = ui->mapwidget;
+    mapWidget->refresh(miniMap, relativePos);
+}
+
+void MainView::onSetMiniMapSize(int dim) {
+    emit setMiniMapSize(dim);
 }
 

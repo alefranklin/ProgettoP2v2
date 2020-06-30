@@ -8,6 +8,8 @@
 #include <QObject>
 #include <QString>
 
+#include <QDebug>
+
 class Enemies;
 class Player;
 
@@ -52,7 +54,6 @@ public:
 
 
     void moveBack() { emit dialogOut("sono fuggito"); }
-    void move(char m);
     void dialog(QString s);
 
 signals:
@@ -62,15 +63,31 @@ signals:
     // emetto segnale per inviare le scelte
     void choiceOut(Choice c);
 
-    void posChanged(QVector<QVector<Tile>> miniMap, Coordinate relativePos);
+    // il giocatore si è spostato, emetto la nuova minimappa
+    void posChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos);
 
 public slots:
     // slot che gestisce le scelte fatte dal giocatore
     void choiceDone(Choice c);
 
+    // gestisco segnale movimento
+    void move(char m);
+
+    // gestisco segnale regolazione grandezza minimappa
+    void onSetMiniMapSize(int s) {
+        if(s > 0 && s <= map.getMapDimension() && s != miniMapSize) miniMapSize = s;
+        else miniMapSize = mapSize;
+
+        //la grandezza è cambiata quindi aggiorno la mappa
+        emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
+    }
+
 
 
 private:
+
+    static const int mapSize;
+    int miniMapSize;
 
     // struttura per memorizzare lo stato del combattimento in corso
     struct CombatState {
@@ -108,6 +125,7 @@ private:
         combat->numero_turno++;
         combat->turno_player = true;
         emit dialogOut("cosa vuoi fare?");
+
         emit choiceOut(Choice::attack());
         //ememies.arma.use(player)
     }

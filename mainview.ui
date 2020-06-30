@@ -75,7 +75,7 @@
     <string>mute</string>
    </property>
   </widget>
-  <widget class="MapWidget" name="widget" native="true">
+  <widget class="MapWidget" name="mapwidget" native="true">
    <property name="geometry">
     <rect>
      <x>270</x>

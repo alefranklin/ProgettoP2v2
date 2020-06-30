@@ -20,12 +20,14 @@ SOURCES += \
     choicebutton.cpp \
     controller.cpp \
     game.cpp \
+    inventorywidget.cpp \
     item.cpp \
     main.cpp \
     mainview.cpp \
     map.cpp \
     mapwidget.cpp \
-    randomizer.cpp
+    randomizer.cpp \
+    tilebutton.cpp
 
 HEADERS += \
     character.h \
@@ -33,11 +35,13 @@ HEADERS += \
     controller.h \
     entity.h \
     game.h \
+    inventorywidget.h \
     item.h \
     mainview.h \
     map.h \
     mapwidget.h \
-    randomizer.h
+    randomizer.h \
+    tilebutton.h
 
 FORMS += \
     mainview.ui

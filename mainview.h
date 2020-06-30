@@ -7,6 +7,8 @@
 
 #include <game.h>
 #include <choicebutton.h>
+#include <mapwidget.h>
+#include <map.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainView; }
@@ -30,6 +32,9 @@ signals:
     // segnale di volume changed
     void volumeChanged(int volume);
 
+    // segnale per il cambio della dimensione della minimappa
+    void setMiniMapSize(int dim);
+
 public slots:
     // printo su textedit
     void printString(QString s);
@@ -46,6 +51,12 @@ public slots:
     // slot per gestire lo slider del volume
     void onVolumeChanged(int volume);
     void onMute();
+
+    // gestisco il refresh della mapppa
+    void onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos);
+
+    // gestisco il segnale di cambio di dimensione proveniente da MapWidget
+    void onSetMiniMapSize(int dim);
 
 
 private:
