@@ -1,7 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <vector>
+#include <QVector>
 #include "entity.h"
 
 #include <iostream>
@@ -42,26 +42,26 @@ public:
   void moveRIGHT();
   Tile& getCurrentTile();
 
-  std::vector<Coordinate> createCircle(Coordinate center, int radius); // va messa su private
-  std::vector<Coordinate> createRectangle(Coordinate center, int width, int height); // va messa su private
-  //std::vector<Coordinate> createRand(Coordinate center, int width, int height); // va messa su private
-  std::vector<Coordinate> createLine(Coordinate start, Coordinate end, int thickness = 2); // va messa su private
-  void modifyTile(std::vector<Coordinate> points, bool w, Biome b, bool overwrite = false); // va messa su private
+  QVector<Coordinate> createCircle(Coordinate center, int radius); // va messa su private
+  QVector<Coordinate> createRectangle(Coordinate center, int width, int height); // va messa su private
+  //QVector<Coordinate> createRand(Coordinate center, int width, int height); // va messa su private
+  QVector<Coordinate> createLine(Coordinate start, Coordinate end, int thickness = 2); // va messa su private
+  void modifyTile(QVector<Coordinate> points, bool w, Biome b, bool overwrite = false); // va messa su private
   void Generatemap(); // va messa su private
 
   bool setPos(Coordinate newPos);
   Coordinate getPos() const;
   Coordinate getRelativePos() const;
 
-  std::vector<std::vector<Tile>> getMiniMap(int size);
+  QVector<QVector<Tile>> getMiniMap(int size);
 
-  static void printMap(std::vector<std::vector<Tile>> m, Coordinate pos);
+  static void printMap(QVector<QVector<Tile>> m, Coordinate pos);
 //qui giace la funzione pronta
 
 private:
   static int minDim;
   int dim;
-  std::vector<std::vector<Tile>> map;
+  QVector<QVector<Tile>> map;
   Coordinate pos;
   Coordinate relativePos;
 

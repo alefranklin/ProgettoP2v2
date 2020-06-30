@@ -17,6 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     character.cpp \
+    choicebutton.cpp \
+    controller.cpp \
     game.cpp \
     item.cpp \
     main.cpp \
@@ -26,6 +28,8 @@ SOURCES += \
 
 HEADERS += \
     character.h \
+    choicebutton.h \
+    controller.h \
     entity.h \
     game.h \
     item.h \

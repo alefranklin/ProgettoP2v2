@@ -3,7 +3,7 @@
 
 #include "entity.h"
 #include "item.h"
-#include <vector>
+#include <QVector>
 #include <QString>
 using namespace std;
 
@@ -20,7 +20,6 @@ private:
 protected:
   Character(QString n, int v, int m);
 public:
-  virtual void save() =0;
   QString getName();
   int getVita();
   int getMana();
@@ -44,27 +43,25 @@ public:
                           {
                               int armatura.absorb(danno)
                           }
-              {
+              }
   }
 
   mob.attacca(Charxter player)
   */
-  virtual int attacca(Character* target);
+  virtual int attacca(QVector<Character*> target);
 
 };
 
 class Player: public Character {
 public:
   Player(QString n, int v, int m);
-  virtual void save();
   void info();
   bool isAlive();
 };
 
 class Mob: public Character {
 public:
-  Mob(int v, int m);
-  virtual void save();
+  Mob(QString n, int v, int m);
   void info();
   bool isAlive();
 };

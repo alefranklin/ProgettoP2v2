@@ -2,11 +2,11 @@
 #define ITEM_H
 
 #include "entity.h"
-#include <iostream>
-#include <vector>
+#include <iostream> // TODO da togliere
+#include <QVector>
 #include <QString>
 #include "character.h"
-using namespace std;
+using namespace std; // TODO controllare se togliere
 
 class Character;
 
@@ -33,8 +33,9 @@ protected:
   Item(int i = 0);
 public:
   virtual ~Item();
-  virtual void use(Character* owner, Character* target = nullptr);
-  virtual void save() = 0;
+  virtual int use(Character* owner, QVector<Character*> target) = 0;
+  
+
   //questo metodo viene usato per ritornare tutti gli attributi di un oggetto
   //per poterli stampare nella lista nella gui
   //virtual vector<Attribute<T>> getAttributes() =0;
@@ -47,8 +48,7 @@ private:
 public:
  Potion(int e);
  virtual ~Potion();
- virtual void use();
- virtual void save();
+ virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>());
  /*
  virtual vector<Attribute<T>> getAttributes() {
    vector<Attribute<T>> att;
@@ -66,8 +66,8 @@ protected:
 public:
   virtual ~Weapon();
   virtual int getDamage();
-  virtual int use(Character* owner, Character* target = nullptr);
-  virtual void save();
+  virtual int use(Character* owner, QVector<Character*> target) = 0;
+  
   //virtual vector<Attribute<T>> getAttributes() {}
 };
 
@@ -77,6 +77,8 @@ class Sword : virtual public Weapon {
   public:
     Sword(int d, int r);
     int getRange();
+    virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>() );
+    
     //virtual void use();
 
     /*
@@ -93,6 +95,7 @@ class Bow : virtual public Weapon {
   public:
     Bow(int d, int r);
     int getArrow();
+    virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>());
     //virtual void use();
 };
 
@@ -106,8 +109,9 @@ public:
   virtual ~Magic();
   int getEffect();
   int getMana();
+  virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>()) = 0;
+  
   //virtual void use();
-  virtual void save();
   //virtual vector<Attribute<T>> getAttributes() {}
 
 };
@@ -117,8 +121,8 @@ class MagicWeapon: virtual public Weapon, virtual public Magic {
 public:
   MagicWeapon(int d, int e, int m);
   virtual ~MagicWeapon();
-  virtual void use();
-  virtual void save();
+  virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>());
+  
   //virtual vector<Attribute<T>> getAttributes() {}
 };
 
@@ -128,9 +132,7 @@ private:
 public:
  Armor(int a);
  virtual ~Armor();
- virtual int absorb(int danno);
- //virtual void use();
- virtual void save();
+ int absorb(int danno);
  //virtual vector<Attribute<T>> getAttributes() {}
 };
 

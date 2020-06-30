@@ -2,7 +2,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <vector>
 using namespace std;
 
 unsigned int Randomizer::seed = 1; //valore di default di srand

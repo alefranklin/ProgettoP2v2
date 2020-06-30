@@ -71,5 +71,5 @@ bool Game::isPlayer(const Entity *e) { return (dynamic_cast<const Player*>(e)) ?
 
 
 
-void Game::fight(Character *pg, vector<Character *> enemies) {
+void Game::fight(Character *pg, QVector<Character *> enemies) {
 }

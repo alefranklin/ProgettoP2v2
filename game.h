@@ -94,7 +94,7 @@ private:
     void usePotionMana();
     void usePotionHealth();
 
-    void fight(Character *pg, vector<Character *> enemies);
+    void fight(Character *pg, QVector<Character *> enemies);
     void startCombat() {
         combat = new CombatState(nullptr, nullptr);
         emit dialogOut("sei entrato nel pieno del combattimento");
