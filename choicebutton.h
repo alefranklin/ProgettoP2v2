@@ -11,13 +11,13 @@ class ChoiceButton : public QPushButton
 public:
     ChoiceButton(QWidget *parent = nullptr);
 
-    void setChoice(Choice c) {
+    void setChoice(Game::Choice c) {
         choice = c;
         setText(c.getLabel());
     }
 
 signals:
-    void buttonClicked(Choice, ChoiceButton*);
+    void buttonClicked(Game::Choice, ChoiceButton*);
 
 private slots:
     void handleClick()
@@ -26,7 +26,7 @@ private slots:
     }
 
 private:
-    Choice choice;
+    Game::Choice choice;
 };
 
 #endif // CHOICEBUTTON_H

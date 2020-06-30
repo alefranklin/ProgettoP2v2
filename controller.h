@@ -6,6 +6,8 @@
 
 #include <QObject>
 #include <QString>
+#include <QMediaPlaylist>
+#include <QMediaPlayer>
 
 class Controller: public QObject
 {
@@ -18,21 +20,18 @@ public:
 signals:
 
 public slots:
-    // gestisco i testi da model a view
-    void onDialogOut(QString s);
-
-    // gestisco la scelta che va da model verso view
-    void onChoiceOut(Choice c);
-
-    // gestisco la scelta che arriva da view verso model
-    void onChoiceIn(Choice c);
-
     // faccio partire la funzione che emette il dialogo (solo per test)
     void avviaDialogo();
 
 private:
   Game* model;
   MainView* view;
+
+  // musica di sottofondo
+  // aggiungo la musica
+  QMediaPlaylist *playlist;
+  QMediaPlayer *music;
+
 };
 
 #endif // CONTROLLER_H

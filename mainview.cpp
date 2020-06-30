@@ -22,6 +22,20 @@ MainView::MainView(Game *g, QWidget *parent)
     //solo per il dialogo
     QPushButton* bt = ui->dialogo;
     connect(bt, &QPushButton::clicked, this, &MainView::onDialogPressed);
+
+
+    // controllo il volume
+    volumeSlider = ui->volumeSlider; // TODO sostitutire con (riga sotto)
+    //volumeSlider = new QSlider(Qt::Horizontal);
+    volumeSlider->setMinimum(0);
+    volumeSlider->setMaximum(100);
+    volumeSlider->setValue(50);
+    connect(volumeSlider, &QSlider::valueChanged, this, &MainView::onVolumeChanged);
+
+    // bottone per il muto
+    muteButton = ui->muteButton;
+    //muteButton = new QPushButton("mute");
+    connect(muteButton, &QPushButton::clicked, this, &MainView::onMute);
 }
 
 MainView::~MainView()
@@ -34,14 +48,14 @@ void MainView::printString(QString s)
     ui->textEdit->append(s);
 }
 
-void MainView::showChoice(Choice c)
+void MainView::showChoice(Game::Choice c)
 {
     ui->choiceButton->setEnabled(true);
     ui->choiceButton->setHidden(false);
     ui->choiceButton->setChoice(c);
 }
 
-void MainView::choicePressed(Choice c, ChoiceButton *cbt)
+void MainView::choicePressed(Game::Choice c, ChoiceButton *cbt)
 {
     cbt->setEnabled(false);
     cbt->setHidden(true);
@@ -51,5 +65,17 @@ void MainView::choicePressed(Choice c, ChoiceButton *cbt)
 void MainView::onDialogPressed()
 {
     emit emitDialog();
+}
+
+void MainView::onVolumeChanged(int volume) {
+    // se il volume è a zero mute è disabilitato
+    if(volume == 0) muteButton->setDisabled(true);
+    else muteButton->setDisabled(false);
+    // emetto il segnale verso il controller
+    emit volumeChanged(volume);
+}
+
+void MainView::onMute() {
+    volumeSlider->setValue(0);
 }
 

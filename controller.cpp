@@ -9,14 +9,29 @@ Controller::Controller(Game *g, MainView* v, QObject *parent) : QObject(parent),
     */
 
     // collego sistema di dialogo
-    connect(model, &Game::dialogOut, this, &Controller::onDialogOut);
+    connect(model, &Game::dialogOut, view, &MainView::printString);
 
     // collego sistema di scelte
-    connect(model, &Game::choiceOut, this, &Controller::onChoiceOut);   // gestisco scelte da model a view
-    connect(view, &MainView::emitChoice, this, &Controller::onChoiceIn);  // gestisco la scelta fatta da view a model
+    connect(model, &Game::choiceOut, view, &MainView::showChoice);   // gestisco scelte da model a view
+    connect(view, &MainView::emitChoice, model, &Game::choiceDone);  // gestisco la scelta fatta da view a model
 
     // avvio il dialogo quando arriva il segnale da view
     connect(view, &MainView::emitDialog, this, &Controller::avviaDialogo);
+
+
+
+    //aggiungo la musica
+    playlist = new QMediaPlaylist();
+    playlist->addMedia(QUrl("qrc:/music/track1"));
+    playlist->setCurrentIndex(1);
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    music = new QMediaPlayer();
+    music->setPlaylist(playlist);
+    music->setVolume(50);
+    music->play();
+    // connetto il segnale della view al cambio di volume
+    connect(view, &MainView::volumeChanged, music, &QMediaPlayer::setVolume);
+
 
 }
 
@@ -24,21 +39,6 @@ Controller::~Controller()
 {
     delete model;
     delete view;
-}
-
-void Controller::onDialogOut(QString s)
-{
-    view->printString(s);
-}
-
-void Controller::onChoiceOut(Choice c)
-{
-    view->showChoice(c);
-}
-
-void Controller::onChoiceIn(Choice c)
-{
-    model->choiceDone(c);
 }
 
 void Controller::avviaDialogo()

@@ -11,29 +11,6 @@
 class Enemies;
 class Player;
 
-class Choice {
-public:
-    Choice(QString l = "Null", int n = -1): label(l), number(n) {}
-
-    QString getLabel() { return label; }
-    int getNumber() { return number; }
-
-    static Choice escape() { return Choice("Scappa", 0); }
-    static Choice combat() { return Choice("Combatti", 1); }
-    static Choice attack() { return Choice("Attacca", 2); }
-    static Choice useManaPotion() { return Choice("Usa pozione mana", 3); }
-    static Choice useHealthPotion() { return Choice("Usa pozione vita", 4); }
-
-    operator int() const
-    {
-       return number;
-    }
-
-private:
-    QString label;
-    int number;
-};
-
 class Game: public QObject
 {
     Q_OBJECT
@@ -41,6 +18,29 @@ class Game: public QObject
 public:
     Game(QObject *parent = nullptr);
     ~Game();
+
+    class Choice {
+    public:
+        Choice(QString l = "Null", int n = -1): label(l), number(n) {}
+
+        QString getLabel() { return label; }
+        int getNumber() { return number; }
+
+        static Choice escape() { return Choice("Scappa", 0); }
+        static Choice combat() { return Choice("Combatti", 1); }
+        static Choice attack() { return Choice("Attacca", 2); }
+        static Choice useManaPotion() { return Choice("Usa pozione mana", 3); }
+        static Choice useHealthPotion() { return Choice("Usa pozione vita", 4); }
+
+        operator int() const
+        {
+           return number;
+        }
+
+    private:
+        QString label;
+        int number;
+    };
 
     static bool isItem(const Entity *e);
     static bool isWeapon(const Entity *e);
@@ -62,12 +62,17 @@ signals:
     // emetto segnale per inviare le scelte
     void choiceOut(Choice c);
 
+    void posChanged(QVector<QVector<Tile>> miniMap, Coordinate relativePos);
+
 public slots:
+    // slot che gestisce le scelte fatte dal giocatore
     void choiceDone(Choice c);
+
 
 
 private:
 
+    // struttura per memorizzare lo stato del combattimento in corso
     struct CombatState {
         unsigned int numero_turno;
         bool turno_player;

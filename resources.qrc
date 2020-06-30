@@ -1,2 +1,8 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/music">
+        <file alias="track1">music/MedievalCoffinDance.mp3</file>
+    </qresource>
+    <qresource prefix="/splash">
+        <file alias="splash_img">img/splash/splash.jpg</file>
+    </qresource>
+</RCC>
