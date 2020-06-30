@@ -94,6 +94,4 @@ void MainView::onMute() {
 void MainView::movePressed(char dir){
     //codice per muovere
     ui->textEdit->append(QString(dir)); //placeholder per test
-    choiceWidget->cleanGrid();
 }
-
