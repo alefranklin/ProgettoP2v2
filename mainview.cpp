@@ -18,8 +18,8 @@ MainView::MainView(Game *g, QWidget *parent)
     ui->choiceButton->setHidden(true);
 
     //connetto il segnale del pulsante allo slot per gestirlo
-    ChoiceButton* cbt = ui->choiceButton;
-    connect(cbt, &ChoiceButton::buttonClicked, this, &MainView::choicePressed);
+    //ChoiceButton* cbt = ui->choiceButton;
+    //connect(cbt, &ChoiceButton::buttonClicked, this, &MainView::choicePressed);
 
     //solo per il dialogo
     QPushButton* bt = ui->dialogo;
@@ -42,6 +42,10 @@ MainView::MainView(Game *g, QWidget *parent)
     moveWidget = new MoveWidget(this);
 
     connect(moveWidget, &MoveWidget::emitDir, this, &MainView::movePressed);
+
+    choiceWidget = new ChoiceWidget(this);
+    choiceWidget->move(0,100);
+    connect(choiceWidget, &ChoiceWidget::sendChoice, this, &MainView::choicePressed);
 }
 
 MainView::~MainView()
@@ -54,17 +58,19 @@ void MainView::printString(QString s)
     ui->textEdit->append(s);
 }
 
-void MainView::showChoice(Game::Choice c)
+void MainView::showChoice(QVector<Game::Choice> c)
 {
-    ui->choiceButton->setEnabled(true);
-    ui->choiceButton->setHidden(false);
-    ui->choiceButton->setChoice(c);
+    //mostriamo le scelte
+    choiceWidget->setChoices(c);
+
+    //ui->choiceButton->setEnabled(true);
+   //ui->choiceButton->setHidden(false);
+   // ui->choiceButton->setChoice(c);
 }
 
-void MainView::choicePressed(Game::Choice c, ChoiceButton *cbt)
+void MainView::choicePressed(Game::Choice c)
 {
-    cbt->setEnabled(false);
-    cbt->setHidden(true);
+    choiceWidget->cleanGrid();
     emit emitChoice(c);
 }
 
@@ -88,5 +94,6 @@ void MainView::onMute() {
 void MainView::movePressed(char dir){
     //codice per muovere
     ui->textEdit->append(QString(dir)); //placeholder per test
+    choiceWidget->cleanGrid();
 }
 

@@ -30,6 +30,14 @@ MoveWidget::MoveWidget(QWidget *parent) : QWidget(parent) {
     grid->addWidget(RIGHT,1,2);
 }
 
+MoveWidget::~MoveWidget()
+{
+    delete UP;
+    delete DOWN;
+    delete LEFT;
+    delete RIGHT;
+}
+
 void MoveWidget::dirPressed(char dir) {
     emit emitDir(dir);
 }

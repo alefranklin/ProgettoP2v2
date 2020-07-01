@@ -60,7 +60,7 @@ signals:
     void dialogOut(QString s);
 
     // emetto segnale per inviare le scelte
-    void choiceOut(Choice c);
+    void choiceOut(QVector<Choice> c);
 
     void posChanged(QVector<QVector<Tile>> miniMap, Coordinate relativePos);
 
@@ -108,7 +108,9 @@ private:
         combat->numero_turno++;
         combat->turno_player = true;
         emit dialogOut("cosa vuoi fare?");
-        emit choiceOut(Choice::attack());
+        QVector<Choice> c;
+        c << Choice::attack();
+        emit choiceOut(c);
         //ememies.arma.use(player)
     }
     void attacca() {
