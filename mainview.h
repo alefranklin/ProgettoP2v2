@@ -53,7 +53,6 @@ private:
     void createMenu();
     void createMusicSliderBox();
     void createMoveBox();
-    void createButtonBox();
 
     //menu
     QMenuBar *menuBar;

@@ -24,11 +24,12 @@ MainView::MainView(Game *g, QWidget *parent)
     createMenu();
     createMusicSliderBox();
     createMoveBox();
-    createButtonBox();
 
+    //widget scelte
     choiceWidget = new ChoiceWidget(this);
-    choiceWidget->move(0,100);
+    choiceWidget->move(0,100); //non serve era solo per spostarlo che si sovrapponeva
     connect(choiceWidget, &ChoiceWidget::sendChoice, this, &MainView::choicePressed);
+    //fine widget scelte
 }
 
 MainView::~MainView()
@@ -138,12 +139,4 @@ void MainView::createMoveBox()
     connect(moveWidget, &MoveWidget::emitDir, this, &MainView::movePressed);
 }
 
-void MainView::createButtonBox()
-{
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
-
-    //connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    //connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-    buttonBox->setGeometry(840, 495, 170, 150);
-}
 
