@@ -31,9 +31,6 @@ MainView::MainView(Game *g, QWidget *parent)
     createMapBox();
     createEnemyBox();
 
-    //widget scelte
-
-    //fine widget scelte
 }
 
 MainView::~MainView()
@@ -91,8 +88,8 @@ void MainView::createMenu()
 
 
     //aggiungo le azioni al menu
-    fileMenu->addAction(exitAction);
     fileMenu->addAction(saveAction);
+    fileMenu->addAction(exitAction);
 
     //aggiungo il menu alla barra
     menuBar->addMenu(fileMenu);

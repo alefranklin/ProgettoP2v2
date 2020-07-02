@@ -22,13 +22,18 @@ SOURCES += \
     controller.cpp \
     game.cpp \
     item.cpp \
+    itemwidget.cpp \
     main.cpp \
+    main_dialog.cpp \
     mainview.cpp \
     map.cpp \
     mapwidget.cpp \
     movebutton.cpp \
     movewidget.cpp \
-    randomizer.cpp
+    playerwidget.cpp \
+    prova_main.cpp \
+    randomizer.cpp \
+    tilebutton.cpp
 
 HEADERS += \
     character.h \
@@ -38,12 +43,17 @@ HEADERS += \
     entity.h \
     game.h \
     item.h \
+    itemwidget.h \
+    main_dialog.h \
     mainview.h \
     map.h \
     mapwidget.h \
     movebutton.h \
     movewidget.h \
-    randomizer.h
+    playerwidget.h \
+    prova_main.h \
+    randomizer.h \
+    tilebutton.h
 
 FORMS += \
     mainview.ui

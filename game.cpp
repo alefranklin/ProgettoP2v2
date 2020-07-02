@@ -4,9 +4,15 @@
 #include <QtGlobal>
 #include <QTime>
 
-Game::Game(QObject *parent) : QObject(parent), combat(nullptr)
-{
+const int Game::mapSize = 250;
 
+Game::Game(QObject *parent) : QObject(parent)
+  , miniMapSize(20) // 20 di degault
+  , combat(nullptr)
+  , map(mapSize)
+{
+    //la grandezza della minimappa è settata quindi aggiorno la view
+    emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
 }
 
 Game::~Game()
@@ -20,9 +26,7 @@ Game::~Game()
 void Game::dialog(QString s)
 {
     emit dialogOut(s);
-    QVector<Choice> c;
-    c << Choice::escape();
-    emit choiceOut(c);
+    emit choiceOut(Choice::escape());
 
 }
 
@@ -61,6 +65,8 @@ void Game::move(char m) {
     case 'd': map.moveRIGHT();  break;
     default:  break;
   }
+
+  emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
 }
 
 bool Game::isItem(const Entity *e) { return (dynamic_cast<const Item*>(e)) ? true : false; }

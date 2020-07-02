@@ -1,6 +1,8 @@
 #include "mainview.h"
+#include "prova_main.h"
 #include "controller.h"
 #include "game.h"
+#include "main_dialog.h"
 
 #include <QApplication>
 #include <QSplashScreen>
@@ -20,7 +22,14 @@ int main(int argc, char *argv[])
     Controller c(&g, &w);
 
     QTimer::singleShot(200, &splash, SLOT(close()));   // chiudo lo spalsh screen
-    QTimer::singleShot(200, &w, SLOT(show()));         // e poi apro la finestra
+    //QTimer::singleShot(200, &w, SLOT(show()));         // e poi apro la finestra
+
+    Game g2;
+    Main_dialog w2(&g2);
+    //Controller c2(&g2, &w2);
+
+    QTimer::singleShot(200, &splash, SLOT(close()));   // chiudo lo spalsh screen
+    QTimer::singleShot(200, &w2, SLOT(show()));         // e poi apro la finestra
 
     return a.exec();
 }

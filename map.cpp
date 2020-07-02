@@ -57,7 +57,7 @@ Coordinate Map::getRelativePos() const {
   return relativePos;
 }
 
-QVector<QVector<Tile>> Map::getMiniMap(int size) {
+QVector<QVector<Tile> > Map::getMiniMap(int size) {
 
   // controllo se ho una grandezza sufficiente a creare una minimappa
   // in caso contrario ritorno tutta la mappa
@@ -516,4 +516,8 @@ void Map::Generatemap() {
 
 
   //modifyTile(createLine(Coordinate(40,40), Coordinate(79,20)), true, Street, true);  //debug
+}
+
+int Map::getMapDimension() const {
+    return dim;
 }
