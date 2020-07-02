@@ -26,7 +26,7 @@ MainView::MainView(Game *g, QWidget *parent)
     createMoveBox();
     createChoiceBox();
     createDialogBox();
-    createCharachterBox();
+    //createCharachterBox();
     createInventoryBox();
     createMapBox();
     createEnemyBox();
@@ -34,6 +34,9 @@ MainView::MainView(Game *g, QWidget *parent)
     //widget scelte
 
     //fine widget scelte
+
+    player = new PlayerWidget(this);
+
 }
 
 MainView::~MainView()
@@ -43,7 +46,7 @@ MainView::~MainView()
 
 void MainView::printString(QString s)
 {
-    //ui->textEdit->append(s);
+    prov->setText(s);
 }
 
 void MainView::showChoice(QVector<Game::Choice> c)
@@ -77,8 +80,25 @@ void MainView::onMute() {
 
 void MainView::movePressed(char dir){
     //codice per muovere
-    //ui->textEdit->append(QString(dir)); //placeholder per test
+    std::string s;
+        switch (dir){
+            case 'W':
+                s = "Ti sei mosso verso su";
+            break;
+            case 'A':
+                s = "Ti sei mosso verso sinistra";
+            break;
+            case 'S':
+                s = "Ti sei mosso verso giú";
+            break;
+            case 'D':
+                s = "Ti sei mosso verso destra";
+            break;
+        }
+        prov->setText(QString::fromStdString(s)); //placeholder per test
     qDebug() << "muovi: " << dir;
+    model->move(dir);
+    player->changeWeapon(new Sword(30,2));
 }
 
 void MainView::createMenu()
@@ -161,7 +181,7 @@ void MainView::createChoiceBox()
 
 void MainView::createDialogBox()
 {
-    QTextEdit *prov = new QTextEdit(this);
+    prov = new QTextEdit(this);
     prov->setPlainText("FINESTRA DI DIALOGO");
 
     QGroupBox *characBox = new QGroupBox(this);

@@ -11,12 +11,20 @@ using namespace std;
 
 Item::Item(int i): Entity() { qDebug() << "istanzio Item: "<< endl; }
 Item::~Item() { qDebug() << "elimino Item:" << endl; }
+
+QString Item::getNome() const{
+    return nome;
+}
 //questo metodo viene usato per ritornare tutti gli attributi di un oggetto
 //per poterli stampare nella lista nella gui
  //vector<Attribute<T>> getAttributes() =0;
 
 Potion::Potion(int e): Item(), effect(e) {}
 Potion::~Potion() { qDebug() << "elimino Potion: " << endl; }
+
+int Potion::getEffect() const{
+    return effect;
+}
 int Potion::use(Character* owner, QVector<Character*> target) { qDebug() << "sto usando Potion " << " ripristina " << effect << " salute" << endl; }
 /* vector<Attribute<T>> getAttributes() {
    vector<Attribute<T>> att;
@@ -27,24 +35,24 @@ int Potion::use(Character* owner, QVector<Character*> target) { qDebug() << "sto
 
 Weapon::Weapon(int d): Item(), damage(d) {}
 Weapon::~Weapon() { qDebug() << "elimino Weapon:" << endl; }
-int Weapon::getDamage() { return damage; }
+int Weapon::getDamage() const{ return damage; }
 //vector<Attribute<T>> Weapon::getAttributes() {}
 
 Sword::Sword(int d, int r) : Weapon(d), range(r), Item() {}
-int Sword::getRange() { return range; }
+int Sword::getRange() const{ return range; }
 int Sword::use(Character* owner, QVector<Character*> target) { qDebug() << "sto usando SPADA " << endl;}
 
 
 Bow::Bow(int d, int a) : Weapon(d), arrows(a), Item() {}
-int Bow::getArrow() { return arrows; }
+int Bow::getArrow() const{ return arrows; }
 int Bow::use(Character* owner, QVector<Character*> target) { qDebug() << "sto usando ARCO " << endl;}
 
 
 
 Magic::Magic(int e, int m): Item(), effect(e), mana(m) {}
 Magic::~Magic() { qDebug() << "elimino Magic:" << endl; }
-int Magic::getEffect() { return effect; }
-int Magic::getMana() { return mana; }
+int Magic::getEffect() const { return effect; }
+int Magic::getMana() const { return mana; }
 //void Magic::use() { qDebug() << "sto usando Magic " << " subisci " << effect << " danno" << endl; }
 //vector<Attribute<T>> Magic::getAttributes() {}
 

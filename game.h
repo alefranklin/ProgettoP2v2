@@ -49,6 +49,9 @@ public:
     static bool isCharacter(const Entity *e);
     static bool isMob(const Entity *e);
     static bool isPlayer(const Entity *e);
+    static bool isSword(const Entity *e);
+    static bool isBow(const Entity *e);
+    static bool isMagicWeapon(const Entity *e);
 
 
     void moveBack() { emit dialogOut("sono fuggito"); }

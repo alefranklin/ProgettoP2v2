@@ -33,6 +33,7 @@ protected:
   Item(int i = 0);
 public:
   virtual ~Item();
+  virtual QString getNome() const;
   virtual int use(Character* owner, QVector<Character*> target) = 0;
   
 
@@ -48,6 +49,7 @@ private:
 public:
  Potion(int e);
  virtual ~Potion();
+ virtual int getEffect() const;
  virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>());
  /*
  virtual vector<Attribute<T>> getAttributes() {
@@ -65,7 +67,7 @@ protected:
   Weapon(int d);
 public:
   virtual ~Weapon();
-  virtual int getDamage();
+  virtual int getDamage() const;
   virtual int use(Character* owner, QVector<Character*> target) = 0;
   
   //virtual vector<Attribute<T>> getAttributes() {}
@@ -76,7 +78,7 @@ class Sword : virtual public Weapon {
     int range;
   public:
     Sword(int d, int r);
-    int getRange();
+    int getRange() const;
     virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>() );
     
     //virtual void use();
@@ -94,7 +96,7 @@ class Bow : virtual public Weapon {
     int arrows;
   public:
     Bow(int d, int r);
-    int getArrow();
+    int getArrow() const;
     virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>());
     //virtual void use();
 };
@@ -106,14 +108,15 @@ private:
 protected:
   Magic(int e, int m);
 public:
+
   virtual ~Magic();
-  int getEffect();
-  int getMana();
   virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>()) = 0;
   
   //virtual void use();
   //virtual vector<Attribute<T>> getAttributes() {}
 
+  int getEffect() const;
+  int getMana() const;
 };
 
 
@@ -133,6 +136,10 @@ public:
  Armor(int a);
  virtual ~Armor();
  int absorb(int danno);
+ //void use();
+ int getArmatura() const{
+     return armatura;
+ }
  //virtual vector<Attribute<T>> getAttributes() {}
 };
 

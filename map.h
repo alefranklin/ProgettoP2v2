@@ -26,10 +26,10 @@ struct Coordinate {
 };
 
 struct Tile {
-  Entity* e;
   bool walkable;
   Biome biome;
-  Tile(bool w = false, Biome b = Null, Entity* en = nullptr): walkable(w), biome(b), e(en) {}
+  QVector<Entity*> e;
+   Tile(bool w = false, Biome b = Null, QVector<Entity*> en = QVector<Entity*>()): walkable(w), biome(b), e(en) {}
 };
 
 class Map {
@@ -48,12 +48,12 @@ public:
   QVector<Coordinate> createLine(Coordinate start, Coordinate end, int thickness = 2); // va messa su private
   void modifyTile(QVector<Coordinate> points, bool w, Biome b, bool overwrite = false); // va messa su private
   void Generatemap(); // va messa su private
-
+  int getMapDimension() const;
   bool setPos(Coordinate newPos);
   Coordinate getPos() const;
   Coordinate getRelativePos() const;
 
-  QVector<QVector<Tile>> getMiniMap(int size);
+  QVector<QVector<Tile> > getMiniMap(int size);
 
   static void printMap(QVector<QVector<Tile>> m, Coordinate pos);
 //qui giace la funzione pronta

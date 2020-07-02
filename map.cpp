@@ -57,7 +57,7 @@ Coordinate Map::getRelativePos() const {
   return relativePos;
 }
 
-QVector<QVector<Tile>> Map::getMiniMap(int size) {
+QVector<QVector<Tile> > Map::getMiniMap(int size) {
 
   // controllo se ho una grandezza sufficiente a creare una minimappa
   // in caso contrario ritorno tutta la mappa
@@ -100,29 +100,7 @@ QVector<QVector<Tile>> Map::getMiniMap(int size) {
     }
 
   return miniMap;
-} // funzione pronta
-
-/*
-void Map::printMap(vector<vector<Tile>> m, Coordinate pos) {
-  for(int row = 0; row < m.size(); row++){
-    for(int col = 0; col < m[row].size(); col++){
-      if(row == pos.row && col == pos.col) qDebug() << BLUE << "P" << RESET;
-      else if(m[row][col].biome != Null) {
-        switch (m[row][col].biome)
-        {
-        case Valley:    qDebug() << GREEN << "\"" << RESET;     break;
-        case Desert:    qDebug() << YELLOW << "~" << RESET;     break;
-        case Doungeon:  qDebug() << BOLDBLACK << "x" << RESET;  break;
-        case Street:    qDebug() << WHITE << "=" <<  RESET;     break;
-        case Water:     qDebug() << CYAN << "~" << RESET;       break;
-        default:        qDebug() << "N";                        break;
-        }
-      } else qDebug() << BLACK << "=" << RESET;
-    }
-    qDebug() << endl;
-  }
 }
-*/
 
 
 Coordinate Map::RandomPos() const {
@@ -516,4 +494,7 @@ void Map::Generatemap() {
 
 
   //modifyTile(createLine(Coordinate(40,40), Coordinate(79,20)), true, Street, true);  //debug
+}
+int Map::getMapDimension() const {
+    return dim;
 }

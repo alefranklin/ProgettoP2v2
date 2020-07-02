@@ -22,12 +22,14 @@ SOURCES += \
     controller.cpp \
     game.cpp \
     item.cpp \
+    itemwidget.cpp \
     main.cpp \
     mainview.cpp \
     map.cpp \
     mapwidget.cpp \
     movebutton.cpp \
     movewidget.cpp \
+    playerwidget.cpp \
     randomizer.cpp
 
 HEADERS += \
@@ -38,11 +40,13 @@ HEADERS += \
     entity.h \
     game.h \
     item.h \
+    itemwidget.h \
     mainview.h \
     map.h \
     mapwidget.h \
     movebutton.h \
     movewidget.h \
+    playerwidget.h \
     randomizer.h
 
 FORMS += \

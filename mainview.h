@@ -6,11 +6,13 @@
 #include <QPushButton>
 #include <QDialogButtonBox>
 #include <QMenuBar>
+#include <QTextEdit>
 
 #include <game.h>
 #include "choicebutton.h"
 #include <movewidget.h>
 #include <choicewidget.h>
+#include <playerwidget.h>
 
 class MainView : public QWidget
 {
@@ -70,6 +72,8 @@ private:
     Game* model;
     MoveWidget *moveWidget;
 
+    QTextEdit *prov;
+
     //widget scelte personaggio
     ChoiceWidget *choiceWidget;
 
@@ -78,6 +82,10 @@ private:
 
     //widget move
     QPushButton *muteButton;
+
+    PlayerWidget *player;
+
+
 
 
 };
