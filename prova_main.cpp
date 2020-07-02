@@ -4,43 +4,64 @@ prova_main::prova_main(Game *g, QWidget *parent)
     : QWidget(parent)
     , model(g)
 {
+    // connetto i segnali per la mappa dal modello a view e viceversa
+    connect(model, &Game::posChanged, this, &prova_main::onPosChanged);  // da model a view
+    connect(this, &prova_main::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
+
     createMusicSliderBox();
 
     grid = new QGridLayout();
     setLayout(grid);
 
     charachter = new PlayerWidget(this);
+    PlayerWidget *mob = new PlayerWidget(this); //TODO dichiararlo sul .h
+
+
 
     inventory= new QListWidget(); //lista di widget (inventario)
     inventory->setFixedWidth(270);
     //inventory->setFixedHeight(200);
     //inventory->setFixedSize(300, 200);
 
-    mapWidget = new MapWidget(this, 10, 30, 15);
+    QListWidget *placeholder = new QListWidget();
+
+    mapWidget = new MapWidget(this, 10, 20, 15);
+
+    connect(mapWidget, &MapWidget::setMiniMapSize, this, &prova_main::onSetMiniMapSize);
+    //mapWidget->setMaximumSize(400,300);
+
+
+    connect(mapWidget, &MapWidget::showDetailsOf, mob, &PlayerWidget::onShowDetailOf);
 
     choiceWidget = new ChoiceWidget(this);
-    choiceWidget->setFixedWidth(300);
+    //choiceWidget->setFixedWidth(300);
 
     moveWidget = new MoveWidget(this);
-    moveWidget->setFixedWidth(300);
 
     //prima colonna (col = 0)
     grid->addWidget(charachter, 0, 0);
     grid->addWidget(inventory, 1, 0);
-    grid->addWidget(musicSlider, 2, 0);
+    grid->addWidget(musicSlider, 2, 0, Qt::AlignLeft);
 
     //seconda colonna (col = 1)
-    grid->addWidget(mapWidget, 0, 1);
-    grid->addWidget(choiceWidget, 2, 1);
+    grid->addWidget(mapWidget, 0, 1, Qt::AlignCenter);
+    grid->addWidget(placeholder, 1, 1); //TODO mettere finestra di dialogo
+    grid->addWidget(choiceWidget, 2, 1, Qt::AlignCenter);
 
     //terza colonna (col = 2)
-    grid->addWidget(moveWidget, 2, 3);
+    grid->addWidget(moveWidget, 2, 2);
+    grid->addWidget(mob, 0, 2); //TODO implementare in modo diverso per mob
+
+    //grid->setRowMinimumHeight(0,270);
+
 }
 
 prova_main::~prova_main()
 {
     delete this;
 }
+
+
 
 void prova_main::createMenu()
 {
@@ -92,4 +113,13 @@ void prova_main::createMusicSliderBox(){
 
 
     //musicSlider->setGeometry(20, 520, 200, 65);
+}
+
+void prova_main::onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos) {
+    MapWidget *mapwidget = mapWidget;
+    mapwidget->refresh(miniMap, relativePos);
+}
+
+void prova_main::onSetMiniMapSize(int dim) {
+    emit setMiniMapSize(dim);
 }

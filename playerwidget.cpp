@@ -88,3 +88,7 @@ void PlayerWidget::clear(){
     weapon->clear();
     armor->clear();
 }
+
+void PlayerWidget::onShowDetailOf(QVector<Entity*> e){
+
+}

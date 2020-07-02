@@ -53,6 +53,7 @@ public:
     static bool isPlayer(const Entity *e);
 
 
+
     void moveBack() { emit dialogOut("sono fuggito"); }
     void dialog(QString s);
 

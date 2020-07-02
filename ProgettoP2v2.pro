@@ -20,6 +20,7 @@ SOURCES += \
     choicebutton.cpp \
     choicewidget.cpp \
     controller.cpp \
+    entergame.cpp \
     game.cpp \
     item.cpp \
     itemwidget.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     choicebutton.h \
     choicewidget.h \
     controller.h \
+    entergame.h \
     entity.h \
     game.h \
     item.h \

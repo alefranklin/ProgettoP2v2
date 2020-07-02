@@ -6,6 +6,8 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <itemwidget.h>
+#include "entity.h"
+
 class PlayerWidget : public QWidget
 {
     Q_OBJECT
@@ -19,6 +21,9 @@ public:
     void clear();
 
 signals:
+
+public slots:
+    void onShowDetailOf(QVector<Entity*>e);
 
 private:
     QVBoxLayout *layout;

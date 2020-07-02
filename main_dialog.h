@@ -18,19 +18,20 @@ class Main_dialog : public QMainWindow {
     Q_OBJECT
 
 public:
-    Main_dialog(Game* g, QWidget *parent = nullptr);
+    Main_dialog(Game* g = nullptr, QWidget *parent = nullptr);
 
 private:
 
     prova_main* mainWidget;
     QMenuBar* menubar;
-    QMenu* mbFile;
-    QMenu* mbTools;
-    QMenu* mbInfo;
-    QAction* mbLogOut;
-    QAction* mbEsci;
-    QAction* mbTotalSize;
-    QAction* mbInfoShow;
+    QMenu* mFile;
+    QMenu* mHelp;
+    QMenu* mInfo;
+    QAction* mLogOut;
+    QAction* mEsci;
+    QAction* mLegend;
+    QAction* mShowInfo;
+    QAction* mShowRank;
 
     void setMenuBar();
 

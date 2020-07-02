@@ -17,16 +17,16 @@ int main(int argc, char *argv[])
     QSplashScreen splash(pixmap, Qt::WindowStaysOnTopHint);
     splash.show();
 
-    Game g;
-    MainView w(&g);
-    Controller c(&g, &w);
+    //Game g;
+    //MainView w(&g);
+    //Controller c(&g, &w);
 
     QTimer::singleShot(200, &splash, SLOT(close()));   // chiudo lo spalsh screen
     //QTimer::singleShot(200, &w, SLOT(show()));         // e poi apro la finestra
 
     Game g2;
     Main_dialog w2(&g2);
-    //Controller c2(&g2, &w2);
+    Controller c2(&w2, &g2);
 
     QTimer::singleShot(200, &splash, SLOT(close()));   // chiudo lo spalsh screen
     QTimer::singleShot(200, &w2, SLOT(show()));         // e poi apro la finestra

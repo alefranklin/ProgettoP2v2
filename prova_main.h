@@ -19,13 +19,14 @@
 #include <movewidget.h>
 #include <choicewidget.h>
 #include "mapwidget.h"
+#include <map.h>
 
 class prova_main : public QWidget
 {
     Q_OBJECT
 
 public:
-    prova_main(Game *g, QWidget *parent = nullptr);
+    prova_main(Game *g = nullptr, QWidget *parent = nullptr);
     ~prova_main();
 
 signals:
@@ -38,9 +39,11 @@ signals:
 //    // segnale di volume changed
 //    void volumeChanged(int volume);
 
+    void setMiniMapSize(int dim);
+
 public slots:
     // printo su textedit
-//    void printString(QString s);
+    //void printString(QString s);
 
 //    // gestisco e mostro le varie scelte diponibili
 //    void showChoice(QVector<Game::Choice> c);
@@ -55,6 +58,11 @@ public slots:
 //    void onMute();
 
 //    void movePressed(char dir);
+    // gestisco il refresh della mapppa
+    void onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos);
+
+    // gestisco il segnale di cambio di dimensione proveniente da MapWidget
+    void onSetMiniMapSize(int dim);
 
 
 private:

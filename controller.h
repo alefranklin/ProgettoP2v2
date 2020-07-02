@@ -3,6 +3,7 @@
 
 #include <game.h>
 #include <mainview.h>
+#include <main_dialog.h>
 
 #include <QObject>
 #include <QString>
@@ -14,19 +15,18 @@ class Controller: public QObject
     Q_OBJECT
 
 public:
-    Controller(Game *g, MainView* v, QObject *parent = nullptr);
+    Controller(Main_dialog* v, Game *g = nullptr, QObject *parent = nullptr);
     ~Controller();
 
 signals:
 
 public slots:
     // faccio partire la funzione che emette il dialogo (solo per test)
-    void avviaDialogo();
-    //void exitWindow();
+    //void avviaDialogo();
 
 private:
   Game* model;
-  MainView* view;
+  Main_dialog* view;
 
   // musica di sottofondo
   // aggiungo la musica
