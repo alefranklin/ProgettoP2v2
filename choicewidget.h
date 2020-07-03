@@ -18,13 +18,15 @@ public:
     void setChoices(QVector<Game::Choice> choices);
 
 signals:
-
     void sendChoice(Game::Choice c);
 
-public slots:
-    void choicePressed(Game::Choice c);
+private slots:
+    void onChoicePressed(Game::Choice c);
 
 private:
+
+    void clearWidgets(QLayout *layout);
+
     QGridLayout *grid;
     QVector<ChoiceButton*> buttons;
 };

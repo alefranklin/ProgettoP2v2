@@ -3,8 +3,6 @@
 
 #include <QWidget>
 #include <QGridLayout>
-#include <QLabel>
-#include <QSlider>
 #include <QVector>
 
 #include <entity.h>
@@ -16,7 +14,7 @@ class MapWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MapWidget(QWidget *parent = nullptr, int min = 10, int max = 30, int val = 15);
+    explicit MapWidget(QWidget *parent = nullptr, int val = 19);
     ~MapWidget() = default;
 
 signals:
@@ -29,24 +27,12 @@ signals:
 
 public slots:
     void refresh(const QVector<QVector<Tile>> &miniMap, Coordinate pos);
-
-    // gestisco il segnale proveniente dallo slider per selezionare la dimensione
-    void onDimensionChanged(int dim);
-
     void onTileButtonPressd(QVector<Entity*> e);
+    void syncDimension();
 
 private:
-
-    // elimino tutti i widget nel layout
-    void clearWidgets(QLayout * layout);
-
-
+    int dimension;
+    QVector<TileButton*> tiles;
     QGridLayout *layout;
-    QGridLayout *tile_layout;
-    QGridLayout *slider_layout;
-
-    QSlider *dimensionSlider;
-    QLabel *dimensionLabel;
-
 };
 #endif // MAPWIDGET_H

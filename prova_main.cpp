@@ -4,14 +4,16 @@ prova_main::prova_main(Game *g, QWidget *parent)
     : QWidget(parent)
     , model(g)
 {
-    // connetto i segnali per la mappa dal modello a view e viceversa
-    connect(model, &Game::posChanged, this, &prova_main::onPosChanged);  // da model a view
-    connect(this, &prova_main::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
-
-    createMusicSliderBox();
+    mapWidget = new MapWidget(this);
+    choiceWidget = new ChoiceWidget(this);
+    moveWidget = new MoveWidget(this);
 
     grid = new QGridLayout();
     setLayout(grid);
+
+    dialogOutBox = new QTextEdit(this);
+    dialogOutBox->setReadOnly(true);
+    //dialogOutBox->setDisabled(true);
 
     charachter = new PlayerWidget(model->getPlayer(), this);
     PlayerWidget *mob = new PlayerWidget(model->getPlayer(), this); //TODO dichiararlo sul .h
@@ -20,21 +22,20 @@ prova_main::prova_main(Game *g, QWidget *parent)
     inventory->setFixedWidth(270);
     //inventory->setFixedHeight(200);
     //inventory->setFixedSize(300, 200);
-
     //QListWidget *placeholder = new QListWidget();
 
-    mapWidget = new MapWidget(this, 10, 20, 15);
+    createMusicSliderBox();
 
-    connect(mapWidget, &MapWidget::setMiniMapSize, this, &prova_main::onSetMiniMapSize);
-
+    // connetto i segnali per la mappa dal modello a view e viceversa
+    connect(model, &Game::posChanged, mapWidget, &MapWidget::refresh);  // da model a view
+    connect(mapWidget, &MapWidget::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
     connect(mapWidget, &MapWidget::showDetailsOf, mob, &PlayerWidget::onShowDetailOf);
 
-    choiceWidget = new ChoiceWidget(this);
+    // da mettere dopo il connect
+    mapWidget->syncDimension();
 
-    moveWidget = new MoveWidget(this);
-
-    dialogOutBox = new QTextEdit(this);
-    dialogOutBox->setText("FINESTRA DI DIALOGO");
+    //connetto view e model per muovere il personaggio nella mappa
+    connect(moveWidget, &MoveWidget::emitDir, this, &prova_main::movePressed);
 
     //prima colonna (col = 0)
     grid->addWidget(charachter, 0, 0);
@@ -51,9 +52,6 @@ prova_main::prova_main(Game *g, QWidget *parent)
     grid->addWidget(mob, 0, 2); //TODO implementare in modo diverso per mob
 
     //grid->setRowMinimumHeight(0,270);
-
-    //connetto view e model per muovere il personaggio nella mappa
-    connect(moveWidget, &MoveWidget::emitDir, this, &prova_main::movePressed);
 
 }
 
@@ -107,15 +105,6 @@ void prova_main::createMusicSliderBox(){
 
 
     //musicSlider->setGeometry(20, 520, 200, 65);
-}
-
-void prova_main::onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos) {
-    MapWidget *mapwidget = mapWidget;
-    mapwidget->refresh(miniMap, relativePos);
-}
-
-void prova_main::onSetMiniMapSize(int dim) {
-    emit setMiniMapSize(dim);
 }
 
 void prova_main::movePressed(char dir){

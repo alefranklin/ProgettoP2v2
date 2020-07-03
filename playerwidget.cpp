@@ -1,63 +1,5 @@
 #include "playerwidget.h"
 
-//TODO eliminare
-
-//PlayerWidget::PlayerWidget(QWidget *parent) : QWidget(parent){
-//    layout = new QVBoxLayout(this);
-//    //nome
-//    nome = new QLabel("Nome Giocatore");
-//    nome->setStyleSheet("font-weight: bold; text-decoration: underline;");
-//    //hp
-//    QHBoxLayout *hpLayout = new QHBoxLayout(this);
-//    hpLayout->addWidget(new QLabel("HP"));
-//    hp = new QProgressBar(this);
-//    hp->setOrientation(Qt::Orientation::Horizontal);
-//    hp->setRange(0,100);
-//    hp->setValue(40);
-//    hp->setFixedHeight(20);
-//    hp->setFixedWidth(200);
-//    hp->setTextVisible(false);
-//    QPalette hpPalette = QPalette();
-//    hpPalette.setColor(QPalette::Highlight, Qt::green);
-//    hp->setPalette(hpPalette);
-//    hpLayout->addWidget(hp);
-//    hpLabel = new QLabel(this);
-//    hpLabel->setText("400");
-//    hpLabel->setFixedWidth(25);
-//    hpLayout->addWidget(hpLabel);
-//    //mp
-//    QHBoxLayout *mpLayout = new QHBoxLayout(this);
-//    mpLayout->addWidget(new QLabel("MP"));
-//    mp = new QProgressBar(this);
-//    mp->setOrientation(Qt::Orientation::Horizontal);
-//    mp->setRange(0,300);
-//    mp->setValue(40);
-//    mp->setFixedHeight(20);
-//    mp->setFixedWidth(200);
-//    mp->setTextVisible(false);
-//    QPalette mpPalette = QPalette();
-//    mpPalette.setColor(QPalette::Highlight, Qt::blue);
-//    mp->setPalette(mpPalette);
-//    mpLayout->addWidget(mp);
-//    mpLabel = new QLabel(this);
-//    mpLabel->setText("400");
-//    mpLabel->setFixedWidth(25);
-//    mpLayout->addWidget(mpLabel);
-//    //weapon widget
-//    weapon = new ItemWidget("Spada suprema","Arma",40,21,2);
-//    armor = new ItemWidget("Armatura della morte","Armatura",40);
-
-//    setFixedWidth(270);
-
-//    //setto tutto
-//    setLayout(layout);
-//    layout->addWidget(nome);
-//    layout->addLayout(hpLayout);
-//    layout->addLayout(mpLayout);
-//    layout->addWidget(weapon);
-//    layout->addWidget(armor);
-//}
-
 PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     layout = new QVBoxLayout(this);
     //nome
@@ -66,7 +8,7 @@ PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     int mpNum = c->getMana();
     nome->setStyleSheet("font-weight: bold; text-decoration: underline;");
     //hp
-    QHBoxLayout *hpLayout = new QHBoxLayout(this);
+    QHBoxLayout *hpLayout = new QHBoxLayout();
     hpLayout->addWidget(new QLabel("HP"));
     hp = new QProgressBar(this);
     hp->setOrientation(Qt::Orientation::Horizontal);
@@ -84,7 +26,7 @@ PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     hpLabel->setFixedWidth(25);
     hpLayout->addWidget(hpLabel);
     //mp
-    QHBoxLayout *mpLayout = new QHBoxLayout(this);
+    QHBoxLayout *mpLayout = new QHBoxLayout();
     mpLayout->addWidget(new QLabel("MP"));
     mp = new QProgressBar(this);
     mp->setOrientation(Qt::Orientation::Horizontal);

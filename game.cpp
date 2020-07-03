@@ -7,7 +7,7 @@
 
 const int Game::mapSize = 250;
 
-const QString fileScore = "../Save.txt";
+const QString Game::fileScore = "../Save.txt";
 
 
 Game::Game(Player* player, QObject *parent) : QObject(parent)
@@ -176,9 +176,4 @@ bool Game::isMagicWeapon(const Entity *e) { return (dynamic_cast<const MagicWeap
 Character *Game::getPlayer()
 {
     return pg;
-}
-
-
-
-void Game::fight(Character *pg, QVector<Character *> enemies) {
 }

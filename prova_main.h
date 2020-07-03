@@ -39,8 +39,6 @@ signals:
 
 //    // segnale di volume changed
 //    void volumeChanged(int volume);
-
-    void setMiniMapSize(int dim);
     void newGameSlot();
 
 public slots:
@@ -60,11 +58,6 @@ public slots:
 //    void onMute();
 
     void movePressed(char dir);
-    // gestisco il refresh della mapppa
-    void onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos);
-
-    // gestisco il segnale di cambio di dimensione proveniente da MapWidget
-    void onSetMiniMapSize(int dim);
 
 
 private:

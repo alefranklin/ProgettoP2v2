@@ -40,6 +40,7 @@ public:
   void moveDOWN();
   void moveLEFT();
   void moveRIGHT();
+  void moveBack();
   Tile& getCurrentTile();
 
   QVector<Coordinate> createCircle(Coordinate center, int radius); // va messa su private
@@ -64,6 +65,7 @@ private:
   int dim;
   QVector<QVector<Tile>> map;
   Coordinate pos;
+  Coordinate lastPos;
   Coordinate relativePos;
 
   Coordinate RandomPos() const;

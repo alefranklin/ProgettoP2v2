@@ -1,7 +1,22 @@
 #include "tilebutton.h"
 #include "game.h"
 
-TileButton::TileButton(Tile t, bool playerIn, QWidget *parent): QPushButton(parent), tile(t) {
+TileButton::TileButton(QWidget *parent): QPushButton(parent) {
+
+    //all'inizio disabilito tutto e aspetto che venga settato un tile che sostituisca quello creato di default
+    setStyleSheet("background-color: black; border: 0px;");
+    setDisabled(true);
+
+    connect(this, SIGNAL(clicked()), this, SLOT(handleClick()));
+
+}
+
+void TileButton::setTile(Tile t)
+{
+    setPlayerHere(false);
+
+    //sostituisco tile
+    tile = t;
 
     //se non ci sono entity disabilito il pulsante
     if(tile.e.isEmpty()) setDisabled(true);
@@ -26,13 +41,16 @@ TileButton::TileButton(Tile t, bool playerIn, QWidget *parent): QPushButton(pare
             setStyleSheet("border: 0px;");
         break;
     }
+}
 
-    if(playerIn){
+void TileButton::setPlayerHere(bool here)
+{
+    if(here) {
         setText("P");
         setStyleSheet("font-weight: bold; color: black; border: 1px solid black;");
+    } else {
+        setText("");
     }
-
-    connect(this, SIGNAL(clicked()), this, SLOT(handleClick()));
 }
 
 void TileButton::handleClick()

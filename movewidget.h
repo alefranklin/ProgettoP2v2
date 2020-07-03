@@ -2,9 +2,9 @@
 #define MOVEWIDGET_H
 
 #include <QWidget>
-#include <QGroupBox>
-#include <QLayout>
-#include "movebutton.h"
+#include <QGridLayout>
+#include <QPushButton>
+
 
 class MoveWidget : public QWidget
 {
@@ -19,17 +19,20 @@ signals:
     void emitDir(char c);
 
 public slots:
-    void dirPressed(char c);
-
     void setEnabled(bool enable);
 
+private slots:
+    void clickedUP();
+    void clickedDOWN();
+    void clickedRIGHT();
+    void clickedLEFT();
+
 private:
-    MoveButton *UP;
-    MoveButton *DOWN;
-    MoveButton *RIGHT;
-    MoveButton *LEFT;
+    QPushButton *UP;
+    QPushButton *DOWN;
+    QPushButton *RIGHT;
+    QPushButton *LEFT;
 
     QGridLayout *grid;
-    //QGroupBox *grid;
 };
 #endif // MOVEWIDGET_H
