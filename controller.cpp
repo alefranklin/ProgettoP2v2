@@ -15,9 +15,9 @@ Controller::Controller(Main_dialog* v, Game *g, QObject *parent) : QObject(paren
     //connect(model, &Game::choiceOut, view, &MainView::showChoice);   // gestisco scelte da model a view
     //connect(view, &MainView::emitChoice, model, &Game::choiceDone);  // gestisco la scelta fatta da view a model
 
+    //TODO solo per prova da eleminare
     // avvio il dialogo quando arriva il segnale da view
     //connect(view, &MainView::emitDialog, this, &Controller::avviaDialogo);
-
 
     //aggiungo la musica
     /*

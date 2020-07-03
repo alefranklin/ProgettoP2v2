@@ -7,7 +7,17 @@
 
 const int Game::mapSize = 250;
 
+
+Game::Game(QObject *parent) : QObject(parent)
+  , miniMapSize(20) // 20 di degault
+  , combat(nullptr)
+  , map(mapSize)
+{
+    //la grandezza della minimappa è settata quindi aggiorno la view
+    emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
+}
 const QString fileScore = "Save.txt";
+
 
 Game::Game(QObject *parent) : QObject(parent)
   , miniMapSize(20) // 20 di degault
@@ -70,8 +80,7 @@ void Game::move(char m) {
   emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
 }
 
-void Game::saveScoreSlot()
-{
+void Game::saveScoreSlot(){
     QFile file(fileScore);
 
     qDebug() << "entro salva file";

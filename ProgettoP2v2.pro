@@ -22,6 +22,7 @@ SOURCES += \
     controller.cpp \
     entergame.cpp \
     game.cpp \
+    inventorywidget.cpp \
     item.cpp \
     itemwidget.cpp \
     main.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     entergame.h \
     entity.h \
     game.h \
+    inventorywidget.h \
     item.h \
     itemwidget.h \
     main_dialog.h \

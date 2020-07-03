@@ -13,6 +13,8 @@
 
 extern const QString fileScore;
 
+#include <QDebug>
+
 class Enemies;
 class Player;
 
