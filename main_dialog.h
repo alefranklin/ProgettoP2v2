@@ -2,15 +2,12 @@
 #define MAIN_DIALOG
 
 #include <QMainWindow>
-#include <QStatusBar>
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
-#include <QString>
 #include <QMessageBox>
-#include <QString>
 
-#include <prova_main.h>
+#include "prova_main.h"
 #include "game.h"
 
 #include <string>
@@ -19,10 +16,13 @@ class Main_dialog : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit Main_dialog(bool& refNewGame, Game* g = nullptr, QWidget *parent = nullptr);
+    explicit Main_dialog(bool& refNewGame, Game* g, QWidget *parent = nullptr);
     ~Main_dialog(){}
 
 private:
+
+
+    Game* game;
 
     prova_main* mainWidget;
     QMenuBar* menubar;
@@ -40,12 +40,16 @@ private:
 
     void setMenuBar();
 
+signals:
+    void saveScoreSignal();
+
 public slots:
     void showLegend();
     void newGameSlot();
 
 private slots:
     void showInf();
+    void confirmSave();
 
 };
 

@@ -53,6 +53,9 @@ public:
 
 };
 
+
+//TODO rivedere queste due classi > possiamo mergiarle(?)
+
 class Player: public Character {
 public:
   Player(QString n, int v, int m);

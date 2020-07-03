@@ -3,7 +3,7 @@
 
 Main_dialog::Main_dialog(bool& refNewGame, Game *g, QWidget *parent)
     : QMainWindow(parent)
-    //, Game(g)
+    , game(g)
     , newGame(refNewGame)
 {
 
@@ -42,10 +42,10 @@ void Main_dialog::setMenuBar()
 
 
     connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(newGameSlot()));
-    //connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(saveGameSlot()));
+    //connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(confirmSave()));
     connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(close())); //TODO displayare una finestra e chiedere di salvare
 
-    //connect(mSave, SIGNAL(triggered(bool)), this, SLOT(saveGameSlot())); //TODO same as above
+    connect(mSave, SIGNAL(triggered(bool)), game, SLOT(saveScoreSlot())); //TODO same as above
 
     //connect(mEsci, SIGNAL(triggered(bool)), this, SLOT(saveGameSlot())); //TODO same as above
 
@@ -63,21 +63,25 @@ void Main_dialog::newGameSlot()
 
 void Main_dialog::showInf()
 {
-    QString str;
-    str = QString("Applicazione creata da:\n\n %1\n %2\n %3").arg("Franchin Alessandro")
-                                                             .arg("Pagotto Matteo")
-                                                             .arg("Pagotto Manuel");
+    QString str = QString("Applicazione creata da:\n\n %1\n %2\n %3").arg("Franchin Alessandro")
+                                                                     .arg("Pagotto Matteo")
+                                                                     .arg("Pagotto Manuel");
 
     QMessageBox::information(0, "Infomazioni", str);
 }
 
 void Main_dialog::showLegend()
 {
-    QString str;
-    str = QString("%1\n%2\n%3").arg("P - Personaggio")
-                               .arg("N - Nemico")
-                               .arg("I - Oggetto");
+    QString str = QString("%1\n%2\n%3").arg("P - Personaggio")
+                                       .arg("N - Nemico")
+                                       .arg("I - Oggetto");
 
-    QMessageBox::information(0, "Legenda", str, "Capito");
+    QMessageBox::information(0, "Legenda", str);
 }
 
+
+void Main_dialog::confirmSave()
+{
+    QString str = "Vuoi salvare il punteggio?";
+    QMessageBox::question(0, "Salva", str);
+}

@@ -7,8 +7,11 @@
 
 #include <QObject>
 #include <QString>
+#include <QSaveFile>
 
 #include <QDebug>
+
+extern const QString fileScore;
 
 class Enemies;
 class Player;
@@ -83,7 +86,7 @@ public slots:
         emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
     }
 
-
+    void saveScoreSlot();
 
 private:
 
@@ -144,6 +147,7 @@ private:
     CombatState* combat;
     Player *PG;
     Map map;
+    unsigned int score = 0;
 };
 
 #endif // GAME_H

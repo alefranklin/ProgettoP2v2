@@ -22,6 +22,7 @@ public slots:
     void dirPressed(char c);
 
     void setEnabled(bool enable);
+
 private:
     MoveButton *UP;
     MoveButton *DOWN;
