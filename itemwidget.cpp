@@ -1,43 +1,5 @@
 #include "itemwidget.h"
 
-//TODO eliminare
-
-//ItemWidget::ItemWidget(QWidget *parent): QWidget(parent){
-//    nome = new QLabel("");
-//    tipo = new QLabel("");
-//    stat1Name = new QLabel("");
-//    stat1 = new QLabel("");
-//    stat2Name = new QLabel("");
-//    stat2 = new QLabel("");
-//    stat3Name = new QLabel("Stat 3");
-//    stat3 = new QLabel("");
-
-//    QVBoxLayout *main = new QVBoxLayout(this);
-//    setMinimumWidth(200);
-//    setLayout(main);
-//    nome->setStyleSheet("font-weight: bold;");
-//    main->addWidget(nome);
-//    QHBoxLayout *body = new QHBoxLayout(this);
-//    main->addLayout(body);
-//    body->addWidget(tipo);
-//    tipo->setMaximumWidth(70);
-//    QVBoxLayout *stats = new QVBoxLayout(this);
-//    body->addLayout(stats);
-//    QHBoxLayout *s1Layout = new QHBoxLayout(this);
-//    s1Layout->addWidget(stat1Name);
-//    s1Layout->addWidget(stat1);
-//    QHBoxLayout *s2Layout = new QHBoxLayout(this);
-//    s2Layout->addWidget(stat2Name);
-//    s2Layout->addWidget(stat2);
-//    QHBoxLayout *s3Layout = new QHBoxLayout(this);
-//    s3Layout->addWidget(stat3Name);
-//    s3Layout->addWidget(stat3);
-
-//    stats->addLayout(s1Layout);
-//    stats->addLayout(s2Layout);
-//    stats->addLayout(s3Layout);
-//}
-
 ItemWidget::ItemWidget(QString n, QString t, int s1, int s2, int s3, QWidget *parent) : QWidget(parent)
 {
     nome = new QLabel(n);
@@ -54,19 +16,24 @@ ItemWidget::ItemWidget(QString n, QString t, int s1, int s2, int s3, QWidget *pa
     setLayout(main);
     nome->setStyleSheet("font-weight: bold;");
     main->addWidget(nome);
-    QHBoxLayout *body = new QHBoxLayout(this);
+
+    QHBoxLayout *body = new QHBoxLayout();
     main->addLayout(body);
     body->addWidget(tipo);
     tipo->setMaximumWidth(70);
-    QVBoxLayout *stats = new QVBoxLayout(this);
+
+    QVBoxLayout *stats = new QVBoxLayout();
     body->addLayout(stats);
-    QHBoxLayout *s1Layout = new QHBoxLayout(this);
+
+    QHBoxLayout *s1Layout = new QHBoxLayout();
     s1Layout->addWidget(stat1Name);
     s1Layout->addWidget(stat1);
-    QHBoxLayout *s2Layout = new QHBoxLayout(this);
+
+    QHBoxLayout *s2Layout = new QHBoxLayout();
     s2Layout->addWidget(stat2Name);
     s2Layout->addWidget(stat2);
-    QHBoxLayout *s3Layout = new QHBoxLayout(this);
+
+    QHBoxLayout *s3Layout = new QHBoxLayout();
     s3Layout->addWidget(stat3Name);
     s3Layout->addWidget(stat3);
 

@@ -1,5 +1,5 @@
-#ifndef PROVA_MAIN_H
-#define PROVA_MAIN_H
+#ifndef MAIN_VIEW_H
+#define MAIN_VIEW_H
 
 #include <QWidget>
 #include <QSlider>
@@ -22,13 +22,13 @@
 #include "mapwidget.h"
 #include "map.h"
 
-class prova_main : public QWidget
+class main_view : public QWidget
 {
     Q_OBJECT
 
 public:
-    prova_main(Game *g = nullptr, QWidget *parent = nullptr);
-    ~prova_main();
+    main_view(Game *g = nullptr, QWidget *parent = nullptr);
+    ~main_view();
 
 signals:
     // invio il segnale con la scelta fatta
@@ -113,4 +113,4 @@ private:
 
 };
 
-#endif // PROVA_MAIN_H
+#endif // MAIN_VIEW_H

@@ -7,7 +7,7 @@
 #include <QAction>
 #include <QMessageBox>
 
-#include "prova_main.h"
+#include "main_view.h"
 #include "game.h"
 
 #include <string>
@@ -24,14 +24,14 @@ private:
 
     Game* game;
 
-    prova_main* mainWidget;
+    main_view* mainWidget;
     QMenuBar* menubar;
     QMenu* mFile;
     QMenu* mHelp;
     QMenu* mInfo;
     QAction* mNewGame;
     QAction* mSavePlayer;
-    QAction* mSave;
+
     QAction* mEsci;
     QAction* mLegend;
     QAction* mShowInfo;

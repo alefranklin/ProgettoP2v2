@@ -7,7 +7,7 @@
 
 const int Game::mapSize = 250;
 
-const QString fileScore = "../Save.txt";
+const QString Game::fileScore = "../Save.txt";
 
 
 Game::Game(Player* player, QObject *parent) : QObject(parent)
@@ -62,6 +62,27 @@ void Game::usePotionMana() { emit dialogOut("sto usando la pozione del mana"); }
 
 void Game::usePotionHealth() { emit dialogOut("sto usando la pozione della vita"); }
 
+void Game::startCombat(Tile &t) {
+    combat = new CombatState(t.e, nullptr);
+    emit dialogOut("sei entrato nel pieno del combattimento");
+    emit dialogOut("il tuo nemico ti sferra un fendente micidiale");
+    // usare combat per tenere traccia dello stato del sistema
+    combat->numero_turno++;
+    combat->turno_player = true;
+    emit dialogOut("cosa vuoi fare?");
+    emit choiceOut(Choice::attack());
+    //ememies.arma.use(player)
+}
+
+void Game::attacca() {
+    emit dialogOut("usi la tua arma pazzesca per sfonnare il nemico");
+}
+
+void Game::endCombat() {
+    delete combat;
+    combat = nullptr;
+}
+
 int Game::randInt(int low, int high)
 {
     // Random number between low and high
@@ -69,7 +90,7 @@ int Game::randInt(int low, int high)
 }
 
 void Game::move(char m) {
-  switch (m) {
+    switch (m) {
     case 'W': map.moveUP();     break;
     case 'A': map.moveLEFT();   break;
     case 'S': map.moveDOWN();   break;
@@ -160,6 +181,19 @@ void Game::loadPlayerSlot(bool)
 
 }
 
+void Game::scappa() {
+    emit dialogOut("sto provando a scappare");
+    // con una certa probabilita scappa
+    if(randInt(0,1)) {
+        moveBack();
+        emit dialogOut("sono scappato");
+    }
+    else {
+        emit dialogOut("non sei riuscito a scappare!");
+        //startCombat();
+    }
+}
+
 
 
 bool Game::isItem(const Entity *e) { return (dynamic_cast<const Item*>(e)) ? true : false; }
@@ -176,9 +210,4 @@ bool Game::isMagicWeapon(const Entity *e) { return (dynamic_cast<const MagicWeap
 Character *Game::getPlayer()
 {
     return pg;
-}
-
-
-
-void Game::fight(Character *pg, QVector<Character *> enemies) {
 }

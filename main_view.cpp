@@ -1,12 +1,9 @@
-#include "prova_main.h"
+#include "main_view.h"
 
-prova_main::prova_main(Game *g, QWidget *parent)
+main_view::main_view(Game *g, QWidget *parent)
     : QWidget(parent)
     , model(g)
 {
-    // connetto i segnali per la mappa dal modello a view e viceversa
-    connect(model, &Game::posChanged, this, &prova_main::onPosChanged);  // da model a view
-    connect(this, &prova_main::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
 
     createMusicSliderBox();
 
@@ -23,10 +20,12 @@ prova_main::prova_main(Game *g, QWidget *parent)
 
     //QListWidget *placeholder = new QListWidget();
 
-    mapWidget = new MapWidget(this, 10, 20, 15);
+    mapWidget = new MapWidget(this, 19, 19, 19);
 
-    connect(mapWidget, &MapWidget::setMiniMapSize, this, &prova_main::onSetMiniMapSize);
-
+    // connetto i segnali per la mappa dal modello a view e viceversa
+    connect(model, &Game::posChanged, this, &main_view::onPosChanged);  // da model a view
+    connect(this, &main_view::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
+    connect(mapWidget, &MapWidget::setMiniMapSize, this, &main_view::onSetMiniMapSize);
     connect(mapWidget, &MapWidget::showDetailsOf, mob, &PlayerWidget::onShowDetailOf);
 
     choiceWidget = new ChoiceWidget(this);
@@ -53,13 +52,13 @@ prova_main::prova_main(Game *g, QWidget *parent)
     //grid->setRowMinimumHeight(0,270);
 
     //connetto view e model per muovere il personaggio nella mappa
-    connect(moveWidget, &MoveWidget::emitDir, this, &prova_main::movePressed);
+    connect(moveWidget, &MoveWidget::emitDir, this, &main_view::movePressed);
 
 }
 
-prova_main::~prova_main(){}
+main_view::~main_view(){}
 
-void prova_main::createMenu()
+void main_view::createMenu()
 {
     menubar = new QMenuBar(this);
 
@@ -79,7 +78,7 @@ void prova_main::createMenu()
 
 }
 
-void prova_main::createMusicSliderBox(){
+void main_view::createMusicSliderBox(){
 
     musicSlider = new QGroupBox(this);
     QHBoxLayout *layout = new QHBoxLayout;
@@ -109,16 +108,16 @@ void prova_main::createMusicSliderBox(){
     //musicSlider->setGeometry(20, 520, 200, 65);
 }
 
-void prova_main::onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos) {
+void main_view::onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos) {
     MapWidget *mapwidget = mapWidget;
     mapwidget->refresh(miniMap, relativePos);
 }
 
-void prova_main::onSetMiniMapSize(int dim) {
+void main_view::onSetMiniMapSize(int dim) {
     emit setMiniMapSize(dim);
 }
 
-void prova_main::movePressed(char dir){
+void main_view::movePressed(char dir){
     std::string s = "Ti sei mosso verso ";
     switch (dir){
         case 'W':

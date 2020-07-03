@@ -71,11 +71,28 @@ public slots:
     void savePlayerSlot();
     //carico il personaggio
     void loadPlayerSlot(bool);
+
+    //DEBUG
+    //elimino pg e lo setto a nullptr per nuova partita
+    void setPgNull()
+    {
+        delete pg;
+        pg = nullptr;
+    }
+
+//PRIVATE DI GAME
 private:
+
+    Player *pg;
+    Map map;
+    unsigned int score = 0;
+
 
     static const QString fileScore;
     static const int mapSize;
     int miniMapSize;
+
+
     // struttura per memorizzare lo stato del combattimento in corso
     struct CombatState {
         unsigned int numero_turno;
@@ -84,43 +101,19 @@ private:
         Player *player;
         CombatState(QVector<Entity*> &e, Player *pg): enemies(e), player(pg) {}
     };
+    CombatState* combat;
+
+
     // funzioni test per vedere
-    void scappa() {
-        emit dialogOut("sto provando a scappare");
-        // con una certa probabilita scappa
-        if(randInt(0,1)) {
-            moveBack();
-            emit dialogOut("sono scappato");
-        }
-        else {
-            emit dialogOut("non sei riuscito a scappare!");
-            //startCombat();
-        }
-    }
+    void scappa();
     void usePotionMana();
     void usePotionHealth();
-    void startCombat(Tile &t) {
-        combat = new CombatState(t.e, nullptr);
-        emit dialogOut("sei entrato nel pieno del combattimento");
-        emit dialogOut("il tuo nemico ti sferra un fendente micidiale");
-        // usare combat per tenere traccia dello stato del sistema
-        combat->numero_turno++;
-        combat->turno_player = true;
-        emit dialogOut("cosa vuoi fare?");
-        emit choiceOut(Choice::attack());
-        //ememies.arma.use(player)
-    }
-    void attacca() {
-        emit dialogOut("usi la tua arma pazzesca per sfonnare il nemico");
-    }
-    void endCombat() {
-        delete combat;
-        combat = nullptr;
-    }
+    void startCombat(Tile &t);
+    void attacca();
+    void endCombat();
     int randInt(int low, int high);
-    CombatState* combat;
-    Character *pg;
-    Map map;
-    unsigned int score = 0;
+
+
+
 };
 #endif // GAME_H

@@ -19,7 +19,7 @@ public:
 
     // costruttore
     EnterGame(Game** g, QWidget* parent = nullptr);
-    void cleanLabel();
+    void cleanEnter();
 
 public slots:
     // lista degli slot
