@@ -7,6 +7,7 @@ Main_dialog::Main_dialog(bool& refNewGame, Game *g, QWidget *parent)
     , newGame(refNewGame)
 {
     setWindowTitle("Dungeons & Programming 2");
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setFixedSize(1024, 600);
     setMenuBar();
 
