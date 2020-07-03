@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-EnterGame::EnterGame(Player** pers,QWidget* parent): QDialog(parent), pg(pers)
+EnterGame::EnterGame(Game** g, QWidget* parent): QDialog(parent), gioco(g)
 {
 
     setWindowTitle("D&P2 - Seleziona Nome");
@@ -23,9 +23,16 @@ void EnterGame::cleanLabel()
 
 void EnterGame::tryEnter()
 {
-    if(!pg_name->text().isEmpty() && pg_name->text() != " "){
-        *pg = new Player(pg_name->text(), 20, 20); //TODO inizializzare con Game
+    if((!pg_name->text().isEmpty() && pg_name->text() != " ") || (*gioco)->getPlayer()){
+        if(!(*gioco)->getPlayer()){
+            //evito memory leak
+            delete *gioco;
+            Player* pg = new Player(pg_name->text(), 20, 20);
+            *gioco = new Game(pg);
+        }
+
         this->close();
+
     } else {
         QMessageBox msgError;
         msgError.setText("Errore: il nome non può essere vuoto");
@@ -37,8 +44,7 @@ void EnterGame::tryEnter()
 void EnterGame::createLayoutEnterGame()
 {
     layoutEnterGame = new QGridLayout();
-    nameLabel = new QLabel();
-    nameLabel->setText("Nome Personaggio:");
+    nameLabel = new QLabel("Nome Personaggio:");
 
     pg_name = new QLineEdit();
 
@@ -46,10 +52,16 @@ void EnterGame::createLayoutEnterGame()
     layoutEnterGame->addWidget(pg_name, 1, 1);
 
 
-    bPlay = new QPushButton();
-    bPlay->setText("Gioca");
+    bPlay = new QPushButton("Gioca");
     layoutEnterGame->addWidget(bPlay, 3, 0, 1, 2);
     connect(bPlay, SIGNAL(clicked()), this, SLOT(tryEnter()));
+
+    bLoadPlayer = new QPushButton("Carica Personaggio");
+    layoutEnterGame->addWidget(bLoadPlayer, 4, 0);
+    connect(bLoadPlayer, &QPushButton::clicked, *gioco, &Game::loadPlayerSlot);
+    //connect(bPlay, SIGNAL(clicked()), this, SLOT(tryEnter()));
+
+    //if((*gioco)->getPlayer()) nameLabel->setText((*gioco)->getPlayer()->getName());
 
     setFixedSize(280,110);
 }

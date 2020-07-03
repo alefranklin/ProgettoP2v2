@@ -8,6 +8,10 @@
 #include <QObject>
 #include <QString>
 #include <QSaveFile>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 #include <QDebug>
 
@@ -23,7 +27,7 @@ class Game: public QObject
     Q_OBJECT
 
 public:
-    explicit Game(Character* player, QObject *parent = nullptr);
+    explicit Game(Player* player, QObject *parent = nullptr);
     ~Game();
 
     class Choice {
@@ -84,15 +88,16 @@ public slots:
     void move(char m);
 
     // gestisco segnale regolazione grandezza minimappa
-    void onSetMiniMapSize(int s) {
-        if(s > 0 && s <= map.getMapDimension() && s != miniMapSize) miniMapSize = s;
-        else miniMapSize = mapSize;
+    void onSetMiniMapSize(int s);
 
-        //la grandezza è cambiata quindi aggiorno la mappa
-        emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
-    }
-
+    //salvo il punteggio
     void saveScoreSlot();
+
+    //salvo il personaggio
+    void savePlayerSlot();
+
+    //carico il personaggio
+    void loadPlayerSlot(bool);
 
 private:
 
@@ -151,7 +156,7 @@ private:
     int randInt(int low, int high);
 
     CombatState* combat;
-    Player *pg;
+    Character *pg;
     Map map;
     unsigned int score = 0;
 };

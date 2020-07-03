@@ -30,6 +30,7 @@ private:
     QMenu* mHelp;
     QMenu* mInfo;
     QAction* mNewGame;
+    QAction* mSavePlayer;
     QAction* mSave;
     QAction* mEsci;
     QAction* mLegend;

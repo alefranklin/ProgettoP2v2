@@ -5,6 +5,10 @@
 #include "item.h"
 #include <QVector>
 #include <QString>
+
+
+#include <QDebug>
+
 using namespace std;
 
 class Weapon;
@@ -63,6 +67,10 @@ public:
   Player(QString n, int v, int m);
   void info();
   bool isAlive();
+  void inventory()
+  {
+    qDebug() << "inventario ";
+  }
 };
 
 class Mob: public Character {

@@ -20,9 +20,12 @@ void Main_dialog::setMenuBar()
     //parent senza valore di default su alcune versioni di QT (ad esempio in laboratorio)
     mFile = new QMenu("&File", nullptr);
     mNewGame = new QAction("&Nuova Partita", nullptr);
+    mSavePlayer = new QAction("Sal&va Personaggio");
     mSave = new QAction("&Salva", nullptr);
     mEsci = new QAction("&Esci", nullptr);
     mFile->addAction(mNewGame);
+    mFile->addSeparator();
+    mFile->addAction(mSavePlayer);
     mFile->addSeparator();
     mFile->addAction(mSave);
     mFile->addSeparator();
@@ -30,7 +33,7 @@ void Main_dialog::setMenuBar()
     menubar->addMenu(mFile);
 
     mInfo  = new QMenu("&Info", nullptr);
-    mShowInfo = new QAction("I&nfo sviluppatori", nullptr);
+    mShowInfo = new QAction("Inf&o sviluppatori", nullptr);
     mShowRank = new QAction("&Rank", nullptr);
     mInfo->addAction(mShowInfo);
     menubar->addMenu(mInfo);
@@ -44,6 +47,8 @@ void Main_dialog::setMenuBar()
     connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(newGameSlot()));
     //connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(confirmSave()));
     connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(close())); //TODO displayare una finestra e chiedere di salvare
+
+    connect(mSavePlayer, SIGNAL(triggered(bool)), game, SLOT(savePlayerSlot()));
 
     connect(mSave, SIGNAL(triggered(bool)), game, SLOT(saveScoreSlot())); //TODO same as above
 

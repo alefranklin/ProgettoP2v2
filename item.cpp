@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Item::Item(string n): nome(n), Entity() { qDebug() << "istanzio Item: "<< endl; }
+Item::Item(string n): Entity(), nome(n) { qDebug() << "istanzio Item: "<< endl; }
 
 string Item::getNome() const{ return nome; }
 
@@ -40,7 +40,7 @@ int Sword::getRange() const { return range; }
 int Sword::use(Character* owner, QVector<Character*> target) { qDebug() << "sto usando SPADA " << endl;}
 
 
-Bow::Bow(string n, int d, int a) : Weapon(n, d), arrows(a), Item(n) {}
+Bow::Bow(string n, int d, int a) : Item(n), Weapon(n, d), arrows(a)  {}
 int Bow::getArrow() const { return arrows; }
 int Bow::use(Character* owner, QVector<Character*> target) { qDebug() << "sto usando ARCO " << endl;}
 
@@ -68,7 +68,7 @@ void MeleeMagic::save() { qDebug() << "salvo MeleeMagic " << endl; }
 */
 
 
-MagicWeapon::MagicWeapon(string n, int d, int e, int m): Weapon(n, d), Magic(n, e, m), Item(n) {}
+MagicWeapon::MagicWeapon(string n, int d, int e, int m): Item(n), Weapon(n, d), Magic(n, e, m) {}
 MagicWeapon::~MagicWeapon() { qDebug() << "elimino MagicWeapon:" << endl; }
 int MagicWeapon::use(Character* owner, QVector<Character*> target) {
   qDebug() << "Arma magica" << endl;

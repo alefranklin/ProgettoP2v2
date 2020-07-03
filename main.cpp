@@ -13,6 +13,7 @@
 
 int main(int argc, char *argv[])
 {
+
     QApplication a(argc, argv);
 
     //mostro lo splash screen
@@ -30,8 +31,8 @@ int main(int argc, char *argv[])
 
     //QTimer::singleShot(500, &splash, SLOT(close()));   // chiudo lo spalsh screen
 
-    Player *player = nullptr;
-    EnterGame *enter = new EnterGame(&player);
+    Game* game = new Game(nullptr);
+    EnterGame *enter = new EnterGame(&game);
 
 
     //enter->cleanLabel();
@@ -50,28 +51,34 @@ int main(int argc, char *argv[])
     bool new_game = true;
 
     while(!exitLoop){
-        //se avvio una nuova partita
+        //avvio una nuova partita
         if(new_game) {
             enter->cleanLabel();
             enter->exec();
         }
 
-        if(player) {
+        //se istanzio player allora avvio la partita
+        if(game->getPlayer()) {
             new_game = false;
-            Game *g2 = new Game(player);
-            Main_dialog w(new_game, g2);
-            Controller c2(&w, g2);
+
+            Main_dialog w(new_game, game);
+            Controller c2(&w, game);
             //partita iniziata -> se decido di uscire non aprirà di nuovo
 
             w.setWindowModality(Qt::ApplicationModal);
             w.show();
             a.exec();
+
+            //MEMEORY LEAK -> game non distrugge player
+
             //TODO spostare dentro if(new_game)
-            player = nullptr; //TODO cambiare in delete player;
+            //player = nullptr; //TODO cambiare in delete player;
+            delete game->getPlayer();
             //successvivamente player sarà istanziato attraverso game e verrà eliminato una volta chiusa la finestra di gioco
             //l'istruzione sopra non sarà più necessaria
         } else {
             exitLoop = true;
+            //delete game;
         }
     }
     //if(player != nullptr) delete player;
