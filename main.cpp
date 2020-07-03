@@ -9,6 +9,8 @@
 #include <QSplashScreen>
 #include <QTimer>
 
+#include <QFile>
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -55,11 +57,12 @@ int main(int argc, char *argv[])
         }
 
         if(player) {
-            Game *g2 = new Game();
+            new_game = false;
+            Game *g2 = new Game(player);
             Main_dialog w(new_game, g2);
             Controller c2(&w, g2);
             //partita iniziata -> se decido di uscire non aprirà di nuovo
-            new_game = false;
+
             w.setWindowModality(Qt::ApplicationModal);
             w.show();
             a.exec();

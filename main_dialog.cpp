@@ -6,7 +6,7 @@ Main_dialog::Main_dialog(bool& refNewGame, Game *g, QWidget *parent)
     , game(g)
     , newGame(refNewGame)
 {
-
+    setWindowTitle("Dungeons & Programming 2");
     setFixedSize(1024, 600);
     setMenuBar();
 

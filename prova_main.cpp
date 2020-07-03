@@ -9,32 +9,33 @@ prova_main::prova_main(Game *g, QWidget *parent)
     connect(this, &prova_main::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
 
     createMusicSliderBox();
+    createDialogOutBox();
 
     grid = new QGridLayout();
     setLayout(grid);
 
-    charachter = new PlayerWidget(this);
-    PlayerWidget *mob = new PlayerWidget(this); //TODO dichiararlo sul .h
+    charachter = new PlayerWidget(model->getPlayer(), this);
+    PlayerWidget *mob = new PlayerWidget(model->getPlayer(), this); //TODO dichiararlo sul .h
 
     inventory= new QListWidget(); //lista di widget (inventario)
     inventory->setFixedWidth(270);
     //inventory->setFixedHeight(200);
     //inventory->setFixedSize(300, 200);
 
-    QListWidget *placeholder = new QListWidget();
+    //QListWidget *placeholder = new QListWidget();
 
     mapWidget = new MapWidget(this, 10, 20, 15);
 
     connect(mapWidget, &MapWidget::setMiniMapSize, this, &prova_main::onSetMiniMapSize);
-    //mapWidget->setMaximumSize(400,300);
-
 
     connect(mapWidget, &MapWidget::showDetailsOf, mob, &PlayerWidget::onShowDetailOf);
 
     choiceWidget = new ChoiceWidget(this);
-    //choiceWidget->setFixedWidth(300);
 
     moveWidget = new MoveWidget(this);
+
+    dialogOutBox = new QTextEdit(this);
+    dialogOutBox->setText("FINESTRA DI DIALOGO");
 
     //prima colonna (col = 0)
     grid->addWidget(charachter, 0, 0);
@@ -42,8 +43,8 @@ prova_main::prova_main(Game *g, QWidget *parent)
     grid->addWidget(musicSlider, 2, 0, Qt::AlignLeft);
 
     //seconda colonna (col = 1)
-    grid->addWidget(mapWidget, 0, 1, Qt::AlignCenter);
-    grid->addWidget(placeholder, 1, 1); //TODO mettere finestra di dialogo
+    grid->addWidget(mapWidget, 0, 1);
+    grid->addWidget(dialogOutBox, 1, 1); //TODO mettere finestra di dialogo
     grid->addWidget(choiceWidget, 2, 1, Qt::AlignCenter);
 
     //terza colonna (col = 2)
@@ -51,6 +52,9 @@ prova_main::prova_main(Game *g, QWidget *parent)
     grid->addWidget(mob, 0, 2); //TODO implementare in modo diverso per mob
 
     //grid->setRowMinimumHeight(0,270);
+
+    //connetto view e model per muovere il personaggio nella mappa
+    connect(moveWidget, &MoveWidget::emitDir, this, &prova_main::movePressed);
 
 }
 
@@ -113,4 +117,35 @@ void prova_main::onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate 
 
 void prova_main::onSetMiniMapSize(int dim) {
     emit setMiniMapSize(dim);
+}
+
+void prova_main::createDialogOutBox()
+{
+//    dialogOutBox = new QTextEdit(this);
+//    dialogOutBox->setText("FINESTRA DI DIALOGO");
+//    QGroupBox *characBox = new QGroupBox(this);
+//    QHBoxLayout *layout = new QHBoxLayout;
+//    layout->addWidget(dialogOutBox);
+//    characBox->setLayout(layout);
+//    //characBox->setGeometry(335, 335, 350, 150);
+}
+
+void prova_main::movePressed(char dir){
+    std::string s = "Ti sei mosso verso ";
+    switch (dir){
+        case 'W':
+            s += "su";
+        break;
+        case 'A':
+            s += "sinistra";
+        break;
+        case 'S':
+            s += "giu";
+        break;
+        case 'D':
+            s += "destra";
+        break;
+    }
+    dialogOutBox->setText(QString::fromStdString(s));
+    model->move(dir);
 }

@@ -23,7 +23,7 @@ class Game: public QObject
     Q_OBJECT
 
 public:
-    explicit Game(QObject *parent = nullptr);
+    explicit Game(Character* player, QObject *parent = nullptr);
     ~Game();
 
     class Choice {
@@ -56,7 +56,11 @@ public:
     static bool isCharacter(const Entity *e);
     static bool isMob(const Entity *e);
     static bool isPlayer(const Entity *e);
+    static bool isSword(const Entity *e);
+    static bool isBow(const Entity *e);
+    static bool isMagicWeapon(const Entity *e);
 
+    Character* getPlayer();
 
 
     void moveBack() { emit dialogOut("sono fuggito"); }
@@ -147,7 +151,7 @@ private:
     int randInt(int low, int high);
 
     CombatState* combat;
-    Player *PG;
+    Player *pg;
     Map map;
     unsigned int score = 0;
 };

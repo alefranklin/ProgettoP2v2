@@ -28,10 +28,11 @@ struct Attribute {
 
 class Item: public Entity {
 private:
-  QString nome;
+  string nome;
 protected:
-  Item(int i = 0);
+  Item(string n);
 public:
+  virtual string getNome() const;
   virtual ~Item();
   virtual int use(Character* owner, QVector<Character*> target) = 0;
   
@@ -46,7 +47,8 @@ class Potion: public Item {
 private:
  int effect;
 public:
- Potion(int e);
+ Potion(string n, int e);
+ int getEffect() const;
  virtual ~Potion();
  virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>());
  /*
@@ -62,10 +64,10 @@ class Weapon: virtual public Item {
 private:
   int damage;
 protected:
-  Weapon(int d);
+  Weapon(string n, int d);
 public:
   virtual ~Weapon();
-  virtual int getDamage();
+  virtual int getDamage() const;
   virtual int use(Character* owner, QVector<Character*> target) = 0;
   
   //virtual vector<Attribute<T>> getAttributes() {}
@@ -75,8 +77,8 @@ class Sword : virtual public Weapon {
   private:
     int range;
   public:
-    Sword(int d, int r);
-    int getRange();
+    Sword(string n, int d, int r);
+    int getRange() const;
     virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>() );
     
     //virtual void use();
@@ -93,8 +95,8 @@ class Bow : virtual public Weapon {
   private:
     int arrows;
   public:
-    Bow(int d, int r);
-    int getArrow();
+    Bow(string n, int d, int r);
+    int getArrow() const;
     virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>());
     //virtual void use();
 };
@@ -104,11 +106,11 @@ private:
   int effect;
   int mana;
 protected:
-  Magic(int e, int m);
+  Magic(string n, int e, int m);
 public:
   virtual ~Magic();
-  int getEffect();
-  int getMana();
+  int getEffect() const;
+  int getMana() const;
   virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>()) = 0;
   
   //virtual void use();
@@ -119,7 +121,7 @@ public:
 
 class MagicWeapon: virtual public Weapon, virtual public Magic {
 public:
-  MagicWeapon(int d, int e, int m);
+  MagicWeapon(string n, int d, int e, int m);
   virtual ~MagicWeapon();
   virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>());
   
@@ -130,10 +132,14 @@ class Armor: virtual public Item {
 private:
  int armatura;
 public:
- Armor(int a);
+ Armor(string n, int a);
+
+ int getArmatura() const;
+
  virtual ~Armor();
  int absorb(int danno);
  //virtual vector<Attribute<T>> getAttributes() {}
+ virtual int use(Character* owner, QVector<Character*> target){};
 };
 
 #endif

@@ -7,12 +7,13 @@
 
 const int Game::mapSize = 250;
 
-const QString fileScore = "Save.txt";
+const QString fileScore = "../Save.txt";
 
 
-Game::Game(QObject *parent) : QObject(parent)
+Game::Game(Character* player, QObject *parent) : QObject(parent)
   , miniMapSize(20) // 20 di degault
   , combat(nullptr)
+  , pg(dynamic_cast<Player*>(player))
   , map(mapSize)
 {
     //per il rand di test
@@ -61,10 +62,10 @@ int Game::randInt(int low, int high)
 
 void Game::move(char m) {
   switch (m) {
-    case 'w': map.moveUP();     break;
-    case 'a': map.moveLEFT();   break;
-    case 's': map.moveDOWN();   break;
-    case 'd': map.moveRIGHT();  break;
+    case 'W': map.moveUP();     break;
+    case 'A': map.moveLEFT();   break;
+    case 'S': map.moveDOWN();   break;
+    case 'D': map.moveRIGHT();  break;
     default:  break;
   }
 
@@ -76,15 +77,11 @@ void Game::saveScoreSlot(){
 
     qDebug() << "entro salva file";
 
-    if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append)){
         QTextStream outputStream(&file);
-        //file.open(QIODevice::WriteOnly);
-        //QString str = QString("Giocatore: PROVA\t  Punteggio: %1").arg(score);
-        //file.append(str);
-        outputStream << "Giocatore: PROVA\t Punteggio: " << 70 << "\n";
-        qDebug() << "salvato credo" << endl;
-        //outputStream.flush();
-        //if(file->commit()) qDebug() << "file salvato";
+
+        outputStream << "Giocatore: " << pg->getName() << "\t Punteggio: " << score << "\n";
+
         file.close();
     }
 }
@@ -96,6 +93,14 @@ bool Game::isPotion(const Entity *e) { return (dynamic_cast<const Potion*>(e)) ?
 bool Game::isCharacter(const Entity *e) { return (dynamic_cast<const Character*>(e)) ? true : false; }
 bool Game::isMob(const Entity *e) { return (dynamic_cast<const Mob*>(e)) ? true : false; }
 bool Game::isPlayer(const Entity *e) { return (dynamic_cast<const Player*>(e)) ? true : false; }
+bool Game::isSword(const Entity *e) { return (dynamic_cast<const Sword*>(e)) ? true : false;}
+bool Game::isBow(const Entity *e) { return (dynamic_cast<const Bow*>(e)) ? true : false;}
+bool Game::isMagicWeapon(const Entity *e) { return (dynamic_cast<const MagicWeapon*>(e)) ? true : false;}
+
+Character *Game::getPlayer()
+{
+    return pg;
+}
 
 
 

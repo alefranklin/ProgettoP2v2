@@ -27,7 +27,10 @@ TileButton::TileButton(Tile t, bool playerIn, QWidget *parent): QPushButton(pare
         break;
     }
 
-    if(playerIn) setText("P");
+    if(playerIn){
+        setText("P");
+        setStyleSheet("font-weight: bold; color: black; border: 1px solid black;");
+    }
 
     connect(this, SIGNAL(clicked()), this, SLOT(handleClick()));
 }

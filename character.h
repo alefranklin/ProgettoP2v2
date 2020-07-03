@@ -24,6 +24,8 @@ public:
   int getVita();
   int getMana();
   void setDamage(int d);
+  Weapon* getWeapon();
+  Armor* getArmor();
   virtual bool isAlive() =0;
   virtual void info() =0;
 

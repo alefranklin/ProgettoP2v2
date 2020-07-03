@@ -11,15 +11,16 @@
 #include <QScrollArea>
 #include <QLabel>
 #include <QGroupBox>
+#include <QTextEdit>
 
 
-#include <game.h>
+#include "game.h"
 #include "choicebutton.h"
 #include "playerwidget.h"
-#include <movewidget.h>
-#include <choicewidget.h>
+#include "movewidget.h"
+#include "choicewidget.h"
 #include "mapwidget.h"
-#include <map.h>
+#include "map.h"
 
 class prova_main : public QWidget
 {
@@ -58,7 +59,7 @@ public slots:
 //    void onVolumeChanged(int volume);
 //    void onMute();
 
-//    void movePressed(char dir);
+    void movePressed(char dir);
     // gestisco il refresh della mapppa
     void onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos);
 
@@ -71,7 +72,7 @@ private:
     void createMusicSliderBox();
     void createMoveBox();
     void createChoiceBox();
-    void createDialogBox();
+    void createDialogOutBox();
     void createCharachterBox();
     void createInventoryBox();
     void createMapBox();
@@ -107,6 +108,8 @@ private:
     QPushButton *muteButton;
 
     QGroupBox *musicSlider;
+
+    QTextEdit *dialogOutBox;
 
 
 };
