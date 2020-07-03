@@ -17,7 +17,7 @@ MainView::MainView(Game *g, QWidget *parent)
     connect(model, &Game::posChanged, this, &MainView::onPosChanged);  // da model a view
     connect(this, &MainView::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
 
-    ui->setupUi(this);
+    //ui->setupUi(this);
 
 
     //fisso la grandezza della finestra del programma
@@ -28,13 +28,13 @@ MainView::MainView(Game *g, QWidget *parent)
 
 
     // connetto i segnali di MapWidget
-    MapWidget *mapWidget = ui->mapwidget;
-    connect(mapWidget, &MapWidget::setMiniMapSize, this, &MainView::onSetMiniMapSize);
+    //MapWidget *mapWidget = ui->mapwidget;
+    //connect(mapWidget, &MapWidget::setMiniMapSize, this, &MainView::onSetMiniMapSize);
 
 
     //TODO solo per il dialogo
-    QPushButton* bt = ui->dialogo;
-    connect(bt, &QPushButton::clicked, this, &MainView::onDialogPressed);
+    //QPushButton* bt = ui->dialogo;
+    //connect(bt, &QPushButton::clicked, this, &MainView::onDialogPressed);
 
     createMenu();
     createMusicSliderBox();
@@ -88,8 +88,8 @@ void MainView::onMute() {
 }
 
 void MainView::onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos) {
-    MapWidget *mapWidget = ui->mapwidget;
-    mapWidget->refresh(miniMap, relativePos);
+    //MapWidget *mapWidget = ui->mapwidget;
+    //mapWidget->refresh(miniMap, relativePos);
 }
 
 void MainView::onSetMiniMapSize(int dim) {
