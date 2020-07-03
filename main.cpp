@@ -44,8 +44,8 @@ int main(int argc, char *argv[])
 //        a.exec();// e poi apro la finestra
 //    }
 
-    bool exit = false;
-    while(!exit){
+    bool exitLoop = false;
+    while(!exitLoop){
         enter->cleanLabel();
         enter->exec();
         if(player) {
@@ -56,9 +56,13 @@ int main(int argc, char *argv[])
             //w.setWindowModality(Qt::ApplicationModal);
             w.show();
             a.exec();
-            if(!new_game) exit = true;
+            if(new_game){
+                //delte g2;
+                player = nullptr; //TODO cambiare in delete player;
+                //exitLoop = true;
+            }
         } else {
-            exit = true;
+            exitLoop = true;
         }
     }
     //if(player != nullptr) delete player;
