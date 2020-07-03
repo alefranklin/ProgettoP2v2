@@ -26,6 +26,7 @@ TileButton::TileButton(Tile t, bool playerIn, QWidget *parent): QPushButton(pare
             setStyleSheet("border: 0px;");
         break;
     }
+
     if(playerIn) setText("P");
 
     connect(this, SIGNAL(clicked()), this, SLOT(handleClick()));
@@ -33,5 +34,6 @@ TileButton::TileButton(Tile t, bool playerIn, QWidget *parent): QPushButton(pare
 
 void TileButton::handleClick()
 {
-    emit buttonClicked(tile.e);
+    //emit buttonClicked(tile.e);
+
 }

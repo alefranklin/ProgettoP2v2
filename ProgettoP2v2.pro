@@ -18,28 +18,44 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     character.cpp \
     choicebutton.cpp \
+    choicewidget.cpp \
     controller.cpp \
+    entergame.cpp \
     game.cpp \
     inventorywidget.cpp \
     item.cpp \
+    itemwidget.cpp \
     main.cpp \
+    main_dialog.cpp \
     mainview.cpp \
     map.cpp \
     mapwidget.cpp \
+    movebutton.cpp \
+    movewidget.cpp \
+    playerwidget.cpp \
+    prova_main.cpp \
     randomizer.cpp \
     tilebutton.cpp
 
 HEADERS += \
     character.h \
     choicebutton.h \
+    choicewidget.h \
     controller.h \
+    entergame.h \
     entity.h \
     game.h \
     inventorywidget.h \
     item.h \
+    itemwidget.h \
+    main_dialog.h \
     mainview.h \
     map.h \
     mapwidget.h \
+    movebutton.h \
+    movewidget.h \
+    playerwidget.h \
+    prova_main.h \
     randomizer.h \
     tilebutton.h
 

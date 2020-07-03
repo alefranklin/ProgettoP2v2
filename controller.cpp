@@ -1,6 +1,6 @@
 #include "controller.h"
 
-Controller::Controller(Game *g, MainView* v, QObject *parent) : QObject(parent), model(g), view(v)
+Controller::Controller(Main_dialog* v, Game *g, QObject *parent) : QObject(parent), model(g), view(v)
 {
     /*
      connetto i vari segnali agli slot
@@ -9,18 +9,18 @@ Controller::Controller(Game *g, MainView* v, QObject *parent) : QObject(parent),
     */
 
     // collego sistema di dialogo
-    connect(model, &Game::dialogOut, view, &MainView::printString);
+    //connect(model, &Game::dialogOut, view, &MainView::printString);
 
     // collego sistema di scelte
-    connect(model, &Game::choiceOut, view, &MainView::showChoice);   // gestisco scelte da model a view
-    connect(view, &MainView::emitChoice, model, &Game::choiceDone);  // gestisco la scelta fatta da view a model
+    //connect(model, &Game::choiceOut, view, &MainView::showChoice);   // gestisco scelte da model a view
+    //connect(view, &MainView::emitChoice, model, &Game::choiceDone);  // gestisco la scelta fatta da view a model
 
     //TODO solo per prova da eleminare
     // avvio il dialogo quando arriva il segnale da view
-    connect(view, &MainView::emitDialog, this, &Controller::avviaDialogo);
-
+    //connect(view, &MainView::emitDialog, this, &Controller::avviaDialogo);
 
     //aggiungo la musica
+    /*
     playlist = new QMediaPlaylist();
     playlist->addMedia(QUrl("qrc:/music/track1"));
     playlist->setCurrentIndex(1);
@@ -31,17 +31,18 @@ Controller::Controller(Game *g, MainView* v, QObject *parent) : QObject(parent),
     music->play();
     // connetto il segnale della view al cambio di volume
     connect(view, &MainView::volumeChanged, music, &QMediaPlayer::setVolume);
+    */
 
 
 }
 
 Controller::~Controller()
 {
-    delete model;
-    delete view;
+    //delete model;
+    //delete view;
 }
 
-void Controller::avviaDialogo()
-{
-    model->dialog("dialogo avviato");
-}
+//void Controller::avviaDialogo()
+//{
+//    model->dialog("dialogo avviato");
+//}

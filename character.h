@@ -27,6 +27,7 @@ public:
   virtual bool isAlive() =0;
   virtual void info() =0;
 
+  virtual ~Character();
 
 
    /*
@@ -51,6 +52,9 @@ public:
   virtual int attacca(QVector<Character*> target);
 
 };
+
+
+//TODO rivedere queste due classi > possiamo mergiarle(?)
 
 class Player: public Character {
 public:

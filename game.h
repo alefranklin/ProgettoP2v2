@@ -7,6 +7,11 @@
 
 #include <QObject>
 #include <QString>
+#include <QSaveFile>
+
+#include <QDebug>
+
+extern const QString fileScore;
 
 #include <QDebug>
 
@@ -18,7 +23,7 @@ class Game: public QObject
     Q_OBJECT
 
 public:
-    Game(QObject *parent = nullptr);
+    explicit Game(QObject *parent = nullptr);
     ~Game();
 
     class Choice {
@@ -53,6 +58,7 @@ public:
     static bool isPlayer(const Entity *e);
 
 
+
     void moveBack() { emit dialogOut("sono fuggito"); }
     void dialog(QString s);
 
@@ -82,7 +88,7 @@ public slots:
         emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
     }
 
-
+    void saveScoreSlot();
 
 private:
 
@@ -143,6 +149,7 @@ private:
     CombatState* combat;
     Player *PG;
     Map map;
+    unsigned int score = 0;
 };
 
 #endif // GAME_H

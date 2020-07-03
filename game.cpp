@@ -3,8 +3,10 @@
 // per il random (provvisorio)
 #include <QtGlobal>
 #include <QTime>
+#include <QFile>
 
 const int Game::mapSize = 250;
+
 
 Game::Game(QObject *parent) : QObject(parent)
   , miniMapSize(20) // 20 di degault
@@ -14,14 +16,23 @@ Game::Game(QObject *parent) : QObject(parent)
     //la grandezza della minimappa è settata quindi aggiorno la view
     emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
 }
+const QString fileScore = "Save.txt";
 
-Game::~Game()
+
+Game::Game(QObject *parent) : QObject(parent)
+  , miniMapSize(20) // 20 di degault
+  , combat(nullptr)
+  , map(mapSize)
 {
     //per il rand di test
     QTime time = QTime::currentTime();
     qsrand((uint)time.msec());
 
+    //la grandezza della minimappa è settata quindi aggiorno la view
+    emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
 }
+
+Game::~Game(){}
 
 void Game::dialog(QString s)
 {
@@ -67,6 +78,24 @@ void Game::move(char m) {
   }
 
   emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
+}
+
+void Game::saveScoreSlot(){
+    QFile file(fileScore);
+
+    qDebug() << "entro salva file";
+
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream outputStream(&file);
+        //file.open(QIODevice::WriteOnly);
+        //QString str = QString("Giocatore: PROVA\t  Punteggio: %1").arg(score);
+        //file.append(str);
+        outputStream << "Giocatore: PROVA\t Punteggio: " << 70 << "\n";
+        qDebug() << "salvato credo" << endl;
+        //outputStream.flush();
+        //if(file->commit()) qDebug() << "file salvato";
+        file.close();
+    }
 }
 
 bool Game::isItem(const Entity *e) { return (dynamic_cast<const Item*>(e)) ? true : false; }

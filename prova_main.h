@@ -1,70 +1,69 @@
-#ifndef MAINVIEW_H
-#define MAINVIEW_H
+#ifndef PROVA_MAIN_H
+#define PROVA_MAIN_H
 
 #include <QWidget>
 #include <QSlider>
 #include <QPushButton>
 #include <QDialogButtonBox>
 #include <QMenuBar>
+#include <QMenu>
+#include <QListWidget>
+#include <QScrollArea>
+#include <QLabel>
+#include <QGroupBox>
+
 
 #include <game.h>
-#include <choicebutton.h>
-#include <mapwidget.h>
-#include <map.h>
+#include "choicebutton.h"
+#include "playerwidget.h"
 #include <movewidget.h>
 #include <choicewidget.h>
+#include "mapwidget.h"
+#include <map.h>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainView; }
-QT_END_NAMESPACE
-
-
-class MainView : public QWidget
+class prova_main : public QWidget
 {
     Q_OBJECT
 
 public:
-    MainView(Game *g, QWidget *parent = nullptr);
-    ~MainView();
+    prova_main(Game *g = nullptr, QWidget *parent = nullptr);
+    ~prova_main();
 
 signals:
     // invio il segnale con la scelta fatta
-    void emitChoice(Game::Choice c);
+    //void emitChoice(Game::Choice c);
 
     // emetto il segnale per far partire il dialogo al controller
-    void emitDialog();
+//    void emitDialog();
 
-    // segnale di volume changed
-    void volumeChanged(int volume);
+//    // segnale di volume changed
+//    void volumeChanged(int volume);
 
-    // segnale per il cambio della dimensione della minimappa
     void setMiniMapSize(int dim);
+    void newGameSlot();
 
 public slots:
     // printo su textedit
-    void printString(QString s);
+    //void printString(QString s);
 
-    // gestisco e mostro le varie scelte diponibili
-    void showChoice(QVector<Game::Choice> c);
-    // gestisco la pressione del pulsante di scelta
-    void choicePressed(Game::Choice c);
+//    // gestisco e mostro le varie scelte diponibili
+//    void showChoice(QVector<Game::Choice> c);
+//    // gestisco la pressione del pulsante di scelta
+//    void choicePressed(Game::Choice c);
 
-    //gestisco il click del pulsante di dialogo
-    void onDialogPressed();
+//    //gestisco il click del pulsante di dialogo
+//    void onDialogPressed();
 
-    // slot per gestire lo slider del volume
-    void onVolumeChanged(int volume);
-    void onMute();
+//    // slot per gestire lo slider del volume
+//    void onVolumeChanged(int volume);
+//    void onMute();
 
-
+//    void movePressed(char dir);
     // gestisco il refresh della mapppa
     void onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos);
 
     // gestisco il segnale di cambio di dimensione proveniente da MapWidget
     void onSetMiniMapSize(int dim);
-
-    void movePressed(char dir);
-
 
 
 private:
@@ -78,12 +77,22 @@ private:
     void createMapBox();
     void createEnemyBox();
 
+    QGridLayout* grid;
+    QListWidget *inventory;
+
+    PlayerWidget *charachter;
+
+    QLabel *info;
+
+    QPushButton* bottone;
+
     //menu
-    QMenuBar *menuBar;
+    QMenuBar *menubar;
     QMenu *fileMenu;
     QAction *exitAction;
     QAction *saveAction;
 
+    MapWidget *mapWidget;
 
     Game* model;
     MoveWidget *moveWidget;
@@ -97,6 +106,9 @@ private:
     //widget move
     QPushButton *muteButton;
 
+    QGroupBox *musicSlider;
+
 
 };
-#endif // MAINVIEW_H
+
+#endif // PROVA_MAIN_H

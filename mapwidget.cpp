@@ -25,6 +25,7 @@ MapWidget::MapWidget(QWidget *parent, int min, int max, int val) : QWidget(paren
     tile_layout = new QGridLayout();
     tile_layout->setSpacing(0);
 
+
     /* creo il layout dello slider e aggiungo gli elementi*/
     slider_layout = new QGridLayout();
     slider_layout->addWidget(dimensionSlider, 0, 0);
@@ -32,8 +33,11 @@ MapWidget::MapWidget(QWidget *parent, int min, int max, int val) : QWidget(paren
 
     /* creo il layout di MapWidget e aggiungo gli elementi*/
     layout = new QGridLayout(this);
-    layout->addLayout(tile_layout, 0, 0, 9, 10);
+    layout->addLayout(tile_layout, 0, 0);
     layout->addLayout(slider_layout, 10, 0);
+
+    //imposto il widget ad una dimensione fissata
+    setMaximumSize(400,300);
 
     /* setto il layout appena creata al
      * Widget in modo da avere una diposizione degli oggetti
