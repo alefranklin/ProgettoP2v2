@@ -1,50 +1,57 @@
 #include "entergame.h"
 
-EnterGame::EnterGame(QWidget* parent): QDialog(parent)
+#include <QDebug>
+
+EnterGame::EnterGame(Player** pers,QWidget* parent): QDialog(parent), pg(pers)
 {
 
-    //setWindowTitle("FileShare - Login");
-    //setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowTitle("D&P2 - Seleziona Nome");
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     //setWindowIcon(QIcon(QPixmap(":/icona")));
 
     createLayoutEnterGame();
-    QVBoxLayout* mainLayout = new QVBoxLayout;
-    mainLayout->addLayout(layoutLogin);
-    //setLayout(mainLayout);
+    QVBoxLayout* enterLayout = new QVBoxLayout;
+    enterLayout->addLayout(layoutEnterGame);
+    setLayout(enterLayout);
 }
 
-//void EnterGame::clean()
-//{
-//    tname->clear();
-//    tpass->clear();
-//    tname->setFocus();
-//}
+void EnterGame::cleanLabel()
+{
+   pg_name->clear();
+   pg_name->setFocus();
+}
+
+
+void EnterGame::tryEnter()
+{
+    if(!pg_name->text().isEmpty() && pg_name->text() != " "){
+        *pg = new Player(pg_name->text(), 20, 20); //TODO inizializzare con Game
+        this->close();
+    } else {
+        QMessageBox msgError;
+        msgError.setText("Errore: il nome non può essere vuoto");
+        msgError.exec();
+    }
+}
 
 
 void EnterGame::createLayoutEnterGame()
 {
-    layoutLogin = new QGridLayout();
-    lname = new QLabel();
-    lname->setText("Nome:");
-    lpass = new QLabel();
-    lpass->setText("Password:");
-    lImgLogin = new QLabel;
-    QPixmap img;
-    img.load(":/login.png");
-    lImgLogin->setPixmap(img.scaled(80,80));
-    tname = new QLineEdit();
-    tpass = new QLineEdit();
-    tpass->setEchoMode(QLineEdit::Password);
-    layoutLogin->addWidget(lImgLogin, 0, 2, 4, 1); //si "mangia" 4 righe
-    layoutLogin->addWidget(lname, 1, 0);
-    layoutLogin->addWidget(tname, 1, 1);
-    layoutLogin->addWidget(lpass, 2, 0);
-    layoutLogin->addWidget(tpass, 2, 1);
+    layoutEnterGame = new QGridLayout();
+    nameLabel = new QLabel();
+    nameLabel->setText("Nome Personaggio:");
 
-    blogin = new QPushButton();
-    blogin->setText("Login");
-    layoutLogin->addWidget(blogin, 3, 0, 1, 2);
-    //connect(blogin, SIGNAL(clicked()), this, SLOT(tryLogin()));
+    pg_name = new QLineEdit();
+
+    layoutEnterGame->addWidget(nameLabel, 1, 0);
+    layoutEnterGame->addWidget(pg_name, 1, 1);
+
+
+    bPlay = new QPushButton();
+    bPlay->setText("Gioca");
+    layoutEnterGame->addWidget(bPlay, 3, 0, 1, 2);
+    connect(bPlay, SIGNAL(clicked()), this, SLOT(tryEnter()));
 
     setFixedSize(280,110);
 }
+

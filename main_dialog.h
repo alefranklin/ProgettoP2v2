@@ -11,6 +11,7 @@
 #include <QString>
 
 #include <prova_main.h>
+#include "game.h"
 
 #include <string>
 
@@ -18,7 +19,8 @@ class Main_dialog : public QMainWindow {
     Q_OBJECT
 
 public:
-    Main_dialog(Game* g = nullptr, QWidget *parent = nullptr);
+    explicit Main_dialog(bool& refNewGame, Game* g = nullptr, QWidget *parent = nullptr);
+    ~Main_dialog(){}
 
 private:
 
@@ -27,17 +29,23 @@ private:
     QMenu* mFile;
     QMenu* mHelp;
     QMenu* mInfo;
-    QAction* mLogOut;
+    QAction* mNewGame;
+    QAction* mSave;
     QAction* mEsci;
     QAction* mLegend;
     QAction* mShowInfo;
     QAction* mShowRank;
 
+    bool& newGame;
+
     void setMenuBar();
 
 public slots:
+    void showLegend();
+    void newGameSlot();
 
 private slots:
+    void showInf();
 
 };
 

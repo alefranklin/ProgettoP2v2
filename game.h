@@ -18,7 +18,7 @@ class Game: public QObject
     Q_OBJECT
 
 public:
-    Game(QObject *parent = nullptr);
+    explicit Game(QObject *parent = nullptr);
     ~Game();
 
     class Choice {

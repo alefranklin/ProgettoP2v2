@@ -16,8 +16,6 @@ prova_main::prova_main(Game *g, QWidget *parent)
     charachter = new PlayerWidget(this);
     PlayerWidget *mob = new PlayerWidget(this); //TODO dichiararlo sul .h
 
-
-
     inventory= new QListWidget(); //lista di widget (inventario)
     inventory->setFixedWidth(270);
     //inventory->setFixedHeight(200);
@@ -56,12 +54,7 @@ prova_main::prova_main(Game *g, QWidget *parent)
 
 }
 
-prova_main::~prova_main()
-{
-    delete this;
-}
-
-
+prova_main::~prova_main(){}
 
 void prova_main::createMenu()
 {
@@ -71,7 +64,6 @@ void prova_main::createMenu()
     saveAction = new QAction("&Save", nullptr);
     exitAction = new QAction("E&xit", nullptr);
 
-
     //aggiungo le azioni al menu
     fileMenu->addAction(saveAction);
     fileMenu->addSeparator();
@@ -79,7 +71,6 @@ void prova_main::createMenu()
 
     //aggiungo il menu alla barra
     menubar->addMenu(fileMenu);
-
 
     connect(exitAction, SIGNAL(triggered()), this, SLOT(accept()));
 

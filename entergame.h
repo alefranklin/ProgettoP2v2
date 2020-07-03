@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QPicture>
 #include <QMessageBox>
+#include "character.h"
 
 class EnterGame: public QDialog
 {
@@ -15,12 +16,12 @@ class EnterGame: public QDialog
 public:
 
     // costruttore
-    EnterGame(QWidget* parent = nullptr);
-    //void clean();
+    EnterGame(Player**pers, QWidget* parent = nullptr);
+    void cleanLabel();
 
 public slots:
     // lista degli slot
-    //void tryLogin();
+    void tryEnter();
 
 signals:
     //void send(user*);
@@ -31,14 +32,12 @@ private:
 
 //    const listUser& listaUtenti;
 //    user**loginUser;
+    Player**pg;
 
-    QGridLayout* layoutLogin;
-    QLabel* lname;
-    QLabel* lpass;
-    QLabel* lImgLogin;
-    QLineEdit* tname;
-    QLineEdit* tpass;
-    QPushButton* blogin;
+    QGridLayout* layoutEnterGame;
+    QLabel* nameLabel;
+    QLineEdit* pg_name;
+    QPushButton* bPlay;
 };
 
 #endif // ENTERGAME_H

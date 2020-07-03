@@ -38,8 +38,8 @@ Controller::Controller(Main_dialog* v, Game *g, QObject *parent) : QObject(paren
 
 Controller::~Controller()
 {
-    delete model;
-    delete view;
+    //delete model;
+    //delete view;
 }
 
 //void Controller::avviaDialogo()

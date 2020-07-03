@@ -27,6 +27,7 @@ public:
   virtual bool isAlive() =0;
   virtual void info() =0;
 
+  virtual ~Character();
 
 
    /*
