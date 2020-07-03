@@ -72,7 +72,6 @@ private:
     void createMusicSliderBox();
     void createMoveBox();
     void createChoiceBox();
-    void createDialogOutBox();
     void createCharachterBox();
     void createInventoryBox();
     void createMapBox();

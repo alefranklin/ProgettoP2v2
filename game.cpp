@@ -173,11 +173,11 @@ bool Game::isSword(const Entity *e) { return (dynamic_cast<const Sword*>(e)) ? t
 bool Game::isBow(const Entity *e) { return (dynamic_cast<const Bow*>(e)) ? true : false;}
 bool Game::isMagicWeapon(const Entity *e) { return (dynamic_cast<const MagicWeapon*>(e)) ? true : false;}
 
+
 Character *Game::getPlayer()
 {
     return pg;
 }
-
 
 
 void Game::fight(Character *pg, QVector<Character *> enemies) {

@@ -9,7 +9,6 @@ prova_main::prova_main(Game *g, QWidget *parent)
     connect(this, &prova_main::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
 
     createMusicSliderBox();
-    createDialogOutBox();
 
     grid = new QGridLayout();
     setLayout(grid);
@@ -117,17 +116,6 @@ void prova_main::onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate 
 
 void prova_main::onSetMiniMapSize(int dim) {
     emit setMiniMapSize(dim);
-}
-
-void prova_main::createDialogOutBox()
-{
-//    dialogOutBox = new QTextEdit(this);
-//    dialogOutBox->setText("FINESTRA DI DIALOGO");
-//    QGroupBox *characBox = new QGroupBox(this);
-//    QHBoxLayout *layout = new QHBoxLayout;
-//    layout->addWidget(dialogOutBox);
-//    characBox->setLayout(layout);
-//    //characBox->setGeometry(335, 335, 350, 150);
 }
 
 void prova_main::movePressed(char dir){
