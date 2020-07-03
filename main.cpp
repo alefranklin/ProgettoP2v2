@@ -45,22 +45,28 @@ int main(int argc, char *argv[])
 //    }
 
     bool exitLoop = false;
+    bool new_game = true;
+
     while(!exitLoop){
-        enter->cleanLabel();
-        enter->exec();
+        //se avvio una nuova partita
+        if(new_game) {
+            enter->cleanLabel();
+            enter->exec();
+        }
+
         if(player) {
-            bool new_game = false;
             Game *g2 = new Game();
             Main_dialog w(new_game, g2);
             Controller c2(&w, g2);
-            //w.setWindowModality(Qt::ApplicationModal);
+            //partita iniziata -> se decido di uscire non aprirà di nuovo
+            new_game = false;
+            w.setWindowModality(Qt::ApplicationModal);
             w.show();
             a.exec();
-            if(new_game){
-                //delte g2;
-                player = nullptr; //TODO cambiare in delete player;
-                //exitLoop = true;
-            }
+            //TODO spostare dentro if(new_game)
+            player = nullptr; //TODO cambiare in delete player;
+            //successvivamente player sarà istanziato attraverso game e verrà eliminato una volta chiusa la finestra di gioco
+            //l'istruzione sopra non sarà più necessaria
         } else {
             exitLoop = true;
         }

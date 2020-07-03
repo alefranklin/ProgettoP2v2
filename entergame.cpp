@@ -7,7 +7,6 @@ EnterGame::EnterGame(Player** pers,QWidget* parent): QDialog(parent), pg(pers)
 
     setWindowTitle("D&P2 - Seleziona Nome");
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    //setWindowIcon(QIcon(QPixmap(":/icona")));
 
     createLayoutEnterGame();
     QVBoxLayout* enterLayout = new QVBoxLayout;

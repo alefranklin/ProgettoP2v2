@@ -42,9 +42,17 @@ void Main_dialog::setMenuBar()
 
 
     connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(newGameSlot()));
+    //connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(saveGameSlot()));
     connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(close())); //TODO displayare una finestra e chiedere di salvare
+
+    //connect(mSave, SIGNAL(triggered(bool)), this, SLOT(saveGameSlot())); //TODO same as above
+
+    //connect(mEsci, SIGNAL(triggered(bool)), this, SLOT(saveGameSlot())); //TODO same as above
+
     connect(mEsci, SIGNAL(triggered(bool)), this, SLOT(close())); //TODO same as above
+
     connect(mShowInfo, SIGNAL(triggered(bool)), this, SLOT(showInf()));
+
     connect(mLegend, SIGNAL(triggered(bool)), this, SLOT(showLegend()));
 }
 
