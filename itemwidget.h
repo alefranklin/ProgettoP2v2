@@ -6,7 +6,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-#include "game.h"
+class Item;
 
 class ItemWidget : public QWidget
 {

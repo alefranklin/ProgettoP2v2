@@ -1,7 +1,16 @@
 #include "randomizer.h"
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+
+#include "item.h"
+#include "armor.h"
+#include "mob.h"
+#include "weapon.h"
+#include "sword.h"
+#include "bow.h"
+#include "potion.h"
 using namespace std;
 
 unsigned int Randomizer::seed = 1; //valore di default di srand
@@ -72,5 +81,5 @@ Mob* Randomizer::getRandomMob()
     return new Mob("Orco", randomNumberBetween(10,20), randomNumberBetween(0,5));
 }
 
-QString Randomizer::getRandomMobName() {}
-QString Randomizer::getrandomNpcName() {}
+string Randomizer::getRandomMobName() { return "ORCONEEE"; }
+//string Randomizer::getrandomNpcName() { return ""; }

@@ -6,9 +6,40 @@
 template<typename T>
 class Container
 {
-public:
     friend class Iterator;
     friend class Const_Iterator;
+
+private:
+
+    class nodo;
+    class smartp {
+    public:
+        nodo* punt;
+
+        smartp(nodo* p = 0);                    // costruttore e convertitore di tipo da nodo* a smartp
+        smartp(const smartp&);                  // costruttore di copia
+        ~smartp();
+        smartp& operator=(const smartp&);       // assegnazione
+        nodo& operator*() const;                // dereferenziazione
+        nodo* operator->() const;               // accesso a membro
+        bool operator==(const smartp&) const;   // uguaglianza
+        bool operator!=(const smartp&) const;   // disuguaglianza
+    };
+
+    class nodo {
+    public:
+        nodo();
+        nodo(const T&, const smartp&);
+        T info;
+        smartp next;
+        int riferimenti;                        // contatore puntatori
+        ~nodo() = default;
+    };
+
+    smartp first;
+    int _size;
+
+public:
 
     class Iterator {
         friend class Container;
@@ -34,6 +65,7 @@ public:
     };
 
     class Const_Iterator {
+        friend class Container;
     public:
 
         Const_Iterator() = default;
@@ -83,35 +115,7 @@ public:
     Const_Iterator cbegin() const;
     Const_Iterator cend() const;
 
-private:
 
-    class nodo;
-    class smartp {
-    public:
-        nodo* punt;
-
-        smartp(nodo* p = 0);                    // costruttore e convertitore di tipo da nodo* a smartp
-        smartp(const smartp&);                  // costruttore di copia
-        ~smartp();
-        smartp& operator=(const smartp&);       // assegnazione
-        nodo& operator*() const;                // dereferenziazione
-        nodo* operator->() const;               // accesso a membro
-        bool operator==(const smartp&) const;   // uguaglianza
-        bool operator!=(const smartp&) const;   // disuguaglianza
-    };
-
-    class nodo {
-    public:
-        nodo();
-        nodo(const T&, const smartp&);
-        T info;
-        smartp next;
-        int riferimenti;                        // contatore puntatori
-        ~nodo() = default;
-    };
-
-    smartp first;
-    int _size;
 
 };
 

@@ -1,6 +1,6 @@
 #include "entergame.h"
-#include "entergame.h"
 
+#include "player.h"
 
 #include <QDebug>
 
@@ -34,7 +34,7 @@ void EnterGame::tryEnter()
             //qDebug() << "cancello gioco";
             //delete *gioco;
             //se faccio delete su gioco non posso più caricare il personaggio
-            Player* pg = new Player(pg_name->text(), 20, 20);
+            Player* pg = new Player(pg_name->text().toStdString(), 20, 20);
             *gioco = new Game(pg);
         }
         //qDebug() << "enter game _ gioco : " << &(*gioco);

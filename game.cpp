@@ -1,5 +1,23 @@
 #include "game.h"
 
+#include "character.h"
+#include "item.h"
+#include "randomizer.h"
+#include "player.h"
+#include "bow.h"
+#include "sword.h"
+#include "magicweapon.h"
+#include "armor.h"
+#include "mob.h"
+#include "potion.h"
+
+#include <QSaveFile>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QJsonDocument>
+#include <QDebug>
+
+
 // per il random (provvisorio)
 #include <QtGlobal>
 #include <QTime>
@@ -10,11 +28,11 @@ const int Game::mapSize = 150;
 const QString Game::fileScore = "../Save.txt";
 
 
-Game::Game(Player* player, QObject *parent) : QObject(parent)
-  , miniMapSize(20) // 20 di default
-  , combat(nullptr)
+Game::Game(Character* player, QObject *parent) : QObject(parent)
   , pg(player)
   , map(mapSize)
+  , miniMapSize(20) // 20 di default
+  , combat(nullptr)
 {
     // genero mostri in tutta la mappa partedo dal centro
     pushRandomMob(mapSize/2, Coordinate(mapSize/2, mapSize/2));
@@ -86,20 +104,26 @@ unsigned int Game::getScore() const
     return score;
 }
 
+void Game::setPgNull()
+{
+    delete pg;
+    pg = nullptr;
+}
+
 void Game::choiceDone(Choice c)
 {
     emit dialogOut("scelta fatta: "+c.getLabel()+"\nadesso devo gestire le varie funzioni delle scelte");
 
     switch(c) {
-    case Choice::escape():
+    case 0:
         scappa();
         break;
-    case Choice::attack():
+    case 1:
         attacca();
         break;
-    case Choice::combat():
+    case 2:
         break;
-    case Choice::pickItem():
+    case 5:
         //aggiungi item all'inventario
         
         emit setEnableMove(true);
@@ -174,6 +198,38 @@ void Game::pushRandomMob(int range, Coordinate c) {
 
 }
 
+void Game::pushRandomItem(int range, Coordinate c) {
+    std::vector<Coordinate> t = map.getWalkableTile(range, c);
+
+    // aggiungo i mob
+    for(auto it = t.begin(); it != t.end(); ++it) {
+
+        Tile &t = map.getTileIn(*it);
+
+        // salto il tile se il vettore non è vuoto
+        if( ! t.e.empty() ) continue;
+
+        if (Randomizer::randomNumberBetween(0, 200) < 1 ) {
+            // 20 % oggetto tra tutti quelli possibili quindi spada, armatura, pozze
+            t.e.push_back( Randomizer::getRandomItem() );
+
+        } /*else {
+                // solo pozioni
+
+                // TODO sistemare sto pezzo in base a come facciomo la generazione delle pozze
+
+                if ( Randomizer::randomNumberBetween(0, 100) < 1 ) {
+                    // 65 % vita
+                    t.e.push_back( Randomizer::getRandomPotion() );
+                } else {
+                    // 35% mana
+                    t.e.push_back( Randomizer::getRandomPotion() );
+                }
+            }*/
+    }
+
+}
+
 void Game::move(char m) {
     switch (m) {
     case 'W': map.moveUP();     break;
@@ -224,7 +280,9 @@ void Game::saveScoreSlot(){
     if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append)){
         QTextStream outputStream(&file);
 
-        outputStream << "Giocatore: " << pg->getName() << "\t Punteggio: " << score << "\n";
+        QString name = QString::fromStdString(pg->getName());
+
+        outputStream << "Giocatore: " << name << "\t Punteggio: " << score << "\n";
 
         file.close();
     }
@@ -246,7 +304,7 @@ void Game::savePlayerSlot()
 
         QJsonObject json; //= QJsonObject::fromVariantMap(v_map);
 
-        json["nome"] = pg->getName();
+        json["nome"] = QString::fromStdString(pg->getName());
         json["vita"] = pg->getVita();
         json["mana"] = pg->getMana();
         json["armatura"] = itemToJson(pg->getArmor());
@@ -285,7 +343,7 @@ void Game::loadPlayerSlot(bool)
         //qDebug() << json["nome"].toString();
 
 
-        pg = new Player(json["nome"].toString(), json["vita"].toInt(), json["mana"].toInt());
+        pg = new Player(json["nome"].toString().toStdString(), json["vita"].toInt(), json["mana"].toInt());
     }
 
 }
@@ -302,3 +360,5 @@ bool Game::isBow(const Entity *e) { return (dynamic_cast<const Bow*>(e)) ? true 
 bool Game::isMagicWeapon(const Entity *e) { return (dynamic_cast<const MagicWeapon*>(e)) ? true : false;}
 
 Character *Game::getPlayer() { return pg; }
+
+void Game::moveBack() { emit dialogOut("sono fuggito"); }

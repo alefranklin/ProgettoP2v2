@@ -1,25 +1,23 @@
 #ifndef GAME_H
 #define GAME_H
+
+#include "entity.h"
 #include "map.h"
-#include "character.h"
-#include "item.h"
-#include "randomizer.h"
 #include <QObject>
 #include <QString>
-#include <QSaveFile>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QDebug>
-#include <QVector>
 #include <vector>
+#include <QVector>
+#include <QJsonObject>
+
+class Player;
+class Character;
+class Item;
 
 class Game: public QObject
 {
     Q_OBJECT
 public:
-    explicit Game(Player* player, QObject *parent = nullptr);
+    explicit Game(Character *player, QObject *parent = nullptr);
     ~Game();
 
     class Choice {
@@ -55,7 +53,7 @@ public:
 
     Character* getPlayer();
 
-    void moveBack() { emit dialogOut("sono fuggito"); }
+    void moveBack();
 
     void dialog(QString s);
 
@@ -65,11 +63,7 @@ public:
 
     //DEBUG
     //elimino pg e lo setto a nullptr per nuova partita
-    void setPgNull()
-    {
-        delete pg;
-        pg = nullptr;
-    }
+    void setPgNull();
 
 signals:
     // emetto segnale per il dialogo
@@ -101,7 +95,7 @@ public slots:
 //PRIVATE DI GAME
 private:
 
-    Player *pg;
+    Character *pg;
     Map map;
     unsigned int score = 0;
 
@@ -132,39 +126,11 @@ private:
     void endCombat();
     int randInt(int low, int high);
 
+    /* creo mob random */
     void pushRandomMob(int range, Coordinate c);
 
-    void pushRandomItem(int range, Coordinate c) {
-        std::vector<Coordinate> t = map.getWalkableTile(range, c);
-
-        // aggiungo i mob
-        for(auto it = t.begin(); it != t.end(); ++it) {
-
-            Tile &t = map.getTileIn(*it);
-            
-            // salto il tile se il vettore non è vuoto
-            if( ! t.e.empty() ) continue;
-
-            if (Randomizer::randomNumberBetween(0, 200) < 1 ) {
-                    // 20 % oggetto tra tutti quelli possibili quindi spada, armatura, pozze
-                    t.e.push_back( Randomizer::getRandomItem() );
-
-            } /*else {
-                // solo pozioni
-
-                // TODO sistemare sto pezzo in base a come facciomo la generazione delle pozze
-
-                if ( Randomizer::randomNumberBetween(0, 100) < 1 ) {
-                    // 65 % vita
-                    t.e.push_back( Randomizer::getRandomPotion() );
-                } else {
-                    // 35% mana
-                    t.e.push_back( Randomizer::getRandomPotion() );
-                }
-            }*/
-        }
-
-    }
+    /* creo item random */
+    void pushRandomItem(int range, Coordinate c);
 
 
 };

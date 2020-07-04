@@ -16,6 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    armor.cpp \
+    bow.cpp \
     character.cpp \
     choicebutton.cpp \
     choicewidget.cpp \
@@ -25,18 +27,27 @@ SOURCES += \
     inventorywidget.cpp \
     item.cpp \
     itemwidget.cpp \
+    magic.cpp \
+    magicweapon.cpp \
     main.cpp \
     main_dialog.cpp \
     main_view.cpp \
     mainview.cpp \
     map.cpp \
     mapwidget.cpp \
+    mob.cpp \
     movewidget.cpp \
+    player.cpp \
     playerwidget.cpp \
+    potion.cpp \
     randomizer.cpp \
-    tilebutton.cpp
+    sword.cpp \
+    tilebutton.cpp \
+    weapon.cpp
 
 HEADERS += \
+    armor.h \
+    bow.h \
     character.h \
     choicebutton.h \
     choicewidget.h \
@@ -48,15 +59,22 @@ HEADERS += \
     inventorywidget.h \
     item.h \
     itemwidget.h \
+    magic.h \
+    magicweapon.h \
     main_dialog.h \
     main_view.h \
     mainview.h \
     map.h \
     mapwidget.h \
+    mob.h \
     movewidget.h \
+    player.h \
     playerwidget.h \
+    potion.h \
     randomizer.h \
-    tilebutton.h
+    sword.h \
+    tilebutton.h \
+    weapon.h
 
 FORMS += \
     mainview.ui

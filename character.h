@@ -2,39 +2,42 @@
 #define CHARACTER_H
 
 #include "entity.h"
-#include "item.h"
-#include "container.h"
-#include <QVector>
-#include <QString>
-
-
-#include <QDebug>
-
+#include <vector>
+#include <string>
 using namespace std;
 
-class Weapon;
-class Armor;
+class Item;
 
 class Character: public Entity {
 private:
-  QString name;
+  static const int maxVita;
+  static const int maxMana;
+  string name;
   int vita;
   int mana;
-  Weapon* arma;
-  Armor* armatura;
+  Item* arma;
+  Item* armatura;
 protected:
-  Character(QString n, int v, int m);
+  Character(string n, int v, int m);
 public:
-  QString getName();
-  int getVita();
-  int getMana();
-  void setDamage(int d);
-  Weapon* getWeapon();
-  Armor* getArmor();
-  virtual bool isAlive() =0;
-  virtual void info() =0;
+  virtual ~Character() = default;
+  virtual string getName();
+  virtual int getVita() const;
+  virtual void setVita(int v);
+  virtual void addVita(int v);
+  virtual int getMana() const;
+  virtual void setMana(int m);
+  virtual void addMana(int m);
+  virtual void setDamage(int d);
+  virtual Item* getWeapon();
 
-  virtual ~Character();
+  /*ritorna la vecchia arma */
+  virtual Item* setWeapon(Item *w);
+  virtual Item* getArmor();
+
+  /* ritorna la vecchia armatura */
+  virtual Item* setArmor(Item *a);
+  virtual bool isAlive();
 
 
    /*
@@ -56,30 +59,8 @@ public:
 
   mob.attacca(Charxter player)
   */
-  virtual int attacca(QVector<Character*> target);
+  virtual int attacca(vector<Character*> target);
 
-};
-
-
-//TODO rivedere queste due classi > possiamo mergiarle(?)
-
-class Player: public Character {
-public:
-  Player(QString n, int v, int m);
-  void info();
-  bool isAlive();
-  void useItem(int id) {
-
-  }
-private:
-  Container inventario;
-};
-
-class Mob: public Character {
-public:
-  Mob(QString n, int v, int m);
-  void info();
-  bool isAlive();
 };
 
 #endif

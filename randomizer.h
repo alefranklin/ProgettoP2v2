@@ -1,19 +1,16 @@
 #ifndef RANDOMIZER_H
 #define RANDOMIZER_H
 
-#include "item.h"
-#include "character.h"
 #include <string>
-#include <QString>
 using namespace std;
 
-struct ScrapedInfo {
-  QString name;
-  int lvl;
-  QString file;
-  ScrapedInfo(QString n, int l, QString f): name(n), lvl(l), file(f) {}
-};
-
+class Mob;
+class Item;
+class Armor;
+class Weapon;
+class Sword;
+class Bow;
+class Potion;
 
 /**
  * classe statica per ottenere valori oppure oggetti random
@@ -21,6 +18,14 @@ struct ScrapedInfo {
  */
 class Randomizer {
 private:
+
+    struct ScrapedInfo {
+      string name;
+      int lvl;
+      string file;
+      ScrapedInfo(string n, int l, string f): name(n), lvl(l), file(f) {}
+    };
+
   static unsigned int seed;
 
   //static vettore da definire constructVectorSword()
@@ -48,8 +53,8 @@ public:
 
   static Mob* getRandomMob();
 
-  static QString getRandomMobName();
-  static QString getrandomNpcName();
+  static string getRandomMobName();
+  //static string getrandomNpcName();
 };
 
 #endif
