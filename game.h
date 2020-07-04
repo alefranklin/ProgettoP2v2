@@ -114,7 +114,6 @@ private:
 
     // struttura per memorizzare lo stato del combattimento in corso
     struct CombatState {
-        unsigned int numero_turno;
         bool turno_player;
         std::vector<Entity*> &enemies;
         Player *player;

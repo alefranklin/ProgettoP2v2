@@ -82,7 +82,7 @@ class Sword : virtual public Weapon {
   public:
     Sword(string n, int d, int r);
     int getRange() const;
-    virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>() );
+    virtual int use(Character* owner, QVector<Character*> target = QVector<Character*>());
     
     //virtual void use();
 

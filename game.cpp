@@ -92,18 +92,21 @@ void Game::usePotionHealth() { emit dialogOut("sto usando la pozione della vita"
 
 void Game::startCombat(Tile &t) {
     combat = new CombatState(t.e, nullptr);
-    emit dialogOut("sei entrato nel pieno del combattimento");
-    emit dialogOut("il tuo nemico ti sferra un fendente micidiale");
+    emit dialogOut("sei entrato in combattimento.\nCosa vuoi fare?");
     // usare combat per tenere traccia dello stato del sistema
-    combat->numero_turno++;
-    combat->turno_player = true;
-    emit dialogOut("cosa vuoi fare?");
-    //emit choiceOut(Choice::attack());
-    //ememies.arma.use(player)
+    combat->turno_player = Randomizer::randomNumberBetween(0,1);
+    if(combat->turno_player){
+        QVector<Choice> c;
+        c << Choice::attack() << Choice::escape();
+    } else {
+        dialogOut("Il mostro attacca per primo");
+        pg->setDamage(5);
+
+    }
 }
 
 void Game::attacca() {
-    emit dialogOut("usi la tua arma pazzesca per sfonnare il nemico");
+
 }
 
 void Game::scappa() {
@@ -158,12 +161,12 @@ void Game::choiceDone(Choice c)
         break;
     }
     case 1:{
-        attacca();
+        //startCombat(map.getCurrentTile());
         break;
     }
 
     case 2:{
-
+        startCombat(map.getCurrentTile());
         break;
     }
     case 5:{
@@ -204,7 +207,7 @@ void Game::move(char m) {
         emit setEnableMove(false);
 
         if(isMob(t.e[0])){
-            c << Choice::escape() << Choice::attack();
+            c << Choice::attack() << Choice::escape();
         }
 
         if(isItem(t.e[0])){
