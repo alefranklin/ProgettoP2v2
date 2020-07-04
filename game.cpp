@@ -43,29 +43,30 @@ void Game::dialog(QString s)
 
 QJsonObject Game::itemToJson(Item *i){
     QJsonObject json;
+    json.insert("nome",QString::fromStdString(i->getNome()));
     if(Game::isArmor(i)){
         const Armor *a = dynamic_cast<const Armor*>(i);
-        json.insert("nome",QString::fromStdString(a->getNome()));
+        //json.insert("nome",QString::fromStdString(a->getNome()));
         json.insert("tipo","Armatura");
         json.insert("difesa",a->getArmatura());
     }
     if(Game::isBow(i)){
         const Bow *b = dynamic_cast<const Bow*>(i);
-        json.insert("nome",QString::fromStdString(b->getNome()));
+        //json.insert("nome",QString::fromStdString(b->getNome()));
         json.insert("tipo","Arco");
         json.insert("danno",b->getDamage());
         json.insert("frecce",b->getArrow());
     }
     if(Game::isSword(i)){
         const Sword *s = dynamic_cast<const Sword*>(i);
-        json.insert("nome",QString::fromStdString(s->getNome()));
+        //json.insert("nome",QString::fromStdString(s->getNome()));
         json.insert("tipo","Spada");
         json.insert("danno",s->getDamage());
         json.insert("range",s->getRange());
     }
     if(Game::isMagicWeapon(i)){
         const MagicWeapon *mw = dynamic_cast<const MagicWeapon*>(i);
-        json.insert("nome",QString::fromStdString(mw->getNome()));
+        //json.insert("nome",QString::fromStdString(mw->getNome()));
         json.insert("tipo","Arma Magica");
         json.insert("danno",mw->getDamage());
         json.insert("effetto",mw->getEffect());
