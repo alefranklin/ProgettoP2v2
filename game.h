@@ -13,8 +13,6 @@
 #include <QJsonDocument>
 #include <QDebug>
 
-
-
 class Game: public QObject
 {
     Q_OBJECT
