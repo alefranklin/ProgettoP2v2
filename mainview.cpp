@@ -13,6 +13,12 @@ MainView::MainView(Game *g, QWidget *parent)
     : QWidget(parent)
     , model(g)
 {
+    // connetto i segnali per la mappa dal modello a view e viceversa
+    connect(model, &Game::posChanged, this, &MainView::onPosChanged);  // da model a view
+    connect(this, &MainView::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
+
+    //ui->setupUi(this);
+
 
     //fisso la grandezza della finestra del programma
     setFixedSize(1024, 600);
@@ -20,6 +26,15 @@ MainView::MainView(Game *g, QWidget *parent)
     //setto il titolo della finestra
     setWindowTitle("Dungeons & Programmazione 2");
 
+
+    // connetto i segnali di MapWidget
+    //MapWidget *mapWidget = ui->mapwidget;
+    //connect(mapWidget, &MapWidget::setMiniMapSize, this, &MainView::onSetMiniMapSize);
+
+
+    //TODO solo per il dialogo
+    //QPushButton* bt = ui->dialogo;
+    //connect(bt, &QPushButton::clicked, this, &MainView::onDialogPressed);
 
     createMenu();
     createMusicSliderBox();
@@ -31,9 +46,6 @@ MainView::MainView(Game *g, QWidget *parent)
     createMapBox();
     createEnemyBox();
 
-    //widget scelte
-
-    //fine widget scelte
 }
 
 MainView::~MainView()
@@ -75,6 +87,15 @@ void MainView::onMute() {
     volumeSlider->setValue(0);
 }
 
+void MainView::onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos) {
+    //MapWidget *mapWidget = ui->mapwidget;
+    //mapWidget->refresh(miniMap, relativePos);
+}
+
+void MainView::onSetMiniMapSize(int dim) {
+    emit setMiniMapSize(dim);
+}
+
 void MainView::movePressed(char dir){
     //codice per muovere
     //ui->textEdit->append(QString(dir)); //placeholder per test
@@ -91,8 +112,8 @@ void MainView::createMenu()
 
 
     //aggiungo le azioni al menu
-    fileMenu->addAction(exitAction);
     fileMenu->addAction(saveAction);
+    fileMenu->addAction(exitAction);
 
     //aggiungo il menu alla barra
     menuBar->addMenu(fileMenu);
@@ -228,5 +249,3 @@ void MainView::createEnemyBox()
 
     characBox->setGeometry(680, 15, 330, 360);
 }
-
-

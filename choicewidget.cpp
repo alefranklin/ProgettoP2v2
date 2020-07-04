@@ -17,6 +17,7 @@ ChoiceWidget::ChoiceWidget(QWidget *parent) : QWidget(parent)
         grid->addWidget(buttons[i],i/3,i%3);
     }
 
+    setFixedWidth(300);
 }
 
 void ChoiceWidget::cleanGrid()

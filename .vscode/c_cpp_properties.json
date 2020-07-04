@@ -3,7 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/home/matteo/Qt/5.9.5/gcc_64/include/QtCore"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

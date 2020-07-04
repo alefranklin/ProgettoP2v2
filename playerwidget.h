@@ -1,0 +1,44 @@
+#ifndef PLAYERWIDGET_H
+#define PLAYERWIDGET_H
+
+#include <QWidget>
+#include <QProgressBar>
+#include <QVBoxLayout>
+#include <QLabel>
+
+
+#include "itemwidget.h"
+#include "entity.h"
+#include "character.h"
+
+class PlayerWidget : public QWidget
+{
+    Q_OBJECT
+public:
+    //explicit PlayerWidget(QWidget *parent = nullptr);
+    explicit PlayerWidget(Character* c, QWidget *parent = nullptr);
+    void setHealth(int h);
+    void setMana(int m);
+    void setMaximumHealth(int maxhp);
+    void setMaximumMana(int maxmp);
+    void setNome(QString name);
+    void clear();
+
+signals:
+
+public slots:
+    void onShowDetailOf(QVector<Entity*>e);
+
+private:
+    QVBoxLayout *layout;
+    QLabel *nome;
+    QProgressBar *hp;
+    QLabel *hpLabel;
+    QProgressBar *mp;
+    QLabel *mpLabel;
+    ItemWidget *weapon;
+    ItemWidget *armor;
+
+};
+
+#endif // PLAYERWIDGET_H

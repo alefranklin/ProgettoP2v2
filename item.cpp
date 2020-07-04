@@ -9,13 +9,18 @@
 
 using namespace std;
 
-Item::Item(int i): Entity() { qDebug() << "istanzio Item: "<< endl; }
+Item::Item(string n): Entity(), nome(n) { qDebug() << "istanzio Item: "<< endl; }
+
+string Item::getNome() const{ return nome; }
+
 Item::~Item() { qDebug() << "elimino Item:" << endl; }
 //questo metodo viene usato per ritornare tutti gli attributi di un oggetto
 //per poterli stampare nella lista nella gui
  //vector<Attribute<T>> getAttributes() =0;
 
-Potion::Potion(int e): Item(), effect(e) {}
+Potion::Potion(string n, int e): Item(n), effect(e) {}
+
+int Potion::getEffect() const { return effect; }
 Potion::~Potion() { qDebug() << "elimino Potion: " << endl; }
 int Potion::use(Character* owner, QVector<Character*> target) { qDebug() << "sto usando Potion " << " ripristina " << effect << " salute" << endl; }
 /* vector<Attribute<T>> getAttributes() {
@@ -25,26 +30,26 @@ int Potion::use(Character* owner, QVector<Character*> target) { qDebug() << "sto
  }*/
 
 
-Weapon::Weapon(int d): Item(), damage(d) {}
+Weapon::Weapon(string n, int d): Item(n), damage(d) {}
 Weapon::~Weapon() { qDebug() << "elimino Weapon:" << endl; }
-int Weapon::getDamage() { return damage; }
+int Weapon::getDamage() const { return damage; }
 //vector<Attribute<T>> Weapon::getAttributes() {}
 
-Sword::Sword(int d, int r) : Weapon(d), range(r), Item() {}
-int Sword::getRange() { return range; }
+Sword::Sword(string n, int d, int r) :  Item(n), Weapon(n, d), range(r) {}
+int Sword::getRange() const { return range; }
 int Sword::use(Character* owner, QVector<Character*> target) { qDebug() << "sto usando SPADA " << endl;}
 
 
-Bow::Bow(int d, int a) : Weapon(d), arrows(a), Item() {}
-int Bow::getArrow() { return arrows; }
+Bow::Bow(string n, int d, int a) : Item(n), Weapon(n, d), arrows(a)  {}
+int Bow::getArrow() const { return arrows; }
 int Bow::use(Character* owner, QVector<Character*> target) { qDebug() << "sto usando ARCO " << endl;}
 
 
 
-Magic::Magic(int e, int m): Item(), effect(e), mana(m) {}
+Magic::Magic(string n, int e, int m): Item(n), effect(e), mana(m) {}
 Magic::~Magic() { qDebug() << "elimino Magic:" << endl; }
-int Magic::getEffect() { return effect; }
-int Magic::getMana() { return mana; }
+int Magic::getEffect() const { return effect; }
+int Magic::getMana() const { return mana; }
 //void Magic::use() { qDebug() << "sto usando Magic " << " subisci " << effect << " danno" << endl; }
 //vector<Attribute<T>> Magic::getAttributes() {}
 
@@ -63,7 +68,7 @@ void MeleeMagic::save() { qDebug() << "salvo MeleeMagic " << endl; }
 */
 
 
-MagicWeapon::MagicWeapon(int d, int e, int m): Weapon(d), Magic(e, m), Item() {}
+MagicWeapon::MagicWeapon(string n, int d, int e, int m): Item(n), Weapon(n, d), Magic(n, e, m) {}
 MagicWeapon::~MagicWeapon() { qDebug() << "elimino MagicWeapon:" << endl; }
 int MagicWeapon::use(Character* owner, QVector<Character*> target) {
   qDebug() << "Arma magica" << endl;
@@ -75,7 +80,9 @@ int MagicWeapon::use(Character* owner, QVector<Character*> target) {
 //void MagicWeapon::useMana() { qDebug() << " Uso " << Magic::getMana() << " mana" << endl; }
 //vector<Attribute<T>> MagicWeapon::getAttributes() {}
 
-Armor::Armor(int a): Item(), armatura(a) {}
+Armor::Armor(string n, int a): Item(n), armatura(a) {}
+
+int Armor::getArmatura() const { return armatura; }
 Armor::~Armor() { qDebug() << "elimino Armor:" << endl; }
 int Armor::absorb(int danno) { return (armatura > danno) ? 0 : danno-armatura; }
 //void Armor::use() { }

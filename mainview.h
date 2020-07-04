@@ -8,9 +8,16 @@
 #include <QMenuBar>
 
 #include <game.h>
-#include "choicebutton.h"
+#include <choicebutton.h>
+#include <mapwidget.h>
+#include <map.h>
 #include <movewidget.h>
 #include <choicewidget.h>
+
+QT_BEGIN_NAMESPACE
+namespace Ui { class MainView; }
+QT_END_NAMESPACE
+
 
 class MainView : public QWidget
 {
@@ -30,6 +37,9 @@ signals:
     // segnale di volume changed
     void volumeChanged(int volume);
 
+    // segnale per il cambio della dimensione della minimappa
+    void setMiniMapSize(int dim);
+
 public slots:
     // printo su textedit
     void printString(QString s);
@@ -46,7 +56,15 @@ public slots:
     void onVolumeChanged(int volume);
     void onMute();
 
+
+    // gestisco il refresh della mapppa
+    void onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos);
+
+    // gestisco il segnale di cambio di dimensione proveniente da MapWidget
+    void onSetMiniMapSize(int dim);
+
     void movePressed(char dir);
+
 
 
 private:

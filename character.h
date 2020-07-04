@@ -5,6 +5,10 @@
 #include "item.h"
 #include <QVector>
 #include <QString>
+
+
+#include <QDebug>
+
 using namespace std;
 
 class Weapon;
@@ -24,9 +28,12 @@ public:
   int getVita();
   int getMana();
   void setDamage(int d);
+  Weapon* getWeapon();
+  Armor* getArmor();
   virtual bool isAlive() =0;
   virtual void info() =0;
 
+  virtual ~Character();
 
 
    /*
@@ -52,11 +59,18 @@ public:
 
 };
 
+
+//TODO rivedere queste due classi > possiamo mergiarle(?)
+
 class Player: public Character {
 public:
   Player(QString n, int v, int m);
   void info();
   bool isAlive();
+  void inventory()
+  {
+    qDebug() << "inventario ";
+  }
 };
 
 class Mob: public Character {

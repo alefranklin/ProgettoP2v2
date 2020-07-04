@@ -1,17 +1,43 @@
 #include "mapwidget.h"
 #include <QPushButton>
 
-MapWidget::MapWidget(QWidget *parent) : QWidget(parent)
+MapWidget::MapWidget(QWidget *parent, int min, int max, int val) : QWidget(parent)
 {
-    /* setto il backgroud */
-    QPalette pal = palette();
-    pal.setColor(QPalette::Background, QColor(86,86,86)); //#565656
-    setAutoFillBackground(true);
-    setPalette(pal);
+    dimensionLabel = new QLabel();
 
-    /* creo il layout e aggiungo gli elementi*/
+    dimensionSlider = new QSlider(Qt::Horizontal);
+    connect(dimensionSlider, &QSlider::valueChanged, this, &MapWidget::onDimensionChanged);
+
+    dimensionSlider->setMinimum(min);
+    dimensionSlider->setMaximum(max);
+    dimensionSlider->setValue(val);
+    dimensionSlider->setPageStep(1);
+    dimensionSlider->setToolTip("modifica la grandezza della mappa");
+    emit setMiniMapSize(val);
+
+    /* setto il backgroud */
+    //QPalette pal = palette();
+    //pal.setColor(QPalette::Background, QColor(86,86,86)); //#565656
+    //setAutoFillBackground(true);
+    //setPalette(pal);
+
+    /* creo il layout della griglia e aggiungo gli elementi*/
+    tile_layout = new QGridLayout();
+    tile_layout->setSpacing(0);
+
+
+    /* creo il layout dello slider e aggiungo gli elementi*/
+    slider_layout = new QGridLayout();
+    slider_layout->addWidget(dimensionSlider, 0, 0);
+    slider_layout->addWidget(dimensionLabel, 0, 1);
+
+    /* creo il layout di MapWidget e aggiungo gli elementi*/
     layout = new QGridLayout(this);
-    layout->setSpacing(1);
+    layout->addLayout(tile_layout, 0, 0, 9, 10);
+    layout->addLayout(slider_layout, 10, 0);
+
+    //imposto il widget ad una dimensione fissata
+    setFixedSize(400,300);
 
     /* setto il layout appena creata al
      * Widget in modo da avere una diposizione degli oggetti
@@ -19,53 +45,43 @@ MapWidget::MapWidget(QWidget *parent) : QWidget(parent)
     setLayout(layout);
 }
 
-void MapWidget::setMap(char **mappa, int w, int h)
-{
-    QPalette pal;
+void MapWidget::refresh(const QVector<QVector<Tile> > &miniMap, Coordinate pos) {
 
-    /*fare una funzione per raggruppare le istruzioni dei case*/
+    // eliminio tutti i TileButton precedenti
+    clearWidgets(tile_layout);
 
-    for(int i = 0; i < w; i++) {
-        for(int j = 0; j < h; j++) {
-            QPushButton *b = new QPushButton(this);
-            b->setFlat(true);
-            switch (mappa[i][j]) {
-                case '$':
-                    b->setToolTip("tesoro");
-                    // setto background
-                    pal = b->palette();
-                    pal.setColor(QPalette::Button, QColor(Qt::yellow));
-                    b->setAutoFillBackground(true);
-                    b->setPalette(pal);
-                    break;
-                case '@':
-                    b->setToolTip("mostro");
-                    // setto background
-                    pal = b->palette();
-                    pal.setColor(QPalette::Button, QColor(Qt::darkGreen));
-                    b->setAutoFillBackground(true);
-                    b->setPalette(pal);
-                    break;
-                case 'P':
-                    b->setToolTip("Tu");
-                    // setto background
-                    pal = b->palette();
-                    pal.setColor(QPalette::Button, QColor(Qt::red));
-                    b->setAutoFillBackground(true);
-                    b->setPalette(pal);
-                    break;
-                default:
-                    b->setDisabled(true);
-                    // setto background
-                    pal = b->palette();
-                    pal.setColor(QPalette::Button, QColor(Qt::darkGray));
-                    b->setAutoFillBackground(true);
-                    b->setPalette(pal);
-                    break;
-            }
-            layout->addWidget(b, i, j);
+    // ripopolo tile_layout con nuovi pulsanti che rispecchiano la situazione della mappa attuale
+    int row = 0;
+    int col = 0;
+    TileButton *tb;
+
+    for(auto it_row = miniMap.begin(); it_row != miniMap.end(); ++it_row, ++row) {
+        for(auto it_col = (*it_row).begin(); it_col != (*it_row).end(); ++it_col, ++col ) {
+
+            if(Coordinate(row, col) == pos) tb = new TileButton((*it_col), true, this);
+            else tb = new TileButton((*it_col), false, this);
+
+            tile_layout->addWidget(tb, row, col);
+            connect(tb, &TileButton::buttonClicked, this, &MapWidget::onTileButtonPressd);
         }
+        col = 0;
     }
+}
 
+void MapWidget::onDimensionChanged(int dim) {
+    dimensionLabel->setText(QString::number(dim));
+    emit setMiniMapSize(dim);
+}
 
+void MapWidget::onTileButtonPressd(QVector<Entity *> e) {
+    emit showDetailsOf(e);
+}
+
+void MapWidget::clearWidgets(QLayout *layout) {
+    if (! layout)
+        return;
+    while (auto item = layout->takeAt(0)) {
+        delete item->widget();
+        clearWidgets(item->layout());
+    }
 }
