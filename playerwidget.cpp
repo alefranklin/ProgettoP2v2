@@ -11,7 +11,7 @@ PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     int mpNum = c->getMana();
     nome->setStyleSheet("font-weight: bold; text-decoration: underline;");
     //hp
-    QHBoxLayout *hpLayout = new QHBoxLayout(this);
+    QHBoxLayout *hpLayout = new QHBoxLayout(nullptr);
     hpLayout->addWidget(new QLabel("HP"));
     hp = new QProgressBar(this);
     hp->setOrientation(Qt::Orientation::Horizontal);
@@ -29,7 +29,7 @@ PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     hpLabel->setFixedWidth(25);
     hpLayout->addWidget(hpLabel);
     //mp
-    QHBoxLayout *mpLayout = new QHBoxLayout(this);
+    QHBoxLayout *mpLayout = new QHBoxLayout(nullptr);
     mpLayout->addWidget(new QLabel("MP"));
     mp = new QProgressBar(this);
     mp->setOrientation(Qt::Orientation::Horizontal);

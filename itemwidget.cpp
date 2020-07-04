@@ -17,23 +17,23 @@ ItemWidget::ItemWidget(QString n, QString t, int s1, int s2, int s3, QWidget *pa
     nome->setStyleSheet("font-weight: bold;");
     main->addWidget(nome);
 
-    QHBoxLayout *body = new QHBoxLayout();
+    QHBoxLayout *body = new QHBoxLayout(nullptr);
     main->addLayout(body);
     body->addWidget(tipo);
     tipo->setMaximumWidth(70);
 
-    QVBoxLayout *stats = new QVBoxLayout();
+    QVBoxLayout *stats = new QVBoxLayout(nullptr);
     body->addLayout(stats);
 
-    QHBoxLayout *s1Layout = new QHBoxLayout();
+    QHBoxLayout *s1Layout = new QHBoxLayout(nullptr);
     s1Layout->addWidget(stat1Name);
     s1Layout->addWidget(stat1);
 
-    QHBoxLayout *s2Layout = new QHBoxLayout();
+    QHBoxLayout *s2Layout = new QHBoxLayout(nullptr);
     s2Layout->addWidget(stat2Name);
     s2Layout->addWidget(stat2);
 
-    QHBoxLayout *s3Layout = new QHBoxLayout();
+    QHBoxLayout *s3Layout = new QHBoxLayout(nullptr);
     s3Layout->addWidget(stat3Name);
     s3Layout->addWidget(stat3);
 
@@ -117,19 +117,19 @@ ItemWidget::ItemWidget(Item *i, QWidget *parent) : QWidget(parent){
     setLayout(main);
     nome->setStyleSheet("font-weight: bold;");
     main->addWidget(nome);
-    QHBoxLayout *body = new QHBoxLayout(this);
+    QHBoxLayout *body = new QHBoxLayout(nullptr);
     main->addLayout(body);
     body->addWidget(tipo);
     tipo->setMaximumWidth(70);
-    QVBoxLayout *stats = new QVBoxLayout(this);
+    QVBoxLayout *stats = new QVBoxLayout(nullptr);
     body->addLayout(stats);
-    QHBoxLayout *s1Layout = new QHBoxLayout(this);
+    QHBoxLayout *s1Layout = new QHBoxLayout(nullptr);
     s1Layout->addWidget(stat1Name);
     s1Layout->addWidget(stat1);
-    QHBoxLayout *s2Layout = new QHBoxLayout(this);
+    QHBoxLayout *s2Layout = new QHBoxLayout(nullptr);
     s2Layout->addWidget(stat2Name);
     s2Layout->addWidget(stat2);
-    QHBoxLayout *s3Layout = new QHBoxLayout(this);
+    QHBoxLayout *s3Layout = new QHBoxLayout(nullptr);
     s3Layout->addWidget(stat3Name);
     s3Layout->addWidget(stat3);
     stats->addLayout(s1Layout);
