@@ -21,6 +21,7 @@ public:
   unsigned int getID() const;
   virtual string getNome() const;
   virtual int use(Character* owner, vector<Character*> target) = 0;
+
 };
 
 #endif

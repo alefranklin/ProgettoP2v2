@@ -143,3 +143,62 @@ ItemWidget::ItemWidget(Item *i, QWidget *parent) : QWidget(parent){
     stats->addLayout(s2Layout);
     stats->addLayout(s3Layout);
 }
+
+void ItemWidget::setItem(Item *i)
+{
+    if(Game::isArmor(i)){
+        const Armor *a = dynamic_cast<const Armor*>(i);
+        nome->setText(QString::fromStdString(a->getNome()));
+        tipo->setText("Armatura");
+        stat1Name->setText("Difesa");
+        stat1->setText(QString::number((a->getArmatura())));
+        stat2Name->setText("");
+        stat2->setText("");
+        stat3Name->setText("");
+        stat3->setText("");
+    }
+    if(Game::isBow(i)){
+        const Bow *b = dynamic_cast<const Bow*>(i);
+        nome->setText(QString::fromStdString(b->getNome()));
+        tipo->setText("Arco");
+        stat1Name->setText("Danno");
+        stat1->setText(QString::number(b->getDamage()));
+        stat2Name->setText("Frecce");
+        stat2->setText(QString::number(b->getArrow()));
+        stat3Name->setText("");
+        stat3->setText("");
+    }
+    if(Game::isSword(i)){
+        const Sword *s = dynamic_cast<const Sword*>(i);
+        nome->setText(QString::fromStdString(s->getNome()));
+        tipo->setText("Spada");
+        stat1Name->setText("Danno");
+        stat1->setText(QString::number(s->getDamage()));
+        stat2Name->setText("Range");
+        stat2->setText(QString::number(s->getRange()));
+        stat3Name->setText("");
+        stat3->setText("");
+    }
+    if(Game::isMagicWeapon(i)){
+        const MagicWeapon *mw = dynamic_cast<const MagicWeapon*>(i);
+        nome->setText(QString::fromStdString(mw->getNome()));
+        tipo->setText("Arma Magica");
+        stat1Name->setText("Danno");
+        stat1->setText(QString::number(mw->getDamage()));
+        stat2Name->setText("Effetto");
+        stat2->setText(QString::number(mw->getEffect()));
+        stat3Name->setText("Mana");
+        stat3->setText(QString::number(mw->getMana()));
+    }
+    if(Game::isPotion(i)){
+        const Potion *p = dynamic_cast<const Potion*>(i);
+        nome->setText(QString::fromStdString(p->getNome()));
+        tipo->setText("Pozione");
+        stat1Name->setText("Effetto");
+        stat1->setText(QString::number((p->getEffect())));
+        stat2Name->setText("");
+        stat2->setText("");
+        stat3Name->setText("");
+        stat3->setText("");
+    }
+}

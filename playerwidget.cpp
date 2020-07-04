@@ -60,13 +60,15 @@ PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
 }
 
 void PlayerWidget::setHealth(int h){
-    hp->setValue(h);
-    hpLabel->setText(QString::fromStdString(std::to_string(h)));
+    int new_h = hp->value()-h;
+    hp->setValue(new_h);
+    hpLabel->setText(QString::fromStdString(std::to_string(new_h)));
 }
 
 void PlayerWidget::setMana(int m){
-    mp->setValue(m);
-    mpLabel->setText(QString::fromStdString(std::to_string(m)));
+    int new_m = mp->value()-m;
+    mp->setValue(new_m);
+    mpLabel->setText(QString::fromStdString(std::to_string(new_m)));
 }
 
 void PlayerWidget::setMaximumHealth(int maxhp){
@@ -93,4 +95,30 @@ void PlayerWidget::clear(){
 
 void PlayerWidget::onShowDetailOf(std::vector<Entity *> e){
 
+}
+
+void PlayerWidget::setWeapon(Item *i)
+{
+    weapon->setItem(i);
+}
+
+void PlayerWidget::setArmor(Item *i)
+{
+    armor->setItem(i);
+}
+
+void PlayerWidget::setFields(Character *c){
+   nome->setText(c->getName());
+   int h = c->getVita();
+   hp->setMaximum(h);
+   hp->setValue(h);
+   hpLabel->setText(QString::number(h));
+   int m = c->getMana();
+
+   mp->setMaximum(m);
+   mp->setValue(m);
+   mpLabel->setText(QString::number(m));
+
+   setWeapon(c->getWeapon());
+   setArmor(c->getArmor());
 }

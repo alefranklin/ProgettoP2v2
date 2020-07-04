@@ -59,7 +59,7 @@ void Character::addMana(int m) {
 void Character::setDamage(int d)
 {
     vita = (vita-d >= 0) ? vita-d : 0;
-    isAlive();
+    //isAlive();
 }
 
 Item* Character::getWeapon()
@@ -91,6 +91,7 @@ Item* Character::setArmor(Item *a) {
 bool Character::isAlive() {
     if(getVita()) return true;
     else return false;
+
 }
 
 int Character::attacca(vector<Character *> target)

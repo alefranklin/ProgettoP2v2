@@ -54,7 +54,7 @@ public:
   std::vector<std::vector<Tile> > getMiniMap(int size);
 
   static void printMap(std::vector<std::vector<Tile>> m, Coordinate pos);
-//qui giace la funzione pronta
+    //qui giace la funzione pronta
 
 private:
   static int minDim;

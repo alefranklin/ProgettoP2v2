@@ -31,6 +31,7 @@ public:
         static Choice useManaPotion() { return Choice("Usa pozione mana", 3); }
         static Choice useHealthPotion() { return Choice("Usa pozione vita", 4); }
         static Choice pickItem() { return Choice("Raccogli", 5); }
+        static Choice leaveItem() { return Choice("Lascia", 6); }
         operator int() const
         {
            return number;
@@ -76,6 +77,16 @@ signals:
 
     //cambio lo stato dei pulsanti di movimento
     void setEnableMove(bool);
+    //sei morto chiudo la finestra
+    void youDied();
+    //invio il danno inferto al player
+    void dannoPlayer(int);
+    //aggiorno punteggio
+    void newScore(int);
+    //aggiorno mob incontrato
+    void mobEncounter(Mob*);
+    //pulisco la view del mostro
+    void clearViewMob();
     
 public slots:
     // slot che gestisce le scelte fatte dal giocatore
@@ -107,11 +118,13 @@ private:
 
     // struttura per memorizzare lo stato del combattimento in corso
     struct CombatState {
-        unsigned int numero_turno;
         bool turno_player;
+        bool first_turn;
         std::vector<Entity*> &enemies;
         Player *player;
-        CombatState(std::vector<Entity*> &e, Player *pg): enemies(e), player(pg) {}
+        CombatState(std::vector<Entity*> &e, Player *pg, bool f = true): enemies(e)
+                                                                        , player(pg)
+                                                                        , first_turn(f) {}
     };
 
     CombatState* combat;
@@ -123,7 +136,8 @@ private:
     void usePotionHealth();
     void startCombat(Tile &t);
     void attacca();
-    void endCombat();
+    void inCombat();
+    void endCombat(bool);
     int randInt(int low, int high);
 
     /* creo mob random */
@@ -131,6 +145,8 @@ private:
 
     /* creo item random */
     void pushRandomItem(int range, Coordinate c);
+
+    void setScore(unsigned int s);
 
 
 };

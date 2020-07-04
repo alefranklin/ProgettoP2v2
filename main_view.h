@@ -67,6 +67,15 @@ public slots:
     // gestisco il segnale di cambio di dimensione proveniente da MapWidget
     void onSetMiniMapSize(int dim);
 
+    //setto la vita aggiornata del giocatore
+    void setPlayerHealth(int d);
+
+    //setto il nuovo score
+    void setNewScore(int s);
+    //aggiorno mob
+    void setEnemy(Mob* t);
+    //pulisco mob
+    void clearEnemy();
 
 private:
     void createMenu();
@@ -84,6 +93,7 @@ private:
     QListWidget *inventory;
 
     PlayerWidget *charachter;
+    PlayerWidget *mob;
 
     QLabel *score;
 
