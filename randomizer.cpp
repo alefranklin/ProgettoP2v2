@@ -20,18 +20,57 @@ int Randomizer::randomNumberBetween(int min, int max) {
   return min+(rand()%(max-min+1));
 }
 
-//Item* Randomizer::getRandomItem(int livello) {/*chiamare casualmente o randomWeapon o randonArmor o potion o altri item istanziabili*/}
+Item* Randomizer::getRandomItem()
+{/*chiamare casualmente o randomWeapon o randonArmor o potion o altri item istanziabili*/
+    int i = randomNumberBetween(1,3);
 
-//Weapon* Randomizer::getRandomWeapon(int livello) {/*chiamare casualmente uno dei metodi sotto*/}
-//static Weapon* getRandomSword(int livello);
-//static Weapon* getRandomBow(int livello);
-//ecc ecc per ogni arma
+    switch (i) {
+        case 1: return getRandomWeapon(); break;
+        case 2: return getRandomPotion(); break;
+        case 3: return getRandomArmor(); break;
+        default: return getRandomPotion(); break;
+    }
+}
 
-//Item* Randomizer::getRandomPotion(int livello) {}
+Weapon* Randomizer::getRandomWeapon()
+{/*chiamare casualmente uno dei metodi sotto*/
+    int i = randomNumberBetween(1,2);
+
+    switch (i) {
+        case 1: return getRandomBow(); break;
+        case 2: return getRandomSword(); break;
+        default: return getRandomSword(); break;
+    }
+}
+
+//TODO randomizzare i nomi
+
+Bow* Randomizer::getRandomBow()
+{
+    return new Bow("Spada di legno", randomNumberBetween(2,8), randomNumberBetween(2,8));
+}
+
+Sword* Randomizer::getRandomSword()
+{
+    return new Sword("Spada di legno", randomNumberBetween(2,8), 1);
+}
+
+Armor* Randomizer::getRandomArmor()
+{
+    return new Armor("Armatura", randomNumberBetween(2,7));
+}
+
+Potion* Randomizer::getRandomPotion()
+{
+    return new Potion("Pozione", randomNumberBetween(1,2));
+}
 
 //static Armor* getRandomArmor(int livello);
 
-Mob* Randomizer::getRandomMob(int livello) {}
+Mob* Randomizer::getRandomMob()
+{
+    return new Mob("Orco", randomNumberBetween(10,20), randomNumberBetween(0,5));
+}
 
 QString Randomizer::getRandomMobName() {}
 QString Randomizer::getrandomNpcName() {}

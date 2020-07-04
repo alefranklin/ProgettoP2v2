@@ -1,12 +1,12 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <QVector>
+#include <vector>
 #include "entity.h"
 
 #include <iostream>
 
-enum Biome {Valley, Desert, Doungeon, Street, Water, Null};
+enum Biome {Valley, Desert, Street, Water, Null};
 
 struct Coordinate {
   int row;
@@ -28,8 +28,8 @@ struct Coordinate {
 struct Tile {
   bool walkable;
   Biome biome;
-  QVector<Entity*> e;
-  Tile(bool w = false, Biome b = Null, QVector<Entity*> en = QVector<Entity*>()): walkable(w), biome(b), e(en) {}
+  std::vector<Entity*> e;
+  Tile(bool w = false, Biome b = Null, std::vector<Entity*> en = std::vector<Entity*>()): walkable(w), biome(b), e(en) {}
 };
 
 class Map {
@@ -42,28 +42,24 @@ public:
   void moveRIGHT();
   void moveBack();
   Tile& getCurrentTile();
+  Tile& getTileIn(Coordinate p);
+  std::vector<Coordinate> getWalkableTile(int range, Coordinate c);
 
-  QVector<Coordinate> createCircle(Coordinate center, int radius); // va messa su private
-  QVector<Coordinate> createRectangle(Coordinate center, int width, int height); // va messa su private
-  //QVector<Coordinate> createRand(Coordinate center, int width, int height); // va messa su private
-  QVector<Coordinate> createLine(Coordinate start, Coordinate end, int thickness = 2); // va messa su private
-  void modifyTile(QVector<Coordinate> points, bool w, Biome b, bool overwrite = false); // va messa su private
-  void Generatemap(); // va messa su private
 
   int getMapDimension() const;
   bool setPos(Coordinate newPos);
   Coordinate getPos() const;
   Coordinate getRelativePos() const;
 
-  QVector<QVector<Tile> > getMiniMap(int size);
+  std::vector<std::vector<Tile> > getMiniMap(int size);
 
-  static void printMap(QVector<QVector<Tile>> m, Coordinate pos);
+  static void printMap(std::vector<std::vector<Tile>> m, Coordinate pos);
 //qui giace la funzione pronta
 
 private:
   static int minDim;
   int dim;
-  QVector<QVector<Tile>> map;
+  std::vector<std::vector<Tile>> map;
   Coordinate pos;
   Coordinate lastPos;
   Coordinate relativePos;
@@ -72,10 +68,15 @@ private:
   // cambio la posizione e aggiorno la visibilità
   void changePos(Coordinate newPos);
   void changeRelativePos(Coordinate newRelativePos);
-  Tile& getTileIn(Coordinate p);
   bool isWalkable(Coordinate p);
   bool isValid(Coordinate p) const;
   float calcSpawnRate(const Tile& t) const;
+
+  std::vector<Coordinate> createCircle(Coordinate center, int radius);
+  std::vector<Coordinate> createRectangle(Coordinate center, int width, int height);
+  std::vector<Coordinate> createLine(Coordinate start, Coordinate end, int thickness = 2);
+  void modifyTile(std::vector<Coordinate> points, bool w, Biome b, bool overwrite = false);
+  void Generatemap();
 
 
   void generateOasi(Coordinate center, int minDim, int maxDim, bool overwrite = false);

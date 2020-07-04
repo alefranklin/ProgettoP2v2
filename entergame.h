@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QPicture>
 #include <QMessageBox>
+#include <regex>
 
 //#include "character.h"
 #include "game.h"
@@ -19,7 +20,7 @@ public:
 
     // costruttore
     EnterGame(Game** g, QWidget* parent = nullptr);
-    void cleanLabel();
+    void cleanEnter();
 
 public slots:
     // lista degli slot

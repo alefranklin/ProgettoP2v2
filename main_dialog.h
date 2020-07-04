@@ -7,31 +7,31 @@
 #include <QAction>
 #include <QMessageBox>
 
-#include "prova_main.h"
+#include "main_view.h"
 #include "game.h"
 
 #include <string>
 
-class Main_dialog : public QMainWindow {
+class main_dialog : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit Main_dialog(bool& refNewGame, Game* g, QWidget *parent = nullptr);
-    ~Main_dialog(){}
+    explicit main_dialog(bool& refNewGame, Game* g, QWidget *parent = nullptr);
+    ~main_dialog(){}
 
 private:
 
 
     Game* game;
 
-    prova_main* mainWidget;
+    main_view* mainWidget;
     QMenuBar* menubar;
     QMenu* mFile;
     QMenu* mHelp;
     QMenu* mInfo;
     QAction* mNewGame;
     QAction* mSavePlayer;
-    QAction* mSave;
+
     QAction* mEsci;
     QAction* mLegend;
     QAction* mShowInfo;

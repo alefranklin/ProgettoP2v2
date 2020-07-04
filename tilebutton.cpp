@@ -19,17 +19,15 @@ void TileButton::setTile(Tile t)
     tile = t;
 
     //se non ci sono entity disabilito il pulsante
-    if(tile.e.isEmpty()) setDisabled(true);
+    if(tile.e.empty()) setDisabled(true);
+    else               setDisabled(false);
 
     switch(tile.biome){
         case Valley:
             setStyleSheet("background-color: green; border: 0px;");
         break;
         case Desert:
-            setStyleSheet("background-color: yellow; border: 0px;");
-        break;
-        case Doungeon:
-            setStyleSheet("background-color: #5c5c5c; border: 0px;");
+            setStyleSheet("background-color: #f6d66c; border: 0px;");
         break;
         case Street:
             setStyleSheet("background-color: gray; border: 0px;");
@@ -38,8 +36,20 @@ void TileButton::setTile(Tile t)
             setStyleSheet("background-color: blue; border: 0px;");
         break;
         case Null:
-            setStyleSheet("border: 0px;");
+            setStyleSheet("background-color: black; border: 0px;");
         break;
+    }
+
+    if(!tile.e.empty()){
+        if(Game::isMob(tile.e[0])){
+            setText("N");
+            setStyleSheet("font-weight: bold; color: red; border: 1px solid red;");
+        }
+
+        if(Game::isItem(tile.e[0])){
+            setText("I");
+            setStyleSheet("font-weight: bold; color: purple; border: 1px solid purple;");
+        }
     }
 }
 

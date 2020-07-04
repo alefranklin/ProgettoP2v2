@@ -36,17 +36,17 @@ public:
 
   static int randomNumberBetween(int min = 0, int max = 1);
 
-  static Item* getRandomItem(int livello);
-  static Weapon* getRandomWeapon(int livello);
-  static Weapon* getRandomSword(int livello);
-  static Weapon* getRandomBow(int livello);
+  static Item* getRandomItem();
+  static Weapon* getRandomWeapon();
+  static Sword* getRandomSword();
+  static Bow* getRandomBow();
   //ecc ecc per ogni arma
 
-  static Item* getRandomPotion(int livello);
+  static Potion* getRandomPotion();
 
-  static Armor* getRandomArmor(int livello);
+  static Armor* getRandomArmor();
 
-  static Mob* getRandomMob(int livello);
+  static Mob* getRandomMob();
 
   static QString getRandomMobName();
   static QString getrandomNpcName();

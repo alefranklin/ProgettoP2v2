@@ -3,6 +3,7 @@
 #include "map.h"
 #include "character.h"
 #include "item.h"
+#include "randomizer.h"
 #include <QObject>
 #include <QString>
 #include <QSaveFile>
@@ -11,6 +12,8 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QDebug>
+#include <QVector>
+#include <vector>
 
 class Game: public QObject
 {
@@ -18,6 +21,7 @@ class Game: public QObject
 public:
     explicit Game(Player* player, QObject *parent = nullptr);
     ~Game();
+
     class Choice {
     public:
         Choice(QString l = "Null", int n = -1): label(l), number(n) {}
@@ -28,6 +32,7 @@ public:
         static Choice attack() { return Choice("Attacca", 2); }
         static Choice useManaPotion() { return Choice("Usa pozione mana", 3); }
         static Choice useHealthPotion() { return Choice("Usa pozione vita", 4); }
+        static Choice pickItem() { return Choice("Raccogli", 5); }
         operator int() const
         {
            return number;
@@ -36,6 +41,7 @@ public:
         QString label;
         int number;
     };
+
     static bool isItem(const Entity *e);
     static bool isWeapon(const Entity *e);
     static bool isArmor(const Entity *e);
@@ -46,16 +52,37 @@ public:
     static bool isSword(const Entity *e);
     static bool isBow(const Entity *e);
     static bool isMagicWeapon(const Entity *e);
+
     Character* getPlayer();
+
     void moveBack() { emit dialogOut("sono fuggito"); }
+
     void dialog(QString s);
+
+    QJsonObject itemToJson(Item *i);
+
+    unsigned int getScore() const;
+
+    //DEBUG
+    //elimino pg e lo setto a nullptr per nuova partita
+    void setPgNull()
+    {
+        delete pg;
+        pg = nullptr;
+    }
+
 signals:
     // emetto segnale per il dialogo
     void dialogOut(QString s);
     // emetto segnale per inviare le scelte
-    void choiceOut(Choice c);
+    void choiceOut(QVector<Choice> c);
     // il giocatore si è spostato, emetto la nuova minimappa
-    void posChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos);
+
+    void posChanged(const std::vector<std::vector<Tile>> &miniMap, Coordinate relativePos);
+
+    //cambio lo stato dei pulsanti di movimento
+    void setEnableMove(bool);
+    
 public slots:
     // slot che gestisce le scelte fatte dal giocatore
     void choiceDone(Choice c);
@@ -69,56 +96,76 @@ public slots:
     void savePlayerSlot();
     //carico il personaggio
     void loadPlayerSlot(bool);
+
+
+//PRIVATE DI GAME
 private:
+
+    Player *pg;
+    Map map;
+    unsigned int score = 0;
+
 
     static const QString fileScore;
     static const int mapSize;
     int miniMapSize;
+
+
     // struttura per memorizzare lo stato del combattimento in corso
     struct CombatState {
         unsigned int numero_turno;
         bool turno_player;
-        QVector<Entity*> &enemies;
+        std::vector<Entity*> &enemies;
         Player *player;
-        CombatState(QVector<Entity*> &e, Player *pg): enemies(e), player(pg) {}
+        CombatState(std::vector<Entity*> &e, Player *pg): enemies(e), player(pg) {}
     };
+
+    CombatState* combat;
+
+
     // funzioni test per vedere
-    void scappa() {
-        emit dialogOut("sto provando a scappare");
-        // con una certa probabilita scappa
-        if(randInt(0,1)) {
-            moveBack();
-            emit dialogOut("sono scappato");
-        }
-        else {
-            emit dialogOut("non sei riuscito a scappare!");
-            //startCombat();
-        }
-    }
+    void scappa();
     void usePotionMana();
     void usePotionHealth();
-    void startCombat(Tile &t) {
-        combat = new CombatState(t.e, nullptr);
-        emit dialogOut("sei entrato nel pieno del combattimento");
-        emit dialogOut("il tuo nemico ti sferra un fendente micidiale");
-        // usare combat per tenere traccia dello stato del sistema
-        combat->numero_turno++;
-        combat->turno_player = true;
-        emit dialogOut("cosa vuoi fare?");
-        emit choiceOut(Choice::attack());
-        //ememies.arma.use(player)
-    }
-    void attacca() {
-        emit dialogOut("usi la tua arma pazzesca per sfonnare il nemico");
-    }
-    void endCombat() {
-        delete combat;
-        combat = nullptr;
-    }
+    void startCombat(Tile &t);
+    void attacca();
+    void endCombat();
     int randInt(int low, int high);
-    CombatState* combat;
-    Character *pg;
-    Map map;
-    unsigned int score = 0;
+
+    void pushRandomMob(int range, Coordinate c);
+
+    void pushRandomItem(int range, Coordinate c) {
+        std::vector<Coordinate> t = map.getWalkableTile(range, c);
+
+        // aggiungo i mob
+        for(auto it = t.begin(); it != t.end(); ++it) {
+
+            Tile &t = map.getTileIn(*it);
+            
+            // salto il tile se il vettore non è vuoto
+            if( ! t.e.empty() ) continue;
+
+            if (Randomizer::randomNumberBetween(0, 200) < 1 ) {
+                    // 20 % oggetto tra tutti quelli possibili quindi spada, armatura, pozze
+                    t.e.push_back( Randomizer::getRandomItem() );
+
+            } /*else {
+                // solo pozioni
+
+                // TODO sistemare sto pezzo in base a come facciomo la generazione delle pozze
+
+                if ( Randomizer::randomNumberBetween(0, 100) < 1 ) {
+                    // 65 % vita
+                    t.e.push_back( Randomizer::getRandomPotion() );
+                } else {
+                    // 35% mana
+                    t.e.push_back( Randomizer::getRandomPotion() );
+                }
+            }*/
+        }
+
+    }
+
+
 };
 #endif // GAME_H

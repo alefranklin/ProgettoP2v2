@@ -14,7 +14,7 @@ public:
     void setPlayerHere(bool here);
 
 signals:
-    void buttonClicked(QVector<Entity *>);
+    void buttonClicked(std::vector<Entity *>);
 
 private slots:
     void handleClick();

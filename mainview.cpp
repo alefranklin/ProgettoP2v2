@@ -87,7 +87,7 @@ void MainView::onMute() {
     volumeSlider->setValue(0);
 }
 
-void MainView::onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos) {
+void MainView::onPosChanged(const std::vector<std::vector<Tile>> &miniMap, Coordinate relativePos) {
     //MapWidget *mapWidget = ui->mapwidget;
     //mapWidget->refresh(miniMap, relativePos);
 }

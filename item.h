@@ -10,21 +10,21 @@ using namespace std; // TODO controllare se togliere
 
 class Character;
 
-// struct degli attributi di un oggetto e ridefinizione operator<< e ==
-struct Attribute {
-  QString name;
-  QString val;
-  Attribute(QString s, QString v): name(s), val(v) {}
-  friend ostream& operator<<(ostream& out, const Attribute &a);
+//// struct degli attributi di un oggetto e ridefinizione operator<< e ==
+//struct Attribute {
+//  QString name;
+//  QString val;
+//  Attribute(QString s, QString v): name(s), val(v) {}
+//  friend ostream& operator<<(ostream& out, const Attribute &a);
 
-  //se dovessero servire
-  bool operator==(const Attribute &a) {
-    return ( name==a.name && val==a.val);
-  }
-  bool operator!=(const Attribute &a) {
-    return !(*this == a);
-  }
-};
+//  //se dovessero servire
+//  bool operator==(const Attribute &a) {
+//    return ( name==a.name && val==a.val);
+//  }
+//  bool operator!=(const Attribute &a) {
+//    return !(*this == a);
+//  }
+//};
 
 class Item: public Entity {
 private:

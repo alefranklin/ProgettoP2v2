@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <QVector>
+#include <vector>
 
 #include <entity.h>
 #include "map.h"
@@ -22,13 +23,18 @@ signals:
     void setMiniMapSize(int dim);
 
     // invio il segnale per avere info sull'Entity presente nel Tile cliccato
-    void showDetailsOf(QVector<Entity*> e);
+    void showDetailsOf(std::vector<Entity*> e);
 
 
 public slots:
-    void refresh(const QVector<QVector<Tile>> &miniMap, Coordinate pos);
-    void onTileButtonPressd(QVector<Entity*> e);
+    void refresh(const std::vector<std::vector<Tile>> &miniMap, Coordinate pos);
+
+    // gestisco il segnale proveniente dallo slider per selezionare la dimensione
+    //void onDimensionChanged(int dim);
+    void onTileButtonPressed(std::vector<Entity *> e);
+
     void syncDimension();
+
 
 private:
     int dimension;

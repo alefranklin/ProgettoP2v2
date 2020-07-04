@@ -1,41 +1,60 @@
-#include "prova_main.h"
+#include "main_view.h"
 
-prova_main::prova_main(Game *g, QWidget *parent)
+main_view::main_view(Game *g, QWidget *parent)
     : QWidget(parent)
     , model(g)
 {
-    mapWidget = new MapWidget(this);
+
+    //LAYOUT PRINCIPALE
+    mapWidget = new MapWidget(this,19);
     choiceWidget = new ChoiceWidget(this);
     moveWidget = new MoveWidget(this);
-
+    charachter = new PlayerWidget(model->getPlayer(), this);
     grid = new QGridLayout();
     setLayout(grid);
+
+    createMusicSliderBox();
 
     dialogOutBox = new QTextEdit(this);
     dialogOutBox->setReadOnly(true);
     //dialogOutBox->setDisabled(true);
 
-    charachter = new PlayerWidget(model->getPlayer(), this);
+
     PlayerWidget *mob = new PlayerWidget(model->getPlayer(), this); //TODO dichiararlo sul .h
 
+    //INVENTARIO
     inventory= new QListWidget(); //lista di widget (inventario)
     inventory->setFixedWidth(270);
-    //inventory->setFixedHeight(200);
-    //inventory->setFixedSize(300, 200);
-    //QListWidget *placeholder = new QListWidget();
 
-    createMusicSliderBox();
+    //MAPPA
 
     // connetto i segnali per la mappa dal modello a view e viceversa
     connect(model, &Game::posChanged, mapWidget, &MapWidget::refresh);  // da model a view
     connect(mapWidget, &MapWidget::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
+    //connect(mapWidget, &MapWidget::setMiniMapSize, this, &main_view::onSetMiniMapSize);
     connect(mapWidget, &MapWidget::showDetailsOf, mob, &PlayerWidget::onShowDetailOf);
 
-    // da mettere dopo il connect
     mapWidget->syncDimension();
+    //TASTI SCELTA
 
+    connect(choiceWidget, &ChoiceWidget::sendChoice, this, &main_view::choicePressed);
+    connect(model, &Game::choiceOut, this, &main_view::showChoice);
+    connect(this, &main_view::emitChoice, model, &Game::choiceDone);
+
+    //TASTI MOVIMENTO
+
+    connect(model, &Game::setEnableMove, moveWidget, &MoveWidget::setEnabled);
     //connetto view e model per muovere il personaggio nella mappa
-    connect(moveWidget, &MoveWidget::emitDir, this, &prova_main::movePressed);
+    connect(moveWidget, &MoveWidget::emitDir, this, &main_view::movePressed);
+
+    //FINESTRA DI DIALOGO
+    dialogOutBox = new QTextEdit(this);
+    dialogOutBox->setReadOnly(true);
+    //dialogOutBox->setText("FINESTRA DI DIALOGO");
+    connect(model, &Game::dialogOut, this, &main_view::printString);
+
+    score = new QLabel(this);
+    score->setText(QString::number(model->getScore()));
 
     //prima colonna (col = 0)
     grid->addWidget(charachter, 0, 0);
@@ -48,16 +67,20 @@ prova_main::prova_main(Game *g, QWidget *parent)
     grid->addWidget(choiceWidget, 2, 1, Qt::AlignCenter);
 
     //terza colonna (col = 2)
+    grid->addWidget(score, 1, 2, Qt::AlignCenter);
     grid->addWidget(moveWidget, 2, 2);
     grid->addWidget(mob, 0, 2); //TODO implementare in modo diverso per mob
 
-    //grid->setRowMinimumHeight(0,270);
-
 }
 
-prova_main::~prova_main(){}
+main_view::~main_view(){}
 
-void prova_main::createMenu()
+void main_view::printString(QString s)
+{
+    dialogOutBox->setText(s);
+}
+
+void main_view::createMenu()
 {
     menubar = new QMenuBar(this);
 
@@ -77,7 +100,7 @@ void prova_main::createMenu()
 
 }
 
-void prova_main::createMusicSliderBox(){
+void main_view::createMusicSliderBox(){
 
     musicSlider = new QGroupBox(this);
     QHBoxLayout *layout = new QHBoxLayout;
@@ -89,11 +112,11 @@ void prova_main::createMusicSliderBox(){
     volumeSlider->setMaximum(100);
     volumeSlider->setValue(50);
 
-    //connect(volumeSlider, &QSlider::valueChanged, this, &MainView::onVolumeChanged);
+    connect(volumeSlider, &QSlider::valueChanged, this, &main_view::onVolumeChanged);
 
     // bottone per il muto
     muteButton = new QPushButton("Mute", this);
-    //connect(muteButton, &QPushButton::clicked, this, &MainView::onMute);
+    connect(muteButton, &QPushButton::clicked, this, &main_view::onMute);
 
     layout->addWidget(muteButton);
     layout->addWidget(volumeSlider);
@@ -107,7 +130,16 @@ void prova_main::createMusicSliderBox(){
     //musicSlider->setGeometry(20, 520, 200, 65);
 }
 
-void prova_main::movePressed(char dir){
+void main_view::onPosChanged(const std::vector<std::vector<Tile>> &miniMap, Coordinate relativePos) {
+    MapWidget *mapwidget = mapWidget;
+    mapwidget->refresh(miniMap, relativePos);
+}
+
+void main_view::onSetMiniMapSize(int dim) {
+    emit setMiniMapSize(dim);
+}
+
+void main_view::movePressed(char dir){
     std::string s = "Ti sei mosso verso ";
     switch (dir){
         case 'W':
@@ -125,4 +157,28 @@ void prova_main::movePressed(char dir){
     }
     dialogOutBox->setText(QString::fromStdString(s));
     model->move(dir);
+}
+
+void main_view::showChoice(QVector<Game::Choice> c)
+{
+    //mostriamo le scelte
+    choiceWidget->setChoices(c);
+}
+
+void main_view::choicePressed(Game::Choice c)
+{
+    choiceWidget->cleanGrid();
+    emit emitChoice(c);
+}
+
+void main_view::onVolumeChanged(int volume) {
+    // se il volume è a zero mute è disabilitato
+    if(volume == 0) muteButton->setDisabled(true);
+    else muteButton->setDisabled(false);
+    // emetto il segnale verso il controller
+    emit volumeChanged(volume);
+}
+
+void main_view::onMute() {
+    volumeSlider->setValue(0);
 }

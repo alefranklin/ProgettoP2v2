@@ -21,10 +21,10 @@ Map::Map(int d): pos(), lastPos(pos){
   //la mappa deve avere una dimensione minima
   dim = (d < minDim) ? minDim : d;
 
-  qDebug() << "dim:" << dim << endl; //debug
+  //qDebug() << "dim:" << dim << endl; //debug
 
   // instanzio i vettori della mappa
-  map = QVector<QVector<Tile>>(dim, QVector<Tile>(dim, Tile()));
+  map = std::vector<std::vector<Tile>>(dim, std::vector<Tile>(dim, Tile()));
 
   Generatemap();
 
@@ -57,7 +57,7 @@ Coordinate Map::getRelativePos() const {
   return relativePos;
 }
 
-QVector<QVector<Tile> > Map::getMiniMap(int size) {
+std::vector<std::vector<Tile> > Map::getMiniMap(int size) {
 
   // controllo se ho una grandezza sufficiente a creare una minimappa
   // in caso contrario ritorno tutta la mappa
@@ -70,7 +70,7 @@ QVector<QVector<Tile> > Map::getMiniMap(int size) {
   // a questo punto  sono certo che la mappa sia più grande della minimappa
   // quindi posso avere overflow solo su uno dei due lati non su entrambi
 
-  QVector<QVector<Tile>> miniMap(size, QVector<Tile>(size, Tile(false)));
+  std::vector<std::vector<Tile>> miniMap(size, std::vector<Tile>(size, Tile(false)));
 
   int overflow_row = 0;
   int overflow_col = 0;
@@ -128,7 +128,7 @@ void Map::printMap(vector<vector<Tile>> m, Coordinate pos) {
 Coordinate Map::RandomPos() const {
   // vettore contenente le /possibili posizioni
   // in cui è possibile spawnare sulla mappa
-  QVector<Coordinate> possiblePos;
+  std::vector<Coordinate> possiblePos;
 
   // trovo tutte le possibili posizioni
   for(int row = 0; row < dim; row++){
@@ -191,23 +191,41 @@ Tile& Map::getCurrentTile() {
   return getTileIn(pos);
 }
 
+std::vector<Coordinate> Map::getWalkableTile(int range, Coordinate c) {
+
+    // ritorna arrai coordinate valide
+    std::vector<Coordinate> circle = createCircle(c, range);
+
+    // filtro e tengo solo quelle camminabili
+    for (auto it = circle.begin(); it != circle.end(); ++it)
+    {
+        if( ! isWalkable(*it) ) {
+            it = circle.erase(it);
+            --it;
+        }
+    }
+
+    return circle;
+
+}
+
 // richiede una posizione valida
 Tile& Map::getTileIn(Coordinate p) {
-  return map[p.row][p.col];
+    return map[p.row][p.col];
 }
 
 bool Map::isWalkable(Coordinate p) {
-  return (isValid(p)) ? getTileIn(p).walkable : false;
+    return (isValid(p)) ? getTileIn(p).walkable : false;
 }
 
 bool Map::isValid(Coordinate p) const {
-  return (p.row < 0 || p.row >= dim || p.col < 0 || p.col >= dim ) ? false : true;
+    return (p.row < 0 || p.row >= dim || p.col < 0 || p.col >= dim ) ? false : true;
 }
 
-QVector<Coordinate> Map::createCircle(Coordinate center, int radius) {
-  /* controllo tutte le posizioni in una regione grande radius^2 x radius^2 con centro in center
+std::vector<Coordinate> Map::createCircle(Coordinate center, int radius) {
+    /* controllo tutte le posizioni in una regione grande radius^2 x radius^2 con centro in center
      e controllo se fanno parte dell'area utilizzando la formula del cerchio */
-  QVector<Coordinate> points;
+  std::vector<Coordinate> points;
 
   // il raggio deve essere >= 0
   radius = (radius < 0) ? radius*(-1) : radius;
@@ -228,8 +246,8 @@ QVector<Coordinate> Map::createCircle(Coordinate center, int radius) {
   return points;
 }
 
-QVector<Coordinate> Map::createRectangle(Coordinate center, int width, int height) {
-  QVector<Coordinate> points;
+std::vector<Coordinate> Map::createRectangle(Coordinate center, int width, int height) {
+  std::vector<Coordinate> points;
 
   // itero nell'area da controllare
   for(int i = 0; i < height; i++) {
@@ -246,8 +264,8 @@ QVector<Coordinate> Map::createRectangle(Coordinate center, int width, int heigh
   return points;
 }
 
-QVector<Coordinate> Map::createLine(Coordinate p1, Coordinate p2, int thickness) {
-  QVector<Coordinate> line;
+std::vector<Coordinate> Map::createLine(Coordinate p1, Coordinate p2, int thickness) {
+  std::vector<Coordinate> line;
 
   /*
   if(p1 > p2){
@@ -309,24 +327,24 @@ QVector<Coordinate> Map::createLine(Coordinate p1, Coordinate p2, int thickness)
   if(thickness <= 1) thickness = 2;
 
   //ingrosso la linea
-  QVector<Coordinate> points;
+  std::vector<Coordinate> points;
   for(auto it = line.begin(); it != line.end(); ++it) {
     // creo un quadrato di dimensione thicknessxthickness intorno ad ogni punto della linea
-    QVector<Coordinate> v = createRectangle(*it, thickness, thickness);
-    //points.insert(points.end(), v.begin(), v.end());
-    for(auto it = v.begin(); it != v.end(); ++it){ points << *it; }
+    std::vector<Coordinate> v = createRectangle(*it, thickness, thickness);
+    points.insert(points.end(), v.begin(), v.end());
+    //for(auto it = v.begin(); it != v.end(); ++it){ points << *it; }
   }
 
   // elimino tutti i punti duplicati
   set<Coordinate> s( points.begin(), points.end() );
-  //points.assign( s.begin(), s.end() );
-  points.erase(points.begin(), points.end());
-  for(auto it = s.begin(); it != s.end(); ++it){ points << *it; }
+  points.assign( s.begin(), s.end() );
+  //points.erase(points.begin(), points.end());
+  //for(auto it = s.begin(); it != s.end(); ++it){ points << *it; }
   return points;
 
 }
 
-void Map::modifyTile(QVector<Coordinate> points, bool w, Biome b, bool overwrite) {
+void Map::modifyTile(std::vector<Coordinate> points, bool w, Biome b, bool overwrite) {
   for(auto it = points.begin(); it != points.end(); ++it) {
     if(isValid(*it)) {
       Tile &t = getTileIn(*it);
@@ -348,9 +366,8 @@ float Map::calcSpawnRate(const Tile& t) const {
   float rate = 0.1;
   switch (t.biome)
   {
-    case Valley:    rate = 0.1;  break;
+    case Valley:    rate = 0.2;  break;
     case Desert:    rate = 0.2;  break;
-    case Doungeon:  rate = 0.4;  break;
     case Street:    rate = 0.05; break;
     default:        rate = 0.1;  break;
   }
@@ -358,7 +375,7 @@ float Map::calcSpawnRate(const Tile& t) const {
 }
 
 void Map::generateOasi(Coordinate center, int minDim, int maxDim, bool overwrite) {
-  QVector<Coordinate> oasi;
+  std::vector<Coordinate> oasi;
 
   // scelgo la forma
   if( Randomizer::randomNumberBetween(0,100) <= 50 ) {
@@ -377,12 +394,12 @@ void Map::generateOasi(Coordinate center, int minDim, int maxDim, bool overwrite
   modifyTile(oasi, true, Valley, overwrite);
 
   // aggiungo l'acqua
-  modifyTile(QVector<Coordinate>(1, center), false, Water, overwrite);
+  modifyTile(std::vector<Coordinate>(1, center), false, Water, overwrite);
 
 }
 
 void Map::generateDesert(Coordinate center, int minDim, int maxDim, int maxOasis, bool overwrite) {
-  QVector<Coordinate> desert;
+  std::vector<Coordinate> desert;
   bool oasis = true;
   // scelgo la forma
   if( Randomizer::randomNumberBetween(0,100) <= 50 ) {
@@ -414,7 +431,7 @@ void Map::generateDesert(Coordinate center, int minDim, int maxDim, int maxOasis
 
 
 void Map::generateLake(Coordinate center, int minDim, int maxDim, bool overwrite) {
-  QVector<Coordinate> lake;
+  std::vector<Coordinate> lake;
 
   int radius = Randomizer::randomNumberBetween(minDim/2, maxDim/2);
   lake = createCircle(center, radius);
@@ -431,7 +448,7 @@ void Map::generateLake(Coordinate center, int minDim, int maxDim, bool overwrite
  * @return
  */
 void Map::generateValley(Coordinate center, int minDim, int maxDim, int maxLakes, bool overwrite) {
-  QVector<Coordinate> valley;
+  std::vector<Coordinate> valley;
   bool lake = true;
   // scelgo la forma
   if( Randomizer::randomNumberBetween(0,100) <= 50 ) {
@@ -467,7 +484,7 @@ void Map::generateValley(Coordinate center, int minDim, int maxDim, int maxLakes
  * @return Coordinate
  */
 Coordinate Map::getRandomPos(Biome b){
-  QVector<Coordinate> v;
+  std::vector<Coordinate> v;
   for(int r = 0; r < dim; r++) {
     for(int c = 0; c < dim; c++) {
       Coordinate p(r,c);
@@ -494,7 +511,7 @@ Coordinate Map::getRandomPos(Biome b){
  */
 void Map::Generatemap() {
 
-  QVector<Coordinate> centers;
+  std::vector<Coordinate> centers;
 
   int maxNumPerBioma = 5;
   Coordinate center;
@@ -515,7 +532,7 @@ void Map::Generatemap() {
 
   // creo le strade di collegamento tra i centri dei vari biomi
   for(int i = 0; i < centers.size()-1; i++) {
-    QVector<Coordinate> line = createLine(centers[i], centers[i+1], 2);
+    std::vector<Coordinate> line = createLine(centers[i], centers[i+1], 2);
     modifyTile(createLine(centers[i], centers[i+1]), true, Street, true);
   }
   modifyTile(createLine(centers[0], centers[centers.size()-1]), true, Street, true);

@@ -58,7 +58,7 @@ public slots:
 
 
     // gestisco il refresh della mapppa
-    void onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos);
+    void onPosChanged(const std::vector<std::vector<Tile>> &miniMap, Coordinate relativePos);
 
     // gestisco il segnale di cambio di dimensione proveniente da MapWidget
     void onSetMiniMapSize(int dim);

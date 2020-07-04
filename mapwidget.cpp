@@ -19,7 +19,7 @@ MapWidget::MapWidget(QWidget *parent, int val) : QWidget(parent), dimension(val)
         row = pos/val;
         col = pos%val;
         layout->addWidget(*it, row, col); //calcolare pos
-        connect(*it, &TileButton::buttonClicked, this, &MapWidget::onTileButtonPressd);
+        connect(*it, &TileButton::buttonClicked, this, &MapWidget::onTileButtonPressed);
     }
 
 
@@ -29,7 +29,7 @@ MapWidget::MapWidget(QWidget *parent, int val) : QWidget(parent), dimension(val)
     emit setMiniMapSize(val);
 }
 
-void MapWidget::refresh(const QVector<QVector<Tile> > &miniMap, Coordinate pos) {
+void MapWidget::refresh(const std::vector<std::vector<Tile> > &miniMap, Coordinate pos) {
 
     // ripopolo tile_layout con nuovi pulsanti che rispecchiano la situazione della mappa attuale
     int row = 0;
@@ -46,7 +46,7 @@ void MapWidget::refresh(const QVector<QVector<Tile> > &miniMap, Coordinate pos) 
     }
 }
 
-void MapWidget::onTileButtonPressd(QVector<Entity *> e) {
+void MapWidget::onTileButtonPressed(std::vector<Entity *> e) {
     emit showDetailsOf(e);
 }
 

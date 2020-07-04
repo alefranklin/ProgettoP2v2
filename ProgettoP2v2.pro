@@ -27,12 +27,12 @@ SOURCES += \
     itemwidget.cpp \
     main.cpp \
     main_dialog.cpp \
+    main_view.cpp \
     mainview.cpp \
     map.cpp \
     mapwidget.cpp \
     movewidget.cpp \
     playerwidget.cpp \
-    prova_main.cpp \
     randomizer.cpp \
     tilebutton.cpp
 
@@ -48,12 +48,12 @@ HEADERS += \
     item.h \
     itemwidget.h \
     main_dialog.h \
+    main_view.h \
     mainview.h \
     map.h \
     mapwidget.h \
     movewidget.h \
     playerwidget.h \
-    prova_main.h \
     randomizer.h \
     tilebutton.h
 
