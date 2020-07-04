@@ -38,11 +38,11 @@ public:
 
   static Item* getRandomItem();
   static Weapon* getRandomWeapon();
-  static Weapon* getRandomSword();
-  static Weapon* getRandomBow();
+  static Sword* getRandomSword();
+  static Bow* getRandomBow();
   //ecc ecc per ogni arma
 
-  static Item* getRandomPotion();
+  static Potion* getRandomPotion();
 
   static Armor* getRandomArmor();
 

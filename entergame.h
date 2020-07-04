@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QPicture>
 #include <QMessageBox>
+#include <regex>
 
 //#include "character.h"
 #include "game.h"

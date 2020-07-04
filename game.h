@@ -32,6 +32,7 @@ public:
         static Choice attack() { return Choice("Attacca", 2); }
         static Choice useManaPotion() { return Choice("Usa pozione mana", 3); }
         static Choice useHealthPotion() { return Choice("Usa pozione vita", 4); }
+        static Choice pickItem() { return Choice("Raccogli", 5); }
         operator int() const
         {
            return number;
@@ -62,6 +63,14 @@ public:
 
     unsigned int getScore() const;
 
+    //DEBUG
+    //elimino pg e lo setto a nullptr per nuova partita
+    void setPgNull()
+    {
+        delete pg;
+        pg = nullptr;
+    }
+
 signals:
     // emetto segnale per il dialogo
     void dialogOut(QString s);
@@ -70,6 +79,9 @@ signals:
     // il giocatore si è spostato, emetto la nuova minimappa
 
     void posChanged(const std::vector<std::vector<Tile>> &miniMap, Coordinate relativePos);
+
+    //cambio lo stato dei pulsanti di movimento
+    void setEnableMove(bool);
     
 public slots:
     // slot che gestisce le scelte fatte dal giocatore
@@ -85,13 +97,6 @@ public slots:
     //carico il personaggio
     void loadPlayerSlot(bool);
 
-    //DEBUG
-    //elimino pg e lo setto a nullptr per nuova partita
-    void setPgNull()
-    {
-        delete pg;
-        pg = nullptr;
-    }
 
 //PRIVATE DI GAME
 private:
@@ -127,24 +132,7 @@ private:
     void endCombat();
     int randInt(int low, int high);
 
-    void pushRandomMob(int range, Coordinate c) {
-        std::vector<Coordinate> t = map.getWalkableTile(range, c);
-
-        // aggiungo i mob
-        for(auto it = t.begin(); it != t.end(); ++it) {
-
-            Tile &t = map.getTileIn(*it);
-            
-            // salto il tile se il vettore non è vuoto
-            if( ! t.e.empty())  continue;
-
-            //con una certa probabilità aggiungo un mob (30%)
-            if( Randomizer::randomNumberBetween(0, 100) < 30 ) {
-                t.e.push_back( Randomizer::getRandomMob() );
-            }
-        }
-
-    }
+    void pushRandomMob(int range, Coordinate c);
 
     void pushRandomItem(int range, Coordinate c) {
         std::vector<Coordinate> t = map.getWalkableTile(range, c);
@@ -157,23 +145,23 @@ private:
             // salto il tile se il vettore non è vuoto
             if( ! t.e.empty() ) continue;
 
-            if (Randomizer::randomNumberBetween(0, 100) < 20 ) {
+            if (Randomizer::randomNumberBetween(0, 200) < 1 ) {
                     // 20 % oggetto tra tutti quelli possibili quindi spada, armatura, pozze
                     t.e.push_back( Randomizer::getRandomItem() );
 
-            } else {
+            } /*else {
                 // solo pozioni
 
                 // TODO sistemare sto pezzo in base a come facciomo la generazione delle pozze
 
-                if ( Randomizer::randomNumberBetween(0, 100) < 65 ) {
+                if ( Randomizer::randomNumberBetween(0, 100) < 1 ) {
                     // 65 % vita
                     t.e.push_back( Randomizer::getRandomPotion() );
                 } else {
                     // 35% mana
                     t.e.push_back( Randomizer::getRandomPotion() );
                 }
-            }
+            }*/
         }
 
     }

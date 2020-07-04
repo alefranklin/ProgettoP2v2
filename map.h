@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-enum Biome {Valley, Desert, Doungeon, Street, Water, Null};
+enum Biome {Valley, Desert, Street, Water, Null};
 
 struct Coordinate {
   int row;

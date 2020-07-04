@@ -36,7 +36,7 @@ main_view::main_view(Game *g, QWidget *parent)
 
     //TASTI MOVIMENTO
     moveWidget = new MoveWidget(this);
-
+    connect(model, &Game::setEnableMove, moveWidget, &MoveWidget::setEnabled);
     //connetto view e model per muovere il personaggio nella mappa
     connect(moveWidget, &MoveWidget::emitDir, this, &main_view::movePressed);
 

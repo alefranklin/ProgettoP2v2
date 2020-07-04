@@ -18,7 +18,7 @@ Game::Game(Player* player, QObject *parent) : QObject(parent)
 {
     // genero mostri in tutta la mappa partedo dal centro
     pushRandomMob(mapSize/2, Coordinate(mapSize/2, mapSize/2));
-
+    pushRandomItem(mapSize/2, Coordinate(mapSize/2, mapSize/2));
 
     //per il rand di test
 //    QTime time = QTime::currentTime();
@@ -146,26 +146,52 @@ int Game::randInt(int low, int high)
     return qrand() % ((high + 1) - low) + low;
 }
 
+void Game::pushRandomMob(int range, Coordinate c) {
+    std::vector<Coordinate> t = map.getWalkableTile(range, c);
+
+    // aggiungo i mob
+    for(auto it = t.begin(); it != t.end(); ++it) {
+
+        Tile &t = map.getTileIn(*it);
+
+        // salto il tile se il vettore non è vuoto
+        if( ! t.e.empty())  continue;
+
+        //con una certa probabilità aggiungo un mob (30%)
+        if( Randomizer::randomNumberBetween(0, 100) < 2 ) {
+            t.e.push_back( Randomizer::getRandomMob() );
+        }
+    }
+
+}
+
 void Game::move(char m) {
     switch (m) {
-        case 'W': map.moveUP();     break;
-        case 'A': map.moveLEFT();   break;
-        case 'S': map.moveDOWN();   break;
-        case 'D': map.moveRIGHT();  break;
-        default:  break;
+    case 'W': map.moveUP();     break;
+    case 'A': map.moveLEFT();   break;
+    case 'S': map.moveDOWN();   break;
+    case 'D': map.moveRIGHT();  break;
+    default:  break;
     }
 
     emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
 
     //controllare il tile se esiste un nemico if(map.getCurrentTile().e) scappa o attacca
 
-    if(!map.getCurrentTile().e.isEmpty()) {
-        //if oggetto
+    Tile &t = map.getCurrentTile();
+    QVector<Choice> c;
 
+    if(!t.e.empty()) {
+        emit setEnableMove(false);
 
-        QVector<Choice> c;
-        c << Choice::escape();
-        c << Choice::attack();
+        if(isMob(t.e[0])){
+            c << Choice::escape();
+            c << Choice::attack();
+        }
+
+        if(isItem(t.e[0])){
+            c << Choice::pickItem();
+        }
 
         emit choiceOut(c);
     }

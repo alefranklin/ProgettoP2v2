@@ -1,6 +1,7 @@
 #include "entergame.h"
 #include "entergame.h"
 
+
 #include <QDebug>
 
 EnterGame::EnterGame(Game** g, QWidget* parent): QDialog(parent), gioco(g)
@@ -26,7 +27,8 @@ void EnterGame::cleanEnter()
 
 void EnterGame::tryEnter()
 {
-    if((!pg_name->text().isEmpty() && pg_name->text() != " ") || (*gioco)->getPlayer()){
+    //regex str ("([a-z][A-Z])(.+)");
+    if((!pg_name->text().isEmpty() /*&& regex_match(pg_name->text(), str)*/ ) || (*gioco)->getPlayer()){
         if(!(*gioco)->getPlayer()){
             //evito memory leak
             //qDebug() << "cancello gioco";
@@ -49,12 +51,12 @@ void EnterGame::tryEnter()
 void EnterGame::createLayoutEnterGame()
 {
     layoutEnterGame = new QGridLayout();
-    nameLabel = new QLabel("Nome Personaggio:");
+
 
     pg_name = new QLineEdit();
+    pg_name->setPlaceholderText("Nome personaggio");
 
-    layoutEnterGame->addWidget(nameLabel, 1, 0);
-    layoutEnterGame->addWidget(pg_name, 1, 1);
+    layoutEnterGame->addWidget(pg_name, 1, 0, 1, 2);
 
 
     bPlay = new QPushButton("Gioca");
