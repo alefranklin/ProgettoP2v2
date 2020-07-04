@@ -43,7 +43,7 @@ Game::~Game()
 void Game::dialog(QString s)
 {
     emit dialogOut(s);
-    emit choiceOut(Choice::escape());
+    //emit choiceOut(Choice::escape());
 
 }
 
@@ -81,10 +81,14 @@ QJsonObject Game::itemToJson(Item *i){
     return json;
 }
 
+unsigned int Game::getScore() const
+{
+    return score;
+}
+
 void Game::choiceDone(Choice c)
 {
-    emit dialogOut("scelta fatta:"+c.getLabel());
-    emit dialogOut("adesso devo gestire le varie funzioni delle scelte");
+    emit dialogOut("scelta fatta: "+c.getLabel()+"\nadesso devo gestire le varie funzioni delle scelte");
 
 
     switch(c) {
@@ -110,12 +114,25 @@ void Game::startCombat(Tile &t) {
     combat->numero_turno++;
     combat->turno_player = true;
     emit dialogOut("cosa vuoi fare?");
-    emit choiceOut(Choice::attack());
+    //emit choiceOut(Choice::attack());
     //ememies.arma.use(player)
 }
 
 void Game::attacca() {
     emit dialogOut("usi la tua arma pazzesca per sfonnare il nemico");
+}
+
+void Game::scappa() {
+    emit dialogOut("sto provando a scappare");
+    // con una certa probabilita scappa
+    if(randInt(0,1)) {
+        moveBack();
+        emit dialogOut("sono scappato");
+    }
+    else {
+        emit dialogOut("non sei riuscito a scappare!");
+        //startCombat();
+    }
 }
 
 void Game::endCombat() {
@@ -131,14 +148,29 @@ int Game::randInt(int low, int high)
 
 void Game::move(char m) {
     switch (m) {
-    case 'W': map.moveUP();     break;
-    case 'A': map.moveLEFT();   break;
-    case 'S': map.moveDOWN();   break;
-    case 'D': map.moveRIGHT();  break;
-    default:  break;
-  }
+        case 'W': map.moveUP();     break;
+        case 'A': map.moveLEFT();   break;
+        case 'S': map.moveDOWN();   break;
+        case 'D': map.moveRIGHT();  break;
+        default:  break;
+    }
 
-  emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
+    emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
+
+    //controllare il tile se esiste un nemico if(map.getCurrentTile().e) scappa o attacca
+
+    if(!map.getCurrentTile().e.isEmpty()) {
+        //if oggetto
+
+
+        QVector<Choice> c;
+        c << Choice::escape();
+        c << Choice::attack();
+
+        emit choiceOut(c);
+    }
+
+    //pushRandomItem(miniMapSize, map.getPos());
 }
 
 void Game::onSetMiniMapSize(int s) {
@@ -215,28 +247,13 @@ void Game::loadPlayerSlot(bool)
         QJsonObject json = d_json.object();
 
 
-        qDebug() << json["nome"].toString();
+        //qDebug() << json["nome"].toString();
 
 
         pg = new Player(json["nome"].toString(), json["vita"].toInt(), json["mana"].toInt());
     }
 
 }
-
-void Game::scappa() {
-    emit dialogOut("sto provando a scappare");
-    // con una certa probabilita scappa
-    if(randInt(0,1)) {
-        moveBack();
-        emit dialogOut("sono scappato");
-    }
-    else {
-        emit dialogOut("non sei riuscito a scappare!");
-        //startCombat();
-    }
-}
-
-
 
 bool Game::isItem(const Entity *e) { return (dynamic_cast<const Item*>(e)) ? true : false; }
 bool Game::isWeapon(const Entity *e) { return (dynamic_cast<const Weapon*>(e)) ? true : false; }
@@ -249,7 +266,4 @@ bool Game::isSword(const Entity *e) { return (dynamic_cast<const Sword*>(e)) ? t
 bool Game::isBow(const Entity *e) { return (dynamic_cast<const Bow*>(e)) ? true : false;}
 bool Game::isMagicWeapon(const Entity *e) { return (dynamic_cast<const MagicWeapon*>(e)) ? true : false;}
 
-Character *Game::getPlayer()
-{
-    return pg;
-}
+Character *Game::getPlayer() { return pg; }

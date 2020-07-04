@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
             //Randomizer::setup();
 
-            Main_dialog w(new_game, game);
+            main_dialog w(new_game, game);
             //Controller c2(&w, game);
             //partita iniziata -> se decido di uscire non aprirà di nuovo
 

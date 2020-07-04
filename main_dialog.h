@@ -12,12 +12,12 @@
 
 #include <string>
 
-class Main_dialog : public QMainWindow {
+class main_dialog : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit Main_dialog(bool& refNewGame, Game* g, QWidget *parent = nullptr);
-    ~Main_dialog(){}
+    explicit main_dialog(bool& refNewGame, Game* g, QWidget *parent = nullptr);
+    ~main_dialog(){}
 
 private:
 

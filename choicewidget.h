@@ -18,7 +18,6 @@ public:
     void setChoices(QVector<Game::Choice> choices);
 
 signals:
-
     void sendChoice(Game::Choice c);
 
 public slots:
