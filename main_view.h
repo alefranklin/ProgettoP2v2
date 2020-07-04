@@ -32,32 +32,32 @@ public:
 
 signals:
     // invio il segnale con la scelta fatta
-    //void emitChoice(Game::Choice c);
+    void emitChoice(Game::Choice c);
 
     // emetto il segnale per far partire il dialogo al controller
 //    void emitDialog();
 
 //    // segnale di volume changed
-//    void volumeChanged(int volume);
+    void volumeChanged(int volume);
 
     void setMiniMapSize(int dim);
     void newGameSlot();
 
 public slots:
     // printo su textedit
-    //void printString(QString s);
+    void printString(QString s);
 
 //    // gestisco e mostro le varie scelte diponibili
-//    void showChoice(QVector<Game::Choice> c);
+    void showChoice(QVector<Game::Choice> c);
 //    // gestisco la pressione del pulsante di scelta
-//    void choicePressed(Game::Choice c);
+    void choicePressed(Game::Choice c);
 
 //    //gestisco il click del pulsante di dialogo
 //    void onDialogPressed();
 
 //    // slot per gestire lo slider del volume
-//    void onVolumeChanged(int volume);
-//    void onMute();
+    void onVolumeChanged(int volume);
+    void onMute();
 
     void movePressed(char dir);
     // gestisco il refresh della mapppa
@@ -77,14 +77,14 @@ private:
     void createMapBox();
     void createEnemyBox();
 
+    Game* model;
+
     QGridLayout* grid;
     QListWidget *inventory;
 
     PlayerWidget *charachter;
 
-    QLabel *info;
-
-    QPushButton* bottone;
+    QLabel *score;
 
     //menu
     QMenuBar *menubar;
@@ -94,7 +94,6 @@ private:
 
     MapWidget *mapWidget;
 
-    Game* model;
     MoveWidget *moveWidget;
 
     //widget scelte personaggio
@@ -105,9 +104,9 @@ private:
 
     //widget move
     QPushButton *muteButton;
-
     QGroupBox *musicSlider;
 
+    //finestra di dialogo con il gioco
     QTextEdit *dialogOutBox;
 
 

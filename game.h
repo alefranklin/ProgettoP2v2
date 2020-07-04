@@ -46,17 +46,24 @@ public:
     static bool isSword(const Entity *e);
     static bool isBow(const Entity *e);
     static bool isMagicWeapon(const Entity *e);
+
     Character* getPlayer();
+
     void moveBack() { emit dialogOut("sono fuggito"); }
     void dialog(QString s);
+
     QJsonObject itemToJson(Item *i);
+
+    unsigned int getScore() const;
+
 signals:
     // emetto segnale per il dialogo
     void dialogOut(QString s);
     // emetto segnale per inviare le scelte
-    void choiceOut(Choice c);
+    void choiceOut(QVector<Choice> c);
     // il giocatore si è spostato, emetto la nuova minimappa
     void posChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos);
+
 public slots:
     // slot che gestisce le scelte fatte dal giocatore
     void choiceDone(Choice c);
@@ -100,6 +107,7 @@ private:
         Player *player;
         CombatState(QVector<Entity*> &e, Player *pg): enemies(e), player(pg) {}
     };
+
     CombatState* combat;
 
 

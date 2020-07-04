@@ -7,19 +7,19 @@ main_view::main_view(Game *g, QWidget *parent)
 
     createMusicSliderBox();
 
+    //LAYOUT PRINCIPALE
     grid = new QGridLayout();
     setLayout(grid);
 
+    //PERSONAGGIO E NEMICO
     charachter = new PlayerWidget(model->getPlayer(), this);
     PlayerWidget *mob = new PlayerWidget(model->getPlayer(), this); //TODO dichiararlo sul .h
 
+    //INVENTARIO
     inventory= new QListWidget(); //lista di widget (inventario)
     inventory->setFixedWidth(270);
-    //inventory->setFixedHeight(200);
-    //inventory->setFixedSize(300, 200);
 
-    //QListWidget *placeholder = new QListWidget();
-
+    //MAPPA
     mapWidget = new MapWidget(this, 19, 19, 19);
 
     // connetto i segnali per la mappa dal modello a view e viceversa
@@ -28,12 +28,26 @@ main_view::main_view(Game *g, QWidget *parent)
     connect(mapWidget, &MapWidget::setMiniMapSize, this, &main_view::onSetMiniMapSize);
     connect(mapWidget, &MapWidget::showDetailsOf, mob, &PlayerWidget::onShowDetailOf);
 
+    //TASTI SCELTA
     choiceWidget = new ChoiceWidget(this);
+    connect(choiceWidget, &ChoiceWidget::sendChoice, this, &main_view::choicePressed);
+    connect(model, &Game::choiceOut, this, &main_view::showChoice);
+    connect(this, &main_view::emitChoice, model, &Game::choiceDone);
 
+    //TASTI MOVIMENTO
     moveWidget = new MoveWidget(this);
 
+    //connetto view e model per muovere il personaggio nella mappa
+    connect(moveWidget, &MoveWidget::emitDir, this, &main_view::movePressed);
+
+    //FINESTRA DI DIALOGO
     dialogOutBox = new QTextEdit(this);
-    dialogOutBox->setText("FINESTRA DI DIALOGO");
+    dialogOutBox->setReadOnly(true);
+    //dialogOutBox->setText("FINESTRA DI DIALOGO");
+    connect(model, &Game::dialogOut, this, &main_view::printString);
+
+    score = new QLabel(this);
+    score->setText(QString::number(model->getScore()));
 
     //prima colonna (col = 0)
     grid->addWidget(charachter, 0, 0);
@@ -46,17 +60,18 @@ main_view::main_view(Game *g, QWidget *parent)
     grid->addWidget(choiceWidget, 2, 1, Qt::AlignCenter);
 
     //terza colonna (col = 2)
+    grid->addWidget(score, 1, 2, Qt::AlignCenter);
     grid->addWidget(moveWidget, 2, 2);
     grid->addWidget(mob, 0, 2); //TODO implementare in modo diverso per mob
-
-    //grid->setRowMinimumHeight(0,270);
-
-    //connetto view e model per muovere il personaggio nella mappa
-    connect(moveWidget, &MoveWidget::emitDir, this, &main_view::movePressed);
 
 }
 
 main_view::~main_view(){}
+
+void main_view::printString(QString s)
+{
+    dialogOutBox->setText(s);
+}
 
 void main_view::createMenu()
 {
@@ -90,11 +105,11 @@ void main_view::createMusicSliderBox(){
     volumeSlider->setMaximum(100);
     volumeSlider->setValue(50);
 
-    //connect(volumeSlider, &QSlider::valueChanged, this, &MainView::onVolumeChanged);
+    connect(volumeSlider, &QSlider::valueChanged, this, &main_view::onVolumeChanged);
 
     // bottone per il muto
     muteButton = new QPushButton("Mute", this);
-    //connect(muteButton, &QPushButton::clicked, this, &MainView::onMute);
+    connect(muteButton, &QPushButton::clicked, this, &main_view::onMute);
 
     layout->addWidget(muteButton);
     layout->addWidget(volumeSlider);
@@ -135,4 +150,28 @@ void main_view::movePressed(char dir){
     }
     dialogOutBox->setText(QString::fromStdString(s));
     model->move(dir);
+}
+
+void main_view::showChoice(QVector<Game::Choice> c)
+{
+    //mostriamo le scelte
+    choiceWidget->setChoices(c);
+}
+
+void main_view::choicePressed(Game::Choice c)
+{
+    choiceWidget->cleanGrid();
+    emit emitChoice(c);
+}
+
+void main_view::onVolumeChanged(int volume) {
+    // se il volume è a zero mute è disabilitato
+    if(volume == 0) muteButton->setDisabled(true);
+    else muteButton->setDisabled(false);
+    // emetto il segnale verso il controller
+    emit volumeChanged(volume);
+}
+
+void main_view::onMute() {
+    volumeSlider->setValue(0);
 }
