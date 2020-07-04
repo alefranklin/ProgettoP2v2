@@ -10,7 +10,7 @@ main_view::main_view(Game *g, QWidget *parent)
     choiceWidget = new ChoiceWidget(this);
     moveWidget = new MoveWidget(this);
     charachter = new PlayerWidget(model->getPlayer(), this);
-    grid = new QGridLayout();
+    grid = new QGridLayout(this);
     setLayout(grid);
 
     createMusicSliderBox();
