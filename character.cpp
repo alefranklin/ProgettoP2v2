@@ -1,37 +1,59 @@
 #include "character.h"
-#include "entity.h"
-#include <QVector>
 
 #include <QDebug>
-
-
+#include "sword.h"
+#include "armor.h"
 using namespace std;
 
+const int Character::maxVita = 500;
+const int Character::maxMana = 250;
+
 //CLASSE CHARACTER
-Character::Character(QString n, int v, int m):
+Character::Character(string n, int v, int m):
     Entity()
   , name(n)
   , vita(v)
   , mana(m)
+
 {
     arma = new Sword("nullptr", 100, 1);
     armatura = new Armor("ARMATURA GROSSSA", 70);
     qDebug() << "istanzio Character: ";
 }
 
-QString Character::getName()
+string Character::getName()
 {
     return name;
 }
 
-int Character::getVita()
+int Character::getVita() const
 {
     return vita;
 }
 
-int Character::getMana()
+void Character::setVita(int v) {
+    if(v < maxVita) vita = v;
+    else vita = maxVita;
+}
+
+void Character::addVita(int v) {
+    if( vita+v < maxVita) vita += v;
+    else vita = maxVita;
+}
+
+int Character::getMana() const
 {
     return mana;
+}
+
+void Character::setMana(int m) {
+    if(m < maxMana) mana = m;
+    else mana = maxMana;
+}
+
+void Character::addMana(int m) {
+    if( mana+m < maxMana) mana += m;
+    else mana = maxMana;
 }
 
 void Character::setDamage(int d)
@@ -40,39 +62,40 @@ void Character::setDamage(int d)
     //isAlive();
 }
 
-Weapon *Character::getWeapon()
+Item* Character::getWeapon()
 {
     return arma;
 }
 
-Armor *Character::getArmor()
+Item *Character::setWeapon(Item *w) {
+    if(w) {
+        Item *aus = arma;
+        arma = w;
+        return aus;
+    } else return nullptr;
+}
+
+Item* Character::getArmor()
 {
     return armatura;
 }
 
-Character::~Character(){
-  qDebug() << "distruggo character";
-  if(arma) delete arma;
-  if(armatura) delete armatura;
+Item* Character::setArmor(Item *a) {
+    if(a) {
+        Item *aus = armatura;
+        armatura = a;
+        return aus;
+    } else return nullptr;
 }
 
-int Character::attacca(QVector<Character*> target) { return arma->use(this, target);}
-
-//CLASSE PLAYER
-Player::Player(QString n, int v, int m): Character(n, v, m) {
+bool Character::isAlive() {
+    if(getVita()) return true;
+    else return false;
 
 }
-void Player::info() { qDebug() << "sono Player " << " con " << getVita() << " di vita e " << getMana() << " di mana" << endl;}
-bool Player::isAlive() {
-if(getVita()) { qDebug() << "non sono ancora morto bastardo!" << endl; return true;}
-else { qDebug() << "Player " << " è morto" << endl; return false;}
+
+int Character::attacca(vector<Character *> target)
+{
+    return arma->use(this, target);
 }
 
-
-//CLASSE MOB
-Mob::Mob(QString n, int v, int m): Character(n, v, m) {}
-void Mob::info() { qDebug() << "sono Mob " << " con " << getVita() << " di vita e " << getMana() << " di mana" << endl;}
-bool Mob::isAlive() {
-if(getVita()) { qDebug() << "non sono ancora morto bastardo!" << endl; return true;}
-else { qDebug() << "Mob " << " è morto" << endl; return false;}
-}

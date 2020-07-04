@@ -1,10 +1,12 @@
 #include "playerwidget.h"
 
+#include "item.h"
+
 PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     layout = new QVBoxLayout(this);
     layout->setMargin(0);
     //nome
-    nome = new QLabel(c->getName());
+    nome = new QLabel(QString::fromStdString(c->getName()));
     int hpNum = c->getVita();
     int mpNum = c->getMana();
     nome->setStyleSheet("font-weight: bold; text-decoration: underline;");

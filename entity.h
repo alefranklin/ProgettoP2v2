@@ -8,7 +8,7 @@
 class Entity{
 protected:
     Entity() = default;
-  virtual ~Entity() = default;
+    virtual ~Entity() = default;
 };
 
 #endif

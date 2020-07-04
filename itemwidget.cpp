@@ -1,5 +1,12 @@
 #include "itemwidget.h"
 
+#include "game.h"
+#include "armor.h"
+#include "bow.h"
+#include "sword.h"
+#include "magicweapon.h"
+#include "potion.h"
+
 ItemWidget::ItemWidget(QString n, QString t, int s1, int s2, int s3, QWidget *parent) : QWidget(parent)
 {
     nome = new QLabel(n);
