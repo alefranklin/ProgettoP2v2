@@ -87,12 +87,6 @@ private:
 
     QLabel *score;
 
-    //menu
-    QMenuBar *menubar;
-    QMenu *fileMenu;
-    QAction *exitAction;
-    QAction *saveAction;
-
     MapWidget *mapWidget;
 
     MoveWidget *moveWidget;

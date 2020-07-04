@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "item.h"
+#include "container.h"
 #include <QVector>
 #include <QString>
 
@@ -62,18 +63,16 @@ public:
 
 //TODO rivedere queste due classi > possiamo mergiarle(?)
 
-class Container;
 class Player: public Character {
 public:
   Player(QString n, int v, int m);
   void info();
   bool isAlive();
-  void inventory()
-  {
-    qDebug() << "inventario ";
+  void useItem(int id) {
+
   }
 private:
-  Container *inventario;
+  Container inventario;
 };
 
 class Mob: public Character {

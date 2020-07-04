@@ -40,6 +40,7 @@ HEADERS += \
     character.h \
     choicebutton.h \
     choicewidget.h \
+    container.h \
     controller.h \
     entergame.h \
     entity.h \

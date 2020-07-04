@@ -10,7 +10,7 @@
 using namespace std;
 
 Item::Item(string n): Entity(), nome(n) { qDebug() << "istanzio Item: "<< endl; }
-
+unsigned int Item::getID() const { return ID; }
 string Item::getNome() const{ return nome; }
 
 Item::~Item() { qDebug() << "elimino Item:" << endl; }

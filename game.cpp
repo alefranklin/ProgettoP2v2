@@ -90,11 +90,19 @@ void Game::choiceDone(Choice c)
 {
     emit dialogOut("scelta fatta: "+c.getLabel()+"\nadesso devo gestire le varie funzioni delle scelte");
 
-
     switch(c) {
-    // scappa
-    case 0:
+    case Choice::escape():
         scappa();
+        break;
+    case Choice::attack():
+        attacca();
+        break;
+    case Choice::combat():
+        break;
+    case Choice::pickItem():
+        //aggiungi item all'inventario
+        
+        emit setEnableMove(true);
         break;
     default:
         break;
@@ -128,6 +136,7 @@ void Game::scappa() {
     if(randInt(0,1)) {
         moveBack();
         emit dialogOut("sono scappato");
+        emit setEnableMove(true);
     }
     else {
         emit dialogOut("non sei riuscito a scappare!");

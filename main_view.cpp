@@ -48,9 +48,6 @@ main_view::main_view(Game *g, QWidget *parent)
     connect(moveWidget, &MoveWidget::emitDir, this, &main_view::movePressed);
 
     //FINESTRA DI DIALOGO
-    dialogOutBox = new QTextEdit(this);
-    dialogOutBox->setReadOnly(true);
-    //dialogOutBox->setText("FINESTRA DI DIALOGO");
     connect(model, &Game::dialogOut, this, &main_view::printString);
 
     score = new QLabel(this);
@@ -78,26 +75,6 @@ main_view::~main_view(){}
 void main_view::printString(QString s)
 {
     dialogOutBox->setText(s);
-}
-
-void main_view::createMenu()
-{
-    menubar = new QMenuBar(this);
-
-    fileMenu = new QMenu("&File", nullptr);
-    saveAction = new QAction("&Save", nullptr);
-    exitAction = new QAction("E&xit", nullptr);
-
-    //aggiungo le azioni al menu
-    fileMenu->addAction(saveAction);
-    fileMenu->addSeparator();
-    fileMenu->addAction(exitAction);
-
-    //aggiungo il menu alla barra
-    menubar->addMenu(fileMenu);
-
-    connect(exitAction, SIGNAL(triggered()), this, SLOT(accept()));
-
 }
 
 void main_view::createMusicSliderBox(){

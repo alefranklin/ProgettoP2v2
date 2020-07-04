@@ -28,10 +28,13 @@ class Character;
 
 class Item: public Entity {
 private:
+  unsigned int usedID;
+  unsigned int ID;
   string nome;
 protected:
   Item(string n);
 public:
+  unsigned int getID() const;
   virtual string getNome() const;
   virtual ~Item();
   virtual int use(Character* owner, QVector<Character*> target) = 0;
