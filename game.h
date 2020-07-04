@@ -51,6 +51,7 @@ public:
     Character* getPlayer();
     void moveBack() { emit dialogOut("sono fuggito"); }
     void dialog(QString s);
+    QJsonObject itemToJson(Item *i);
 signals:
     // emetto segnale per il dialogo
     void dialogOut(QString s);
