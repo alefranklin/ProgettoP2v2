@@ -76,6 +76,12 @@ Item* Character::getWeapon()
     return arma;
 }
 
+Item *Character::removeWeapon() {
+    Item *i = arma;
+    arma = nullptr;
+    return i;
+}
+
 Item *Character::setWeapon(Item *w) {
     if(w) {
         Item *aus = arma;
@@ -87,6 +93,12 @@ Item *Character::setWeapon(Item *w) {
 Item* Character::getArmor()
 {
     return armatura;
+}
+
+Item *Character::removeArmor() {
+    Item *i = armatura;
+    armatura = nullptr;
+    return i;
 }
 
 Item* Character::setArmor(Item *a) {

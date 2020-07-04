@@ -17,15 +17,18 @@ public:
    * ritorna 0 se usato, -1 se non trova l'item
    */
   int useItem(unsigned int id, std::vector<Entity *> e = std::vector<Entity *>());
+
   void usePotion(Item* p, std::vector<Entity *> e = std::vector<Entity *>());
 
-  /* scambio o l'arma o la spada con il nuovo item in base al tipo */
-  void exchangeWearable(Item *item);
-  const Container<Item *> &getInventory() const;
+  const Container<Item *>& getInventory() const;
 
   // aggiungo a inventario
-  //void inventoryAdd(Item *i) { inventory.push_front(i); }
-  //void inventoryDelete(unsigned int id);
+  void inventoryAdd(Item *i);
+
+  void inventoryDelete(unsigned int id);
+
+  /* equipaggia l'item selezionato e mette nell'inventario quello vecchio */
+  void equip(Item *i);
 
 private:
   Item *inventoryGetItem(unsigned int id);
