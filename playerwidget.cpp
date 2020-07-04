@@ -7,8 +7,8 @@ PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     layout->setMargin(0);
     //nome
     nome = new QLabel(QString::fromStdString(c->getName()));
-    int hpNum = c->getVita();
-    int mpNum = c->getMana();
+    int hpNum = c->getVitaMax();
+    int mpNum = c->getManaMax();
     nome->setStyleSheet("font-weight: bold; text-decoration: underline;");
     //hp
     QHBoxLayout *hpLayout = new QHBoxLayout(nullptr);
@@ -108,14 +108,14 @@ void PlayerWidget::setArmor(Item *i)
 }
 
 void PlayerWidget::setFields(Character *c){
-   nome->setText(c->getName());
+   nome->setText(QString::fromStdString(c->getName()));
    int h = c->getVita();
-   hp->setMaximum(h);
+   hp->setMaximum(c->getVitaMax());
    hp->setValue(h);
    hpLabel->setText(QString::number(h));
    int m = c->getMana();
 
-   mp->setMaximum(m);
+   mp->setMaximum(c->getManaMax());
    mp->setValue(m);
    mpLabel->setText(QString::number(m));
 

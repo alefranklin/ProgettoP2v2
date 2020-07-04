@@ -30,8 +30,9 @@ main_view::main_view(Game *g, QWidget *parent)
     //aggiorno view del mob
     connect(model, &Game::mobEncounter, this, &main_view::setEnemy);
 
-    //aggiorno vita giocatore
+    //aggiorno vita giocatore/mob
     connect(model, &Game::dannoPlayer, this, &main_view::setPlayerHealth);
+    connect(model, &Game::dannoMob, this, &main_view::setMobHealth);
 
     //INVENTARIO
     inventory= new QListWidget(); //lista di widget (inventario)
@@ -171,6 +172,11 @@ void main_view::onMute() {
 void main_view::setPlayerHealth(int d)
 {
     charachter->setHealth(d);
+}
+
+void main_view::setMobHealth(int d)
+{
+    mob->setHealth(d);
 }
 
 void main_view::setNewScore(int s)

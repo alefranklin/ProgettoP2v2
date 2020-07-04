@@ -158,8 +158,8 @@ void Game::inCombat(){
 
 void Game::attacca() {
     emit dialogOut("Hai attaccato il nemico.\n\n");
-    dynamic_cast<Mob*>(combat->enemies[0])->setDamage(20);
-    //emit set dannoMob()
+    dynamic_cast<Mob*>(combat->enemies[0])->setDamage(10);
+    emit dannoMob(10);
     return;
 }
 

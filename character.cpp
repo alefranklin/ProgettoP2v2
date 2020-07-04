@@ -5,14 +5,13 @@
 #include "armor.h"
 using namespace std;
 
-const int Character::maxVita = 500;
-const int Character::maxMana = 250;
-
 //CLASSE CHARACTER
 Character::Character(string n, int v, int m):
     Entity()
   , name(n)
   , vita(v)
+  , vitaMax(v)
+  , manaMax(m)
   , mana(m)
 
 {
@@ -31,14 +30,24 @@ int Character::getVita() const
     return vita;
 }
 
+int Character::getVitaMax() const
+{
+    return vitaMax;
+}
+
+int Character::getManaMax() const
+{
+    return manaMax;
+}
+
 void Character::setVita(int v) {
-    if(v < maxVita) vita = v;
-    else vita = maxVita;
+    if(v < vitaMax) vita = v;
+    else vita = vitaMax;
 }
 
 void Character::addVita(int v) {
-    if( vita+v < maxVita) vita += v;
-    else vita = maxVita;
+    if( vita+v < vitaMax) vita += v;
+    else vita = vitaMax;
 }
 
 int Character::getMana() const
@@ -47,13 +56,13 @@ int Character::getMana() const
 }
 
 void Character::setMana(int m) {
-    if(m < maxMana) mana = m;
-    else mana = maxMana;
+    if(m < manaMax) mana = m;
+    else mana = manaMax;
 }
 
 void Character::addMana(int m) {
-    if( mana+m < maxMana) mana += m;
-    else mana = maxMana;
+    if( mana+m < manaMax) mana += m;
+    else mana = manaMax;
 }
 
 void Character::setDamage(int d)

@@ -20,6 +20,8 @@
 #include "movewidget.h"
 #include "choicewidget.h"
 #include "mapwidget.h"
+#include "randomizer.h"
+#include "mob.h"
 #include "map.h"
 
 class main_view : public QWidget
@@ -77,6 +79,7 @@ public slots:
     //pulisco mob
     void clearEnemy();
 
+    void setMobHealth(int d);
 private:
     void createMenu();
     void createMusicSliderBox();

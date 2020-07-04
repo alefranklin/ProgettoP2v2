@@ -1,13 +1,15 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "entity.h"
-#include "map.h"
 #include <QObject>
 #include <QString>
 #include <vector>
 #include <QVector>
 #include <QJsonObject>
+
+#include "entity.h"
+#include "map.h"
+#include "mob.h"
 
 class Player;
 class Character;
@@ -79,14 +81,16 @@ signals:
     void setEnableMove(bool);
     //sei morto chiudo la finestra
     void youDied();
-    //invio il danno inferto al player
+    //invio il danno inferto al player/mob
     void dannoPlayer(int);
+    void dannoMob(int);
     //aggiorno punteggio
     void newScore(int);
     //aggiorno mob incontrato
     void mobEncounter(Mob*);
     //pulisco la view del mostro
     void clearViewMob();
+
     
 public slots:
     // slot che gestisce le scelte fatte dal giocatore
@@ -121,8 +125,8 @@ private:
         bool turno_player;
         bool first_turn;
         std::vector<Entity*> &enemies;
-        Player *player;
-        CombatState(std::vector<Entity*> &e, Player *pg, bool f = true): enemies(e)
+        Character *player;
+        CombatState(std::vector<Entity*> &e, Character *pg, bool f = true): enemies(e)
                                                                         , player(pg)
                                                                         , first_turn(f) {}
     };
