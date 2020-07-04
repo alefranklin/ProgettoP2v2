@@ -11,10 +11,10 @@ const QString Game::fileScore = "../Save.txt";
 
 
 Game::Game(Player* player, QObject *parent) : QObject(parent)
-  , miniMapSize(20) // 20 di default
-  , combat(nullptr)
   , pg(player)
   , map(mapSize)
+  , miniMapSize(20) // 20 di default
+  , combat(nullptr)
 {
     // genero mostri in tutta la mappa partedo dal centro
     pushRandomMob(mapSize/2, Coordinate(mapSize/2, mapSize/2));
@@ -86,44 +86,93 @@ unsigned int Game::getScore() const
     return score;
 }
 
+void Game::setScore(unsigned int s)
+{
+    score = score + s;
+}
+
 void Game::usePotionMana() { emit dialogOut("sto usando la pozione del mana"); }
 
 void Game::usePotionHealth() { emit dialogOut("sto usando la pozione della vita"); }
 
 void Game::startCombat(Tile &t) {
-    combat = new CombatState(t.e, nullptr);
-    emit dialogOut("sei entrato in combattimento.\nCosa vuoi fare?");
-    // usare combat per tenere traccia dello stato del sistema
-    combat->turno_player = Randomizer::randomNumberBetween(0,1);
-    if(combat->turno_player){
-        QVector<Choice> c;
-        c << Choice::attack() << Choice::escape();
-    } else {
-        dialogOut("Il mostro attacca per primo");
-        pg->setDamage(5);
+    combat = new CombatState(t.e, pg);
+    emit dialogOut("Sei entrato in combattimento.\n\n");
+    inCombat();
+}
 
+void Game::inCombat(){
+    QVector<Choice> c;
+    // usare combat per tenere traccia dello stato del sistema
+    if(combat->first_turn){
+        combat->first_turn = false;
+        combat->turno_player = Randomizer::randomNumberBetween(0,1);
+    }
+    if(dynamic_cast<Mob*>(combat->enemies[0])->isAlive()) {
+        if(combat->turno_player){
+                c << Choice::attack() << Choice::escape();
+                combat->turno_player = false;
+                emit choiceOut(c);
+        } else {
+            int i = Randomizer::randomNumberBetween(1, 400);
+            dialogOut("Il mostro ti attacca.\n"
+                      "Ti infligge "+QString::number(i)+" danni.\n"
+                      "Cosa vuoi fare?\n");
+            combat->turno_player = true;
+            pg->setDamage(5);
+            emit dannoPlayer(5);
+            if(!pg->isAlive()){
+                endCombat(false);
+                return;
+            }
+            inCombat();
+        }
+    } else {
+        endCombat(true);
+        return;
     }
 }
 
 void Game::attacca() {
-
+    emit dialogOut("Hai attaccato il nemico.\n\n");
+    dynamic_cast<Mob*>(combat->enemies[0])->setDamage(20);
+    //emit set dannoMob()
+    return;
 }
 
 void Game::scappa() {
     //emit dialogOut("Tiro i dadi per vedere se riesco a scappare");
     // con una certa probabilita scappa
     if(randInt(0,1)) {
+        emit clearViewMob();
         moveBack();
     }
     else {
-        emit dialogOut("non sei riuscito a scappare!");
-        //startCombat();
+        emit dialogOut("Non sei riuscito a scappare!\n\n");
+        if(!combat) {
+            startCombat(map.getCurrentTile());
+        } else {
+            inCombat();
+        }
     }
 }
 
-void Game::endCombat() {
+void Game::endCombat(bool victory) {
     delete combat;
     combat = nullptr;
+
+    if(victory){
+        map.getCurrentTile().e.clear();
+        dialogOut("Hai ucciso il nemico. (+5 punti)\n\n");
+        emit clearViewMob();
+        setScore(5);
+        emit newScore(score);
+        emit setEnableMove(true);
+    } else {
+        emit youDied();
+    }
+
+    return;
 }
 
 int Game::randInt(int low, int high)
@@ -153,7 +202,7 @@ void Game::pushRandomMob(int range, Coordinate c) {
 
 void Game::choiceDone(Choice c)
 {
-    emit dialogOut("scelta fatta: "+c.getLabel()+"\nadesso devo gestire le varie funzioni delle scelte");
+    //emit dialogOut("scelta fatta: "+c.getLabel()+"\nadesso devo gestire le varie funzioni delle scelte");
 
     switch(c) {
     case 0:{
@@ -161,25 +210,26 @@ void Game::choiceDone(Choice c)
         break;
     }
     case 1:{
-        //startCombat(map.getCurrentTile());
+        startCombat(map.getCurrentTile());
         break;
     }
 
     case 2:{
-        startCombat(map.getCurrentTile());
+        attacca();
+        inCombat();
         break;
     }
     case 5:{
         //aggiungi item all'inventario
         Tile &t = map.getCurrentTile();
         Item* item_preso = dynamic_cast<Item*>(t.e[0]);
-        emit dialogOut("Hai preso l'oggetto");
+        emit dialogOut("Hai preso l'oggetto.\n\n");
         t.e.clear();
         emit setEnableMove(true);
         break;
     }
     case 6:{
-        emit dialogOut("Hai lasciato l'oggetto");
+        emit dialogOut("Hai lasciato l'oggetto.\n\n");
         emit setEnableMove(true);
         break;
     }
@@ -207,7 +257,8 @@ void Game::move(char m) {
         emit setEnableMove(false);
 
         if(isMob(t.e[0])){
-            c << Choice::attack() << Choice::escape();
+            emit mobEncounter(dynamic_cast<Mob*>(t.e[0]));
+            c << Choice::combat() << Choice::escape();
         }
 
         if(isItem(t.e[0])){

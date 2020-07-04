@@ -20,7 +20,18 @@ main_view::main_view(Game *g, QWidget *parent)
     //dialogOutBox->setDisabled(true);
 
 
-    PlayerWidget *mob = new PlayerWidget(model->getPlayer(), this); //TODO dichiararlo sul .h
+    mob = new PlayerWidget(Randomizer::getRandomMob(), this); //TODO dichiararlo sul .h
+    mob->clear();
+
+
+    //pulisco view del mob
+    connect(model, &Game::clearViewMob, this, &main_view::clearEnemy);
+
+    //aggiorno view del mob
+    connect(model, &Game::mobEncounter, this, &main_view::setEnemy);
+
+    //aggiorno vita giocatore
+    connect(model, &Game::dannoPlayer, this, &main_view::setPlayerHealth);
 
     //INVENTARIO
     inventory= new QListWidget(); //lista di widget (inventario)
@@ -53,6 +64,8 @@ main_view::main_view(Game *g, QWidget *parent)
     score = new QLabel(this);
     score->setText(QString::number(model->getScore()));
 
+    connect(model, &Game::newScore, this, &main_view::setNewScore);
+
     //prima colonna (col = 0)
     grid->addWidget(charachter, 0, 0);
     grid->addWidget(inventory, 1, 0);
@@ -74,7 +87,7 @@ main_view::~main_view(){}
 
 void main_view::printString(QString s)
 {
-    dialogOutBox->setText(s);
+    dialogOutBox->append(s);
 }
 
 void main_view::createMusicSliderBox(){
@@ -126,6 +139,7 @@ void main_view::movePressed(char dir){
             s += "destra";
         break;
     }
+
     dialogOutBox->setText(QString::fromStdString(s));
     model->move(dir);
 }
@@ -152,4 +166,24 @@ void main_view::onVolumeChanged(int volume) {
 
 void main_view::onMute() {
     volumeSlider->setValue(0);
+}
+
+void main_view::setPlayerHealth(int d)
+{
+    charachter->setHealth(d);
+}
+
+void main_view::setNewScore(int s)
+{
+    score->setText(QString::number(s));
+}
+
+void main_view::setEnemy(Mob* t)
+{
+    mob->setFields(t);
+}
+
+void main_view::clearEnemy()
+{
+    mob->clear();
 }

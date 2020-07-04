@@ -37,7 +37,7 @@ int Character::getMana()
 void Character::setDamage(int d)
 {
     vita = (vita-d >= 0) ? vita-d : 0;
-    isAlive();
+    //isAlive();
 }
 
 Weapon *Character::getWeapon()

@@ -16,6 +16,7 @@ public:
     ItemWidget(Item *i, QWidget *parent = nullptr);
     ItemWidget(QString n, QString t, int s1, int s2 = 0, int s3 = 0, QWidget *parent = nullptr);
     void clear();
+    void setItem(Item *i);
 
 signals:
 

@@ -23,6 +23,9 @@ public:
     void setMaximumMana(int maxmp);
     void setNome(QString name);
     void clear();
+    void setWeapon(Item* i);
+    void setArmor(Item* i);
+    void setFields(Character* c);
 
 signals:
 

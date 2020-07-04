@@ -47,10 +47,12 @@ signals:
 public slots:
     void showLegend();
     void newGameSlot();
+    void onDie();
 
 private slots:
     void showInf();
-    void confirmSave();
+    void confirmSavePunt();
+    void confirmSavePg();
 
 };
 

@@ -1,5 +1,6 @@
 #include "main_dialog.h"
 #include "main_dialog.h"
+#include "main_dialog.h"
 
 
 main_dialog::main_dialog(bool& refNewGame, Game *g, QWidget *parent)
@@ -11,6 +12,8 @@ main_dialog::main_dialog(bool& refNewGame, Game *g, QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setFixedSize(1024, 600);
     setMenuBar();
+
+    connect(game, &Game::youDied, this, &main_dialog::onDie);
 
     mainWidget = new main_view(g, parent);
     setCentralWidget(mainWidget);
@@ -44,14 +47,16 @@ void main_dialog::setMenuBar()
 
 
     connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(newGameSlot()));
-    connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(confirmSave()));
+    connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(confirmSavePunt()));
+    connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(confirmSavePg()));
     connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(close())); //TODO displayare una finestra e chiedere di salvare
 
     connect(mSavePlayer, SIGNAL(triggered(bool)), game, SLOT(savePlayerSlot()));
 
     //connect(mSave, SIGNAL(triggered(bool)), this, SLOT(confirmSave())); //TODO same as above
 
-    connect(mEsci, SIGNAL(triggered(bool)), this, SLOT(confirmSave())); //TODO same as above
+    connect(mEsci, SIGNAL(triggered(bool)), this, SLOT(confirmSavePunt()));
+    connect(mEsci, SIGNAL(triggered(bool)), this, SLOT(confirmSavePg()));//TODO same as above
     connect(mEsci, SIGNAL(triggered(bool)), this, SLOT(close())); //TODO same as above
 
     connect(mShowInfo, SIGNAL(triggered(bool)), this, SLOT(showInf()));
@@ -62,6 +67,13 @@ void main_dialog::setMenuBar()
 void main_dialog::newGameSlot()
 {
     newGame = true;
+}
+
+void main_dialog::onDie()
+{
+    QMessageBox::warning(0,"Ops..", "SEI MORTO");
+    confirmSavePunt();
+    //close();
 }
 
 void main_dialog::showInf()
@@ -83,7 +95,7 @@ void main_dialog::showLegend()
 }
 
 
-void main_dialog::confirmSave()
+void main_dialog::confirmSavePunt()
 {
     QMessageBox salvaPunt;
     salvaPunt.setText("Vuoi salvare il punteggio?");
@@ -94,10 +106,15 @@ void main_dialog::confirmSave()
         game->saveScoreSlot();
     }
 
+}
+
+
+void main_dialog::confirmSavePg()
+{
     QMessageBox salvaPg;
     salvaPg.setText("Vuoi salvare personaggio?");
     salvaPg.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
-    ret = salvaPg.exec();
+    int ret = salvaPg.exec();
 
     if(ret == QMessageBox::Save){
         game->savePlayerSlot();
