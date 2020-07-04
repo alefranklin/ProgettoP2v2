@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
     //QTimer::singleShot(200, &splash, SLOT(close()));   // chiudo lo spalsh screen
     //QTimer::singleShot(200, &w, SLOT(show()));         // e poi apro la finestra
 
-
     Randomizer::setup();
 
     //QTimer::singleShot(500, &splash, SLOT(close()));   // chiudo lo spalsh screen
