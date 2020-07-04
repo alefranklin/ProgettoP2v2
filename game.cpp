@@ -16,9 +16,12 @@ Game::Game(Player* player, QObject *parent) : QObject(parent)
   , pg(player)
   , map(mapSize)
 {
+    //TODO eliminare
     //per il rand di test
-    QTime time = QTime::currentTime();
-    qsrand((uint)time.msec());
+//    QTime time = QTime::currentTime();
+//    qsrand((uint)time.msec());
+
+
 
     //la grandezza della minimappa è settata quindi aggiorno la view
     emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());

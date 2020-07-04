@@ -4,6 +4,7 @@
 #include "game.h"
 #include "main_dialog.h"
 #include "entergame.h"
+#include "randomizer.h"
 
 #include <QApplication>
 #include <QSplashScreen>
@@ -29,6 +30,8 @@ int main(int argc, char *argv[])
     //QTimer::singleShot(200, &w, SLOT(show()));         // e poi apro la finestra
 
 
+    Randomizer::setup();
+
     //QTimer::singleShot(500, &splash, SLOT(close()));   // chiudo lo spalsh screen
 
     Game* game = new Game(nullptr);
@@ -40,6 +43,10 @@ int main(int argc, char *argv[])
     bool new_game = true;
 
     while(!exitLoop){
+
+        //ogni game setto un nuovo seed
+        Randomizer::setup();
+
         //avvio una nuova partita
         if(new_game) {
             //if(!game) game = new Game(nullptr)
@@ -51,6 +58,8 @@ int main(int argc, char *argv[])
         //se istanzio player allora avvio la partita
         if(game->getPlayer()) {
             new_game = false;
+
+            //Randomizer::setup();
 
             Main_dialog w(new_game, game);
             //Controller c2(&w, game);
