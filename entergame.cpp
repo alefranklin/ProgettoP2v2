@@ -29,13 +29,13 @@ void EnterGame::tryEnter()
     if((!pg_name->text().isEmpty() && pg_name->text() != " ") || (*gioco)->getPlayer()){
         if(!(*gioco)->getPlayer()){
             //evito memory leak
-            qDebug() << "cancello gioco";
+            //qDebug() << "cancello gioco";
             //delete *gioco;
             //se faccio delete su gioco non posso più caricare il personaggio
             Player* pg = new Player(pg_name->text(), 20, 20);
             *gioco = new Game(pg);
         }
-        qDebug() << "enter game _ gioco : " << &(*gioco);
+        //qDebug() << "enter game _ gioco : " << &(*gioco);
         this->close();
 
     } else {
@@ -64,7 +64,7 @@ void EnterGame::createLayoutEnterGame()
     bLoadPlayer = new QPushButton("Carica Personaggio");
     layoutEnterGame->addWidget(bLoadPlayer, 4, 0);
     connect(bLoadPlayer, &QPushButton::clicked, *gioco, &Game::loadPlayerSlot);
-    //connect(bLoadPlayer, &QPushButton::clicked, this, SLOT(tryEnter()))
+    connect(bLoadPlayer, SIGNAL(clicked()), this, SLOT(tryEnter()));
 
     //connect(bPlay, SIGNAL(clicked()), this, SLOT(tryEnter()));
 

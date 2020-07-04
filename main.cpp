@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     Game* game = new Game(nullptr);
     EnterGame *enter = new EnterGame(&game);
 
-    qDebug() << "enter game _ main 1 : " << &game;
+    //qDebug() << "enter game _ main 1 : " << &game;
 
     bool exitLoop = false;
     bool new_game = true;
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 
             //forse fixato il memory leak
             game->setPgNull();
-            qDebug() << "enter game _ main 2 : " << &game;
+            //qDebug() << "enter game _ main 2 : " << &game;
             //successvivamente player sarà istanziato attraverso game e verrà eliminato una volta chiusa la finestra di gioco
             //l'istruzione sopra non sarà più necessaria
         } else {

@@ -21,7 +21,7 @@ Map::Map(int d): pos() {
   //la mappa deve avere una dimensione minima
   dim = (d < minDim) ? minDim : d;
 
-  qDebug() << "dim:" << dim << endl; //debug
+  //qDebug() << "dim:" << dim << endl; //debug
 
   // instanzio i vettori della mappa
   map = QVector<QVector<Tile>>(dim, QVector<Tile>(dim, Tile()));
