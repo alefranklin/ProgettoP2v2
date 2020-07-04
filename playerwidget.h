@@ -27,7 +27,7 @@ public:
 signals:
 
 public slots:
-    void onShowDetailOf(QVector<Entity*>e);
+    void onShowDetailOf(std::vector<Entity*>e);
 
 private:
     QVBoxLayout *layout;

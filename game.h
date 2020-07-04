@@ -12,6 +12,8 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QDebug>
+#include <QVector>
+#include <vector>
 
 class Game: public QObject
 {
@@ -62,7 +64,7 @@ signals:
     // emetto segnale per inviare le scelte
     void choiceOut(Choice c);
     // il giocatore si è spostato, emetto la nuova minimappa
-    void posChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos);
+    void posChanged(const std::vector<std::vector<Tile>> &miniMap, Coordinate relativePos);
 public slots:
     // slot che gestisce le scelte fatte dal giocatore
     void choiceDone(Choice c);
@@ -102,9 +104,9 @@ private:
     struct CombatState {
         unsigned int numero_turno;
         bool turno_player;
-        QVector<Entity*> &enemies;
+        std::vector<Entity*> &enemies;
         Player *player;
-        CombatState(QVector<Entity*> &e, Player *pg): enemies(e), player(pg) {}
+        CombatState(std::vector<Entity*> &e, Player *pg): enemies(e), player(pg) {}
     };
     CombatState* combat;
 
@@ -119,46 +121,50 @@ private:
     int randInt(int low, int high);
 
     void pushRandomMob(int range, Coordinate c) {
-        Qvector<Tile&> t = map.getWalkableTile(range, c);
+        std::vector<Coordinate> t = map.getWalkableTile(range, c);
 
         // aggiungo i mob
-        for(auto it = t.begin(); it != t.end(), ++it) {
+        for(auto it = t.begin(); it != t.end(); ++it) {
+
+            Tile &t = map.getTileIn(*it);
             
             // salto il tile se il vettore non è vuoto
-            if( ! *it.e.isEmpty() ) continue;
+            if( ! t.e.empty())  continue;
 
             //con una certa probabilità aggiungo un mob (30%)
             if( Randomizer::randomNumberBetween(0, 100) < 30 ) {
-                *it = ;
-                *it.e.push_back( Randomizer::getRandomMob() )
+                t.e.push_back( Randomizer::getRandomMob() );
             }
         }
 
     }
 
-    void pushRandomItem(in range, Coordinate c) {
-        Qvector<Tile&> t = map.getWalkableTile(range, c);
+    void pushRandomItem(int range, Coordinate c) {
+        std::vector<Coordinate> t = map.getWalkableTile(range, c);
 
         // aggiungo i mob
-        for(auto it = t.begin(); it != t.end(), ++it) {
+        for(auto it = t.begin(); it != t.end(); ++it) {
+
+            Tile &t = map.getTileIn(*it);
             
             // salto il tile se il vettore non è vuoto
-            if( ! *it.e.isEmpty() ) continue;
+            if( ! t.e.empty() ) continue;
 
             if (Randomizer::randomNumberBetween(0, 100) < 20 ) {
                     // 20 % oggetto tra tutti quelli possibili quindi spada, armatura, pozze
-                    *it.e.push_back( Randomizer::getRandomItem() )
+                    t.e.push_back( Randomizer::getRandomItem() );
 
             } else {
-                // solo pozzioni
+                // solo pozioni
 
                 // TODO sistemare sto pezzo in base a come facciomo la generazione delle pozze
+
                 if ( Randomizer::randomNumberBetween(0, 100) < 65 ) {
                     // 65 % vita
-                    *it.e.push_back( Randomizer::getRandomPotion() )
+                    t.e.push_back( Randomizer::getRandomPotion() );
                 } else {
                     // 35% mana
-                    *it.e.push_back( Randomizer::getRandomPotion() )
+                    t.e.push_back( Randomizer::getRandomPotion() );
                 }
             }
         }

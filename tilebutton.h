@@ -12,7 +12,7 @@ public:
     TileButton(Tile t, bool playerIn = false, QWidget *parent = nullptr);
 
 signals:
-    void buttonClicked(QVector<Entity *>);
+    void buttonClicked(std::vector<Entity *>);
 
 private slots:
     void handleClick();

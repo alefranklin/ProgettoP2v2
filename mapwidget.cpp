@@ -45,7 +45,7 @@ MapWidget::MapWidget(QWidget *parent, int min, int max, int val) : QWidget(paren
     setLayout(layout);
 }
 
-void MapWidget::refresh(const QVector<QVector<Tile> > &miniMap, Coordinate pos) {
+void MapWidget::refresh(const std::vector<std::vector<Tile> > &miniMap, Coordinate pos) {
 
     // eliminio tutti i TileButton precedenti
     clearWidgets(tile_layout);
@@ -73,7 +73,7 @@ void MapWidget::onDimensionChanged(int dim) {
     emit setMiniMapSize(dim);
 }
 
-void MapWidget::onTileButtonPressd(QVector<Entity *> e) {
+void MapWidget::onTileButtonPressd(std::vector<Entity *> e) {
     emit showDetailsOf(e);
 }
 

@@ -1,7 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <QVector>
+#include <vector>
 #include "entity.h"
 
 #include <iostream>
@@ -28,8 +28,8 @@ struct Coordinate {
 struct Tile {
   bool walkable;
   Biome biome;
-  QVector<Entity*> e;
-  Tile(bool w = false, Biome b = Null, QVector<Entity*> en = QVector<Entity*>()): walkable(w), biome(b), e(en) {}
+  std::vector<Entity*> e;
+  Tile(bool w = false, Biome b = Null, std::vector<Entity*> en = std::vector<Entity*>()): walkable(w), biome(b), e(en) {}
 };
 
 class Map {
@@ -41,30 +41,8 @@ public:
   void moveLEFT();
   void moveRIGHT();
   Tile& getCurrentTile();
-  QVector<Tile&> getWalkableTile(int range, Coordinate c) {
-
-    // ritorna arrai coordinate valide
-    QVector<Coordinate> circle = createCircle(c, range);
-
-    // filtro e tengo solo quelle camminabili
-    for (auto it = circle.begin(); it != circle.end(); ++it)
-    {
-      if( isWalkable(*it) ) {
-        it = circle.erase(it);
-        --it;
-      }
-    }
-
-    // creo vettore tile
-    QVector<Tile&> t;
-    for (auto it = circle.begin(); it != circle.end(); ++it)
-    {
-      t.push_back(getTileIn(*it) );
-    }
-
-    return t;
-    
-  }
+  Tile& getTileIn(Coordinate p);
+  std::vector<Coordinate> getWalkableTile(int range, Coordinate c);
 
 
   int getMapDimension() const;
@@ -72,15 +50,15 @@ public:
   Coordinate getPos() const;
   Coordinate getRelativePos() const;
 
-  QVector<QVector<Tile> > getMiniMap(int size);
+  std::vector<std::vector<Tile> > getMiniMap(int size);
 
-  static void printMap(QVector<QVector<Tile>> m, Coordinate pos);
+  static void printMap(std::vector<std::vector<Tile>> m, Coordinate pos);
 //qui giace la funzione pronta
 
 private:
   static int minDim;
   int dim;
-  QVector<QVector<Tile>> map;
+  std::vector<std::vector<Tile>> map;
   Coordinate pos;
   Coordinate relativePos;
 
@@ -90,13 +68,12 @@ private:
   void changeRelativePos(Coordinate newRelativePos);
   bool isWalkable(Coordinate p);
   bool isValid(Coordinate p) const;
-  Tile& getTileIn(Coordinate p);
   float calcSpawnRate(const Tile& t) const;
 
-  QVector<Coordinate> createCircle(Coordinate center, int radius);
-  QVector<Coordinate> createRectangle(Coordinate center, int width, int height);
-  QVector<Coordinate> createLine(Coordinate start, Coordinate end, int thickness = 2);
-  void modifyTile(QVector<Coordinate> points, bool w, Biome b, bool overwrite = false);
+  std::vector<Coordinate> createCircle(Coordinate center, int radius);
+  std::vector<Coordinate> createRectangle(Coordinate center, int width, int height);
+  std::vector<Coordinate> createLine(Coordinate start, Coordinate end, int thickness = 2);
+  void modifyTile(std::vector<Coordinate> points, bool w, Biome b, bool overwrite = false);
   void Generatemap();
 
 

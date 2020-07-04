@@ -108,7 +108,7 @@ void main_view::createMusicSliderBox(){
     //musicSlider->setGeometry(20, 520, 200, 65);
 }
 
-void main_view::onPosChanged(const QVector<QVector<Tile>> &miniMap, Coordinate relativePos) {
+void main_view::onPosChanged(const std::vector<std::vector<Tile>> &miniMap, Coordinate relativePos) {
     MapWidget *mapwidget = mapWidget;
     mapwidget->refresh(miniMap, relativePos);
 }

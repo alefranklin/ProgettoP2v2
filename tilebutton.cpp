@@ -4,7 +4,7 @@
 TileButton::TileButton(Tile t, bool playerIn, QWidget *parent): QPushButton(parent), tile(t) {
 
     //se non ci sono entity disabilito il pulsante
-    if(tile.e.isEmpty()) setDisabled(true);
+    if(tile.e.empty()) setDisabled(true);
 
     switch(tile.biome){
         case Valley:

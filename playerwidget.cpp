@@ -91,6 +91,6 @@ void PlayerWidget::clear(){
     armor->clear();
 }
 
-void PlayerWidget::onShowDetailOf(QVector<Entity*> e){
+void PlayerWidget::onShowDetailOf(std::vector<Entity *> e){
 
 }
