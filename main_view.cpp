@@ -63,7 +63,7 @@ main_view::main_view(Game *g, QWidget *parent)
 
     //seconda colonna (col = 1)
     grid->addWidget(mapWidget, 0, 1);
-    grid->addWidget(dialogOutBox, 1, 1); //TODO mettere finestra di dialogo
+    grid->addWidget(dialogOutBox, 1, 1);
     grid->addWidget(choiceWidget, 2, 1, Qt::AlignCenter);
 
     //terza colonna (col = 2)
@@ -106,7 +106,6 @@ void main_view::createMusicSliderBox(){
     QHBoxLayout *layout = new QHBoxLayout;
 
     // controllo il volume
-    //volumeSlider = ui->volumeSlider; // TODO sostitutire con (riga sotto)
     volumeSlider = new QSlider(Qt::Horizontal, this);
     volumeSlider->setMinimum(0);
     volumeSlider->setMaximum(100);
@@ -122,12 +121,7 @@ void main_view::createMusicSliderBox(){
     layout->addWidget(volumeSlider);
     musicSlider->setLayout(layout);
 
-    //musicSlider->setFixedWidth(200);
-    //musicSlider->setFixedHeight(65);
     musicSlider->setFixedSize(200, 65);
-
-
-    //musicSlider->setGeometry(20, 520, 200, 65);
 }
 
 void main_view::onPosChanged(const std::vector<std::vector<Tile>> &miniMap, Coordinate relativePos) {
