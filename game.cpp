@@ -5,17 +5,21 @@
 #include <QTime>
 #include <QFile>
 
-const int Game::mapSize = 250;
+const int Game::mapSize = 150;
 
 const QString Game::fileScore = "../Save.txt";
 
 
 Game::Game(Player* player, QObject *parent) : QObject(parent)
-  , miniMapSize(20) // 20 di degault
+  , miniMapSize(20) // 20 di default
   , combat(nullptr)
   , pg(player)
   , map(mapSize)
 {
+    // genero mostri in tutta la mappa partedo dal centro
+    pushRandomMob(mapSize/2, Coordinate(mapSize/2, mapSize/2));
+
+
     //per il rand di test
     QTime time = QTime::currentTime();
     qsrand((uint)time.msec());

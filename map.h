@@ -41,13 +41,31 @@ public:
   void moveLEFT();
   void moveRIGHT();
   Tile& getCurrentTile();
+  QVector<Tile&> getWalkableTile(int range, Coordinate c) {
 
-  QVector<Coordinate> createCircle(Coordinate center, int radius); // va messa su private
-  QVector<Coordinate> createRectangle(Coordinate center, int width, int height); // va messa su private
-  //QVector<Coordinate> createRand(Coordinate center, int width, int height); // va messa su private
-  QVector<Coordinate> createLine(Coordinate start, Coordinate end, int thickness = 2); // va messa su private
-  void modifyTile(QVector<Coordinate> points, bool w, Biome b, bool overwrite = false); // va messa su private
-  void Generatemap(); // va messa su private
+    // ritorna arrai coordinate valide
+    QVector<Coordinate> circle = createCircle(c, range);
+
+    // filtro e tengo solo quelle camminabili
+    for (auto it = circle.begin(); it != circle.end(); ++it)
+    {
+      if( isWalkable(*it) ) {
+        it = circle.erase(it);
+        --it;
+      }
+    }
+
+    // creo vettore tile
+    QVector<Tile&> t;
+    for (auto it = circle.begin(); it != circle.end(); ++it)
+    {
+      t.push_back(getTileIn(*it) );
+    }
+
+    return t;
+    
+  }
+
 
   int getMapDimension() const;
   bool setPos(Coordinate newPos);
@@ -70,10 +88,16 @@ private:
   // cambio la posizione e aggiorno la visibilità
   void changePos(Coordinate newPos);
   void changeRelativePos(Coordinate newRelativePos);
-  Tile& getTileIn(Coordinate p);
   bool isWalkable(Coordinate p);
   bool isValid(Coordinate p) const;
+  Tile& getTileIn(Coordinate p);
   float calcSpawnRate(const Tile& t) const;
+
+  QVector<Coordinate> createCircle(Coordinate center, int radius);
+  QVector<Coordinate> createRectangle(Coordinate center, int width, int height);
+  QVector<Coordinate> createLine(Coordinate start, Coordinate end, int thickness = 2);
+  void modifyTile(QVector<Coordinate> points, bool w, Biome b, bool overwrite = false);
+  void Generatemap();
 
 
   void generateOasi(Coordinate center, int minDim, int maxDim, bool overwrite = false);
