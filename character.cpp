@@ -59,7 +59,7 @@ Character::~Character(){
 int Character::attacca(QVector<Character*> target) { return arma->use(this, target);}
 
 //CLASSE PLAYER
-Player::Player(QString n, int v, int m): Character(n, v, m), inventario() {
+Player::Player(QString n, int v, int m): Character(n, v, m) {
 
 }
 void Player::info() { qDebug() << "sono Player " << " con " << getVita() << " di vita e " << getMana() << " di mana" << endl;}

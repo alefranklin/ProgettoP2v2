@@ -33,6 +33,7 @@ public:
         static Choice useManaPotion() { return Choice("Usa pozione mana", 3); }
         static Choice useHealthPotion() { return Choice("Usa pozione vita", 4); }
         static Choice pickItem() { return Choice("Raccogli", 5); }
+        static Choice leaveItem() { return Choice("Lascia", 6); }
         operator int() const
         {
            return number;
@@ -55,7 +56,7 @@ public:
 
     Character* getPlayer();
 
-    void moveBack() { emit dialogOut("sono fuggito"); }
+    void moveBack();
 
     void dialog(QString s);
 

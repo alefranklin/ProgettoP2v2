@@ -86,30 +86,6 @@ unsigned int Game::getScore() const
     return score;
 }
 
-void Game::choiceDone(Choice c)
-{
-    emit dialogOut("scelta fatta: "+c.getLabel()+"\nadesso devo gestire le varie funzioni delle scelte");
-
-    switch(c) {
-    case Choice::escape():
-        scappa();
-        break;
-    case Choice::attack():
-        attacca();
-        break;
-    case Choice::combat():
-        break;
-    case Choice::pickItem():
-        //aggiungi item all'inventario
-        
-        emit setEnableMove(true);
-        break;
-    default:
-        break;
-    }
-
-}
-
 void Game::usePotionMana() { emit dialogOut("sto usando la pozione del mana"); }
 
 void Game::usePotionHealth() { emit dialogOut("sto usando la pozione della vita"); }
@@ -131,12 +107,10 @@ void Game::attacca() {
 }
 
 void Game::scappa() {
-    emit dialogOut("sto provando a scappare");
+    //emit dialogOut("Tiro i dadi per vedere se riesco a scappare");
     // con una certa probabilita scappa
     if(randInt(0,1)) {
         moveBack();
-        emit dialogOut("sono scappato");
-        emit setEnableMove(true);
     }
     else {
         emit dialogOut("non sei riuscito a scappare!");
@@ -174,6 +148,42 @@ void Game::pushRandomMob(int range, Coordinate c) {
 
 }
 
+void Game::choiceDone(Choice c)
+{
+    emit dialogOut("scelta fatta: "+c.getLabel()+"\nadesso devo gestire le varie funzioni delle scelte");
+
+    switch(c) {
+    case 0:{
+        scappa();
+        break;
+    }
+    case 1:{
+        attacca();
+        break;
+    }
+
+    case 2:{
+
+        break;
+    }
+    case 5:{
+        //aggiungi item all'inventario
+        Tile &t = map.getCurrentTile();
+        Item* item_preso = dynamic_cast<Item*>(t.e[0]);
+        emit dialogOut("Hai preso l'oggetto");
+        t.e.clear();
+        emit setEnableMove(true);
+        break;
+    }
+    case 6:{
+        emit dialogOut("Hai lasciato l'oggetto");
+        emit setEnableMove(true);
+        break;
+    }
+    }
+
+}
+
 void Game::move(char m) {
     switch (m) {
     case 'W': map.moveUP();     break;
@@ -194,12 +204,12 @@ void Game::move(char m) {
         emit setEnableMove(false);
 
         if(isMob(t.e[0])){
-            c << Choice::escape();
-            c << Choice::attack();
+            c << Choice::escape() << Choice::attack();
         }
 
         if(isItem(t.e[0])){
-            c << Choice::pickItem();
+            emit dialogOut("Hai trovato "+QString::fromStdString(dynamic_cast<Item*>(t.e[0])->getNome()));
+            c << Choice::pickItem() << Choice::leaveItem();
         }
 
         emit choiceOut(c);
@@ -302,3 +312,11 @@ bool Game::isBow(const Entity *e) { return (dynamic_cast<const Bow*>(e)) ? true 
 bool Game::isMagicWeapon(const Entity *e) { return (dynamic_cast<const MagicWeapon*>(e)) ? true : false;}
 
 Character *Game::getPlayer() { return pg; }
+
+void Game::moveBack()
+{
+    emit dialogOut("Sei riuscito a scappare");
+    map.moveBack();
+    emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
+    emit setEnableMove(true);
+}

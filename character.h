@@ -72,7 +72,7 @@ public:
 
   }
 private:
-  Container inventario;
+  //Container inventario;
 };
 
 class Mob: public Character {
