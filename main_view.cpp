@@ -5,14 +5,21 @@ main_view::main_view(Game *g, QWidget *parent)
     , model(g)
 {
 
-    createMusicSliderBox();
-
     //LAYOUT PRINCIPALE
+    mapWidget = new MapWidget(this,19);
+    choiceWidget = new ChoiceWidget(this);
+    moveWidget = new MoveWidget(this);
+    charachter = new PlayerWidget(model->getPlayer(), this);
     grid = new QGridLayout();
     setLayout(grid);
 
-    //PERSONAGGIO E NEMICO
-    charachter = new PlayerWidget(model->getPlayer(), this);
+    createMusicSliderBox();
+
+    dialogOutBox = new QTextEdit(this);
+    dialogOutBox->setReadOnly(true);
+    //dialogOutBox->setDisabled(true);
+
+
     PlayerWidget *mob = new PlayerWidget(model->getPlayer(), this); //TODO dichiararlo sul .h
 
     //INVENTARIO
@@ -20,22 +27,22 @@ main_view::main_view(Game *g, QWidget *parent)
     inventory->setFixedWidth(270);
 
     //MAPPA
-    mapWidget = new MapWidget(this, 19, 19, 19);
 
     // connetto i segnali per la mappa dal modello a view e viceversa
-    connect(model, &Game::posChanged, this, &main_view::onPosChanged);  // da model a view
-    connect(this, &main_view::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
-    connect(mapWidget, &MapWidget::setMiniMapSize, this, &main_view::onSetMiniMapSize);
+    connect(model, &Game::posChanged, mapWidget, &MapWidget::refresh);  // da model a view
+    connect(mapWidget, &MapWidget::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
+    //connect(mapWidget, &MapWidget::setMiniMapSize, this, &main_view::onSetMiniMapSize);
     connect(mapWidget, &MapWidget::showDetailsOf, mob, &PlayerWidget::onShowDetailOf);
 
+    mapWidget->syncDimension();
     //TASTI SCELTA
-    choiceWidget = new ChoiceWidget(this);
+
     connect(choiceWidget, &ChoiceWidget::sendChoice, this, &main_view::choicePressed);
     connect(model, &Game::choiceOut, this, &main_view::showChoice);
     connect(this, &main_view::emitChoice, model, &Game::choiceDone);
 
     //TASTI MOVIMENTO
-    moveWidget = new MoveWidget(this);
+
     connect(model, &Game::setEnableMove, moveWidget, &MoveWidget::setEnabled);
     //connetto view e model per muovere il personaggio nella mappa
     connect(moveWidget, &MoveWidget::emitDir, this, &main_view::movePressed);

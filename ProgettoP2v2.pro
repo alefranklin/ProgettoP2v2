@@ -31,7 +31,6 @@ SOURCES += \
     mainview.cpp \
     map.cpp \
     mapwidget.cpp \
-    movebutton.cpp \
     movewidget.cpp \
     playerwidget.cpp \
     randomizer.cpp \
@@ -53,7 +52,6 @@ HEADERS += \
     mainview.h \
     map.h \
     mapwidget.h \
-    movebutton.h \
     movewidget.h \
     playerwidget.h \
     randomizer.h \

@@ -1,7 +1,5 @@
 #include "playerwidget.h"
 
-
-
 PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     layout = new QVBoxLayout(this);
     layout->setMargin(0);

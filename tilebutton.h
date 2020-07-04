@@ -9,7 +9,9 @@ class TileButton : public QPushButton
     Q_OBJECT
 
 public:
-    TileButton(Tile t, bool playerIn = false, QWidget *parent = nullptr);
+    TileButton(QWidget *parent = nullptr);
+    void setTile(Tile t);
+    void setPlayerHere(bool here);
 
 signals:
     void buttonClicked(std::vector<Entity *>);

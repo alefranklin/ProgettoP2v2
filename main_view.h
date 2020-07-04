@@ -41,6 +41,7 @@ signals:
     void volumeChanged(int volume);
 
     void setMiniMapSize(int dim);
+    
     void newGameSlot();
 
 public slots:

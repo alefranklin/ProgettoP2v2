@@ -62,6 +62,7 @@ public:
 
 //TODO rivedere queste due classi > possiamo mergiarle(?)
 
+class Container;
 class Player: public Character {
 public:
   Player(QString n, int v, int m);
@@ -71,6 +72,8 @@ public:
   {
     qDebug() << "inventario ";
   }
+private:
+  Container *inventario;
 };
 
 class Mob: public Character {

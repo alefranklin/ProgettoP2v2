@@ -17,7 +17,7 @@ ostream& operator<<(ostream& out, const Coordinate &c) {
 }
 
 
-Map::Map(int d): pos() {
+Map::Map(int d): pos(), lastPos(pos){
   //la mappa deve avere una dimensione minima
   dim = (d < minDim) ? minDim : d;
 
@@ -148,6 +148,7 @@ Coordinate Map::RandomPos() const {
 
 // cambio la posizione e aggiorno la visibilità
 void Map::changePos(Coordinate newPos) {
+  lastPos = pos;
   pos = newPos;
 }
 
@@ -177,6 +178,11 @@ void Map::moveLEFT() {
 void Map::moveRIGHT() {
   Coordinate newPos(pos.row, pos.col+1);
   if(isValid(newPos) && isWalkable(newPos)) changePos(newPos);
+}
+
+void Map::moveBack()
+{
+    pos = lastPos;
 }
 
 // restituisce la tile corrent in modo da poter controllare esternamente cosa contiene

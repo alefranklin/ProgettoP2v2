@@ -6,10 +6,9 @@
  */
 
 class Entity{
-
 protected:
-  Entity() = default;
-  virtual ~Entity() {};
+    Entity() = default;
+  virtual ~Entity() = default;
 };
 
 #endif

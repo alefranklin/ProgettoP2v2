@@ -40,6 +40,7 @@ public:
   void moveDOWN();
   void moveLEFT();
   void moveRIGHT();
+  void moveBack();
   Tile& getCurrentTile();
   Tile& getTileIn(Coordinate p);
   std::vector<Coordinate> getWalkableTile(int range, Coordinate c);
@@ -60,6 +61,7 @@ private:
   int dim;
   std::vector<std::vector<Tile>> map;
   Coordinate pos;
+  Coordinate lastPos;
   Coordinate relativePos;
 
   Coordinate RandomPos() const;
