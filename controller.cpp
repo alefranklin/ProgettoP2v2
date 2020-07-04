@@ -1,6 +1,6 @@
 #include "controller.h"
 
-Controller::Controller(Main_dialog* v, Game *g, QObject *parent) : QObject(parent), model(g), view(v)
+Controller::Controller(main_dialog* v, Game *g, QObject *parent) : QObject(parent), model(g), view(v)
 {
     /*
      connetto i vari segnali agli slot

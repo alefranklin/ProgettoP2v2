@@ -15,7 +15,7 @@ class Controller: public QObject
     Q_OBJECT
 
 public:
-    Controller(Main_dialog* v, Game *g = nullptr, QObject *parent = nullptr);
+    Controller(main_dialog* v, Game *g = nullptr, QObject *parent = nullptr);
     ~Controller();
 
 signals:
@@ -26,7 +26,7 @@ public slots:
 
 private:
   Game* model;
-  Main_dialog* view;
+  main_dialog* view;
 
   // musica di sottofondo
   // aggiungo la musica

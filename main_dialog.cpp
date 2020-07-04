@@ -2,7 +2,7 @@
 #include "main_dialog.h"
 
 
-Main_dialog::Main_dialog(bool& refNewGame, Game *g, QWidget *parent)
+main_dialog::main_dialog(bool& refNewGame, Game *g, QWidget *parent)
     : QMainWindow(parent)
     , game(g)
     , newGame(refNewGame)
@@ -16,7 +16,7 @@ Main_dialog::Main_dialog(bool& refNewGame, Game *g, QWidget *parent)
     setCentralWidget(mainWidget);
 }
 
-void Main_dialog::setMenuBar()
+void main_dialog::setMenuBar()
 {
     menubar = menuBar();
     //parent senza valore di default su alcune versioni di QT (ad esempio in laboratorio)
@@ -59,12 +59,12 @@ void Main_dialog::setMenuBar()
     connect(mLegend, SIGNAL(triggered(bool)), this, SLOT(showLegend()));
 }
 
-void Main_dialog::newGameSlot()
+void main_dialog::newGameSlot()
 {
     newGame = true;
 }
 
-void Main_dialog::showInf()
+void main_dialog::showInf()
 {
     QString str = QString("Applicazione creata da:\n\n %1\n %2\n %3").arg("Franchin Alessandro")
                                                                      .arg("Pagotto Matteo")
@@ -73,7 +73,7 @@ void Main_dialog::showInf()
     QMessageBox::information(0, "Infomazioni", str);
 }
 
-void Main_dialog::showLegend()
+void main_dialog::showLegend()
 {
     QString str = QString("%1\n%2\n%3").arg("P - Personaggio")
                                        .arg("N - Nemico")
@@ -83,7 +83,7 @@ void Main_dialog::showLegend()
 }
 
 
-void Main_dialog::confirmSave()
+void main_dialog::confirmSave()
 {
     QMessageBox salvaPunt;
     salvaPunt.setText("Vuoi salvare il punteggio?");
