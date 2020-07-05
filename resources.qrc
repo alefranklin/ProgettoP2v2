@@ -5,4 +5,7 @@
     <qresource prefix="/splash">
         <file alias="splash_img">img/splash/splash.jpg</file>
     </qresource>
+    <qresource prefix="/icon">
+        <file alias="del_ico">img/icon/del.png</file>
+    </qresource>
 </RCC>
