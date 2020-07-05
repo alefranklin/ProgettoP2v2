@@ -26,7 +26,7 @@
 
 const int Game::mapSize = 150;
 
-const QString Game::fileScore = "../Classifica.json";
+const QString Game::fileScore = "Classifica.txt";
 
 Game::Game(Character* player, QObject *parent) : QObject(parent)
   , pg(player)
@@ -402,21 +402,12 @@ void Game::onSetMiniMapSize(int s) {
 }
 
 void Game::saveScoreSlot(){
-    QFile fileSave(fileScore);
-
-    if(fileSave.open(QIODevice::WriteOnly | QIODevice::Append)){
-        QTextStream outputStream(&fileSave);
-
-        qDebug() << "entro per salvare punteggio";
-        QJsonObject insertScore;
-
-        insertScore["Giocatore"] = QString::fromStdString(pg->getName());
-        insertScore["Score"] = QString::number(score);
-
-        QJsonDocument doc(insertScore);
-
-        fileSave.write(doc.toJson());
-        fileSave.close();
+    QFile file(fileScore);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append)){
+        QTextStream out(&file);
+        QString name = QString::fromStdString(pg->getName());
+        out << name.toUtf8() << " " << score << "\n";
+        file.close();
     }
 }
 

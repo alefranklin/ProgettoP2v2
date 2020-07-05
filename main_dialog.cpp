@@ -5,7 +5,17 @@
 #include "main_dialog.h"
 #include "main_dialog.h"
 #include "container.h"
+#include <QtDebug>
+#include <QVector>
+#include <iostream>
+#include <string>
+#include <sstream>
 
+struct Result {
+    int score;
+    QString nome;
+    Result(QString s = "", int p = 0): score(p), nome(s) {}
+};
 
 main_dialog::main_dialog(bool& refNewGame, Game *g, QWidget *parent)
     : QMainWindow(parent)
@@ -40,10 +50,8 @@ void main_dialog::setMenuBar()
 
     mInfo  = new QMenu("&Info", nullptr);
     mShowInfo = new QAction("Inf&o sviluppatori", nullptr);
-    mShowRank = new QAction("&Rank", nullptr);
     mInfo->addAction(mShowInfo);
     mFile->addSeparator();
-    mInfo->addAction(mShowRank);
     menubar->addMenu(mInfo);
 
     mHelp = new QMenu("&Help", nullptr);
@@ -58,9 +66,6 @@ void main_dialog::setMenuBar()
     connect(mNewGame, SIGNAL(triggered(bool)), this, SLOT(close())); //TODO displayare una finestra e chiedere di salvare
 
     connect(mSavePlayer, SIGNAL(triggered(bool)), this, SLOT(savePlayerToJson()));
-
-    connect(mShowRank, SIGNAL(triggered(bool)), this, SLOT(displayHallOfFame()));
-    //connect(mSave, SIGNAL(triggered(bool)), this, SLOT(confirmSave())); //TODO same as above
 
     connect(mEsci, SIGNAL(triggered(bool)), this, SLOT(confirmSavePunt()));
     connect(mEsci, SIGNAL(triggered(bool)), this, SLOT(confirmSavePg()));//TODO same as above
@@ -167,39 +172,5 @@ void main_dialog::savePlayerToJson()
         saveLocation.write(doc.toJson());
     }
     return;
-}
-
-void main_dialog::displayHallOfFame()
-{
-//    QString filePlayer = QFileDialog::getOpenFileName(Q_NULLPTR
-//                                                      , "Carica file Personaggio"
-//                                                      , "../"
-//                                                      , "File Player(*.fpg);;All files(*)");
-
-
-//    if(filePlayer.isEmpty()) return;
-//    else {
-//        QFile f(filePlayer);
-
-//        if(!f.open(QIODevice::ReadOnly)){
-//            //QMessageBox::warning(Q_NULLPTR, "Impossibile aprire il file", f.errorString());
-//            emit warningFile(f.errorString());
-//            return;
-//        }
-//        QString on_json = f.readAll();
-
-//        QJsonParseError jsonError;
-
-//        QJsonDocument d_json = QJsonDocument::fromJson(on_json.toUtf8(), &jsonError);
-
-//        if(!jsonError.error){
-
-//            QJsonObject json = d_json.object();
-
-//            pg = new Player(json["nome"].toString().toStdString(), json["vita"].toInt(), json["mana"].toInt());
-//        } else {
-//            emit loadPlayerFromFile(jsonError);
-//        }
-//    }
 }
 

@@ -24,6 +24,8 @@ public:
     explicit Game(Character *player, QObject *parent = nullptr);
     ~Game();
 
+    static const QString fileScore;
+
     class Choice {
     public:
         Choice(QString l = "Null", int n = -1): label(l), number(n) {}
@@ -132,7 +134,6 @@ private:
     unsigned int score = 0;
 
 
-    static const QString fileScore;
     static const int mapSize;
     int miniMapSize;
 

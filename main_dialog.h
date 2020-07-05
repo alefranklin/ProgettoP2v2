@@ -20,8 +20,6 @@ public:
     ~main_dialog(){}
 
 private:
-
-
     Game* game;
 
     main_view* mainWidget;
@@ -48,7 +46,6 @@ public slots:
     void showLegend();
     void newGameSlot();
     void onDie();
-    void displayHallOfFame();
 
 private slots:
     void showInf();
