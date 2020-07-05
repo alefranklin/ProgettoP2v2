@@ -4,7 +4,7 @@
 
 #include <QDebug>
 
-Potion::Potion(string n, int e): Item(n), effect(e) {}
+Potion::Potion(string n, int e, bool v, bool m): Item(n), effect(e), vita(v), mana(m) {}
 
 int Potion::getEffect() const { return effect; }
 Potion::~Potion() { qDebug() << "elimino Potion: " << endl; }

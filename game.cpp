@@ -112,7 +112,7 @@ void Game::startCombat(Tile &t) {
         emit dialogOut("Sei entrato in combattimento.\n\n");
         inCombat();
     } else {
-        emit dialogOut("Provi a combattare ti accorgi che il mostro non è più lì.\n\n");
+        emit dialogOut("Provi a combattare ma ti accorgi che il mostro non è più lì.\n\n");
         emit setEnableMove(true);
     }
 }
@@ -271,6 +271,9 @@ void Game::choiceDone(Choice c)
         //aggiungi item all'inventario
         Tile &t = map.getCurrentTile();
         Item* item_preso = dynamic_cast<Item*>(t.e[0]);
+
+        (dynamic_cast<Player*>(pg))->inventoryAdd(item_preso);
+
         emit dialogOut("Hai preso l'oggetto.\n\n");
         t.e.clear();
         emit setEnableMove(true);

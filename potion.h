@@ -14,7 +14,7 @@ private:
  bool vita;
  bool mana;
 public:
- Potion(string n, int e);
+ Potion(string n, int e, bool v, bool m);
  int getEffect() const;
  virtual ~Potion();
  virtual int use(Character* owner, vector<Character*> target = vector<Character*>());

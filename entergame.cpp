@@ -72,11 +72,6 @@ void EnterGame::createLayoutEnterGame()
 
     connect(bLoadPlayer, SIGNAL(clicked()), this, SLOT(tryEnter()));
 
-
-    //connect(bPlay, SIGNAL(clicked()), this, SLOT(tryEnter()));
-
-    //if((*gioco)->getPlayer()) nameLabel->setText((*gioco)->getPlayer()->getName());
-
     setFixedSize(280,110);
 }
 

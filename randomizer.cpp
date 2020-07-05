@@ -71,15 +71,16 @@ Armor* Randomizer::getRandomArmor()
 
 Potion* Randomizer::getRandomPotion()
 {
-    return new Potion("Pozione", randomNumberBetween(1,2));
+    return new Potion("Pozione", randomNumberBetween(10,20), randomNumberBetween(0,1), randomNumberBetween(0,1));
 }
 
 //static Armor* getRandomArmor(int livello);
 
 Mob* Randomizer::getRandomMob()
 {
-    return new Mob("Orco", randomNumberBetween(10,20), randomNumberBetween(0,5));
+    return new Mob(getRandomMobName(), randomNumberBetween(10,20), randomNumberBetween(0,5));
 }
 
-string Randomizer::getRandomMobName() { return "ORCONEEE"; }
+//TODO mettere nomi random
+string Randomizer::getRandomMobName() { return "Orco"; }
 //string Randomizer::getrandomNpcName() { return ""; }
