@@ -119,9 +119,13 @@ void Game::usePotionMana() { emit dialogOut("sto usando la pozione del mana"); }
 void Game::usePotionHealth() { emit dialogOut("sto usando la pozione della vita"); }
 
 void Game::startCombat(Tile &t) {
-    combat = new CombatState(t.e, pg);
-    emit dialogOut("Sei entrato in combattimento.\n\n");
-    inCombat();
+    if(t.e[0] && Game::isMob(t.e[0])) {
+        combat = new CombatState(t.e, pg);
+        emit dialogOut("Sei entrato in combattimento.\n\n");
+        inCombat();
+    } else {
+        emit setEnableMove(true);
+    }
 }
 
 void Game::inCombat(){
