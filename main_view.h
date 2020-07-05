@@ -25,6 +25,7 @@
 #include "mob.h"
 #include "map.h"
 #include "inventorywidget.h"
+#include "musicwidget.h"
 
 class main_view : public QWidget
 {
@@ -42,7 +43,6 @@ signals:
 //    void emitDialog();
 
 //    // segnale di volume changed
-    void volumeChanged(int volume);
 
     void setMiniMapSize(int dim);
     
@@ -61,8 +61,6 @@ public slots:
 //    void onDialogPressed();
 
 //    // slot per gestire lo slider del volume
-    void onVolumeChanged(int volume);
-    void onMute();
 
     void movePressed(char dir);
     // gestisco il refresh della mapppa
@@ -110,12 +108,8 @@ private:
     //widget scelte personaggio
     ChoiceWidget *choiceWidget;
 
-    // slider musica
-    QSlider *volumeSlider;
-
-    //widget move
-    QPushButton *muteButton;
-    QGroupBox *musicSlider;
+    // widget musica
+    MusicWidget *music;
 
     //finestra di dialogo con il gioco
     QTextEdit *dialogOutBox;
