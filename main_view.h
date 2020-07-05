@@ -92,6 +92,7 @@ private:
     void createMapBox();
     void createEnemyBox();
 
+
     Game* model;
 
     QGridLayout* grid;

@@ -67,6 +67,9 @@ public:
     //elimino pg e lo setto a nullptr per nuova partita
     void setPgNull();
 
+    QJsonObject characterToJson(Character *c);
+    QJsonObject itemToJson(Item *i);
+
 signals:
     // emetto segnale per il dialogo
     void dialogOut(QString s);
@@ -95,6 +98,7 @@ signals:
 
     //segnale refresh Inventario
     void inventoryRefreshSGNL(const Container<Item*> &);
+
     
 public slots:
     // slot che gestisce le scelte fatte dal giocatore
@@ -106,7 +110,7 @@ public slots:
     //salvo il punteggio
     void saveScoreSlot();
     //salvo il personaggio
-    void savePlayerSlot();
+    //void savePlayerSlot();
     //carico il personaggio
     void loadPlayerSlot(bool);
     // aggiorno l'inventario
@@ -159,8 +163,5 @@ private:
     void pushRandomItem(int range, Coordinate c);
 
     void setScore(unsigned int s);
-
-    QJsonObject characterToJson(Character *c);
-    QJsonObject itemToJson(Item *i);
 };
 #endif // GAME_H

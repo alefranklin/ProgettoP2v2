@@ -531,7 +531,7 @@ void Map::Generatemap() {
   }
 
   // creo le strade di collegamento tra i centri dei vari biomi
-  for(unsigned long i = 0; i < centers.size()-1; i++) {
+  for(int i = 0; i < centers.size()-1; i++) {
     std::vector<Coordinate> line = createLine(centers[i], centers[i+1], 2);
     modifyTile(createLine(centers[i], centers[i+1]), true, Street, true);
   }
