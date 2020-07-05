@@ -38,7 +38,7 @@ vector<Entity::Attribute> MagicWeapon::getAttributes() const {
     vector<Attribute> att = Weapon::getAttributes();
     vector<Attribute> att_m = Magic::getAttributes();
 
-    att.push_back(Attribute("Tipo", "Arma Magica"));
+    att.push_back(Attribute("Tipo", "armaMagica"));
     //concateno
     att.insert(att.end(), att_m.begin(), att_m.end());
     return att;

@@ -18,12 +18,12 @@ public:
 public slots:
     void sliderChanged();
     void onMutePressed();
+
 private:
     QSlider *volumeSlider;
 
     //widget move
     QPushButton *muteButton;
-    QGroupBox *musicSlider;
 
     QMediaPlaylist *playlist;
     QMediaPlayer *music;

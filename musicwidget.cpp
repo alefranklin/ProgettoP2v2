@@ -4,7 +4,7 @@
 
 MusicWidget::MusicWidget(QWidget *parent) : QWidget(parent)
 {
-    musicSlider = new QGroupBox(this);
+
     QHBoxLayout *layout = new QHBoxLayout;
 
     // controllo il volume
@@ -12,13 +12,13 @@ MusicWidget::MusicWidget(QWidget *parent) : QWidget(parent)
     volumeSlider->setMinimum(0);
     volumeSlider->setMaximum(100);
     volumeSlider->setValue(50);
+
     // bottone per il muto
     muteButton = new QPushButton("Mute", this);
 
     layout->addWidget(muteButton);
     layout->addWidget(volumeSlider);
-    musicSlider->setLayout(layout);
-    musicSlider->setFixedSize(200, 65);
+
 
     playlist = new QMediaPlaylist();
     playlist->addMedia(QUrl("qrc:/music/track1"));
@@ -28,6 +28,11 @@ MusicWidget::MusicWidget(QWidget *parent) : QWidget(parent)
     music->setPlaylist(playlist);
     music->setVolume(volumeSlider->value());
     music->play();
+
+    connect(volumeSlider, &QSlider::valueChanged, this, &MusicWidget::sliderChanged);
+    connect(muteButton, &QPushButton::clicked, this, &MusicWidget::onMutePressed);
+
+    setLayout(layout);
 }
 
 void MusicWidget::sliderChanged(){

@@ -83,9 +83,7 @@ main_view::main_view(Game *g, QWidget *parent)
 
     //prima colonna (col = 0)
     grid->addWidget(character, 0, 0);
-
     grid->addWidget(sc, 1, 0);
-
     grid->addWidget(music, 2, 0, Qt::AlignLeft);
 
     //seconda colonna (col = 1)
