@@ -79,13 +79,13 @@ void PlayerWidget::setFields(Character *c){
     int hpNum = c->getVitaMax();
     hp->setRange(0,hpNum);
     hp->setValue(c->getVita());
-    hpLabel->setText(QString::number(hpNum));
+    hpLabel->setText(QString::number(c->getVita()));
 
     //mp
     int mpNum = c->getManaMax();
     mp->setRange(0,mpNum);
     mp->setValue(c->getMana());
-    mpLabel->setText(QString::number(mpNum));
+    mpLabel->setText(QString::number(c->getVita()));
 
     //equip widget
     weapon->setItem(c->getWeapon()->getAttributes());
