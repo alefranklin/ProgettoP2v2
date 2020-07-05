@@ -16,7 +16,7 @@ class PlayerWidget : public QWidget
     Q_OBJECT
 public:
     //explicit PlayerWidget(QWidget *parent = nullptr);
-    explicit PlayerWidget(Character* c, QWidget *parent = nullptr);
+    explicit PlayerWidget(QWidget *parent = nullptr);
     void setHealth(int h);
     void setMana(int m);
     void setMaximumHealth(int maxhp);
@@ -30,7 +30,6 @@ public:
 signals:
 
 public slots:
-    void onShowDetailOf(std::vector<Entity*>e);
 
 private:
     QVBoxLayout *layout;

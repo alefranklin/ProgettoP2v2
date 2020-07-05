@@ -8,8 +8,7 @@
 Player::Player(string n, int v, int m):
     Character(n, v, m)
 {
-    //Item *s =  new Sword("ciao", 100, 1);
-    //inventory.push_back( s );
+
 }
 
 Player::~Player() {
@@ -27,8 +26,7 @@ Player::~Player() {
 void Player::usePotion(Item *p) {
 
     p->use(this, nullptr);
-    // ho usato la pozza adesso la elimino dall'inventario
-    inventoryDelete( p->getID() );
+    delete p;
 }
 
 void Player::equip(Item *i) {

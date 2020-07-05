@@ -25,6 +25,8 @@ public:
   virtual string getName();
   virtual int getVita() const;
   virtual int getVitaMax() const;
+  virtual void setVitaMax(int vx);
+  virtual void setManaMax(int mx);
   virtual void setVita(int v);
   virtual void addVita(int v);
   virtual int getMana() const;

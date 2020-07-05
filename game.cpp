@@ -26,7 +26,7 @@
 
 const int Game::mapSize = 150;
 
-const QString Game::fileScore = "../Classifica.json";
+const QString Game::fileScore = "Classifica.txt";
 
 Game::Game(Character* player, QObject *parent) : QObject(parent)
   , pg(player)
@@ -68,12 +68,14 @@ void Game::dialog(QString s)
 
 QJsonObject Game::characterToJson(Character* c)
 {
-  QJsonObject j;
-  j["nome"] = QString::fromStdString(c->getName());
-  j["vita"] = c->getVita();
-  j["mana"] = c->getMana();
+  QJsonObject json;
 
-  return j;
+  for(auto &elem : c->getAttributes()) {
+      json.insert(QString::fromStdString(elem.name),
+                  QString::fromStdString(elem.val));
+  }
+
+  return json;
 }
 
 QJsonObject Game::itemToJson(Item *i){
@@ -85,6 +87,46 @@ QJsonObject Game::itemToJson(Item *i){
     }
 
     return json;
+}
+
+
+/* creo l'oggetto dalle caratteristiche ritorno nullptr se fallisco */
+Item *Game::JsonToItem(QJsonObject &obj){
+    Item *i = nullptr;
+
+    if(obj["Tipo"].toString() == "Spada") {
+        i = new Sword(obj["Nome"].toString().toStdString(),
+                      obj["Danno"].toString().toInt(),
+                      obj["Range"].toString().toInt());
+    }
+
+    if(obj["Tipo"].toString() == "Arco") {
+        i = new Bow(obj["Nome"].toString().toStdString(),
+                    obj["Danno"].toString().toInt(),
+                    obj["Frecce"].toString().toInt());
+    }
+
+    if(obj["Tipo"].toString() == "ArmaMagica") {
+        i = new MagicWeapon(obj["Nome"].toString().toStdString(),
+                            obj["Danno"].toString().toInt(),
+                            obj["Effetto"].toString().toInt(),
+                            obj["Mana"].toString().toInt());
+    }
+
+    if(obj["Tipo"].toString() == "Armatura") {
+        i = new Armor(obj["Nome"].toString().toStdString(),
+                      obj["Armatura"].toString().toInt());
+    }
+
+    if(obj["Tipo"].toString() == "Pozione") {
+        bool vita = (obj["Vita"].toString() == "si") ? true : false;
+        bool mana = (obj["Mana"].toString() == "si") ? true : false;
+        i = new Potion(obj["Nome"].toString().toStdString(),
+                       obj["Effetto"].toString().toInt(),
+                       vita, mana);
+    }
+
+    return i;
 }
 
 unsigned int Game::getScore() const
@@ -360,21 +402,12 @@ void Game::onSetMiniMapSize(int s) {
 }
 
 void Game::saveScoreSlot(){
-    QFile fileSave(fileScore);
-
-    if(fileSave.open(QIODevice::WriteOnly | QIODevice::Append)){
-        QTextStream outputStream(&fileSave);
-
-        qDebug() << "entro per salvare punteggio";
-        QJsonObject insertScore;
-
-        insertScore["Giocatore"] = QString::fromStdString(pg->getName());
-        insertScore["Score"] = QString::number(score);
-
-        QJsonDocument doc(insertScore);
-
-        fileSave.write(doc.toJson());
-        fileSave.close();
+    QFile file(fileScore);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append)){
+        QTextStream out(&file);
+        QString name = QString::fromStdString(pg->getName());
+        out << name.toUtf8() << " " << score << "\n";
+        file.close();
     }
 }
 
@@ -430,7 +463,7 @@ void Game::onSelectItem(int id) {
              }
             else {
                 Potion *consumable = dynamic_cast<Potion*>(i);
-                if(consumable) consumable->use(pg);
+                if(consumable) p->usePotion(i);
             }
         }
         emit updatePlayer(p);
@@ -445,6 +478,11 @@ void Game::onDeleteItem(int id) {
         emit inventoryRefreshSlot();
         emit dialogOut("Hai eliminato il tuo prezioso oggetto!");
     }
+}
+
+void Game::refreshPlayer() {
+    Player *p = dynamic_cast<Player*>(pg);
+    if(p) emit updatePlayer(p);
 }
 
 bool Game::isItem(const Entity *e) { return (dynamic_cast<const Item*>(e)) ? true : false; }

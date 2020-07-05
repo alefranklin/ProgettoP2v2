@@ -9,7 +9,7 @@ main_view::main_view(Game *g, QWidget *parent)
     mapWidget = new MapWidget(this,19);
     choiceWidget = new ChoiceWidget(this);
     moveWidget = new MoveWidget(this);
-    character = new PlayerWidget(model->getPlayer(), this);
+    character = new PlayerWidget(this);
     grid = new QGridLayout(this);
     music = new MusicWidget(this);
     setLayout(grid);
@@ -19,8 +19,9 @@ main_view::main_view(Game *g, QWidget *parent)
     dialogOutBox->setReadOnly(true);
     //dialogOutBox->setDisabled(true);
 
-    mob = new PlayerWidget(Randomizer::getRandomMob(), this); //TODO dichiararlo sul .h
-    mob->clear();
+
+    mob = new PlayerWidget(this); //TODO dichiararlo sul .h
+
 
 
     //pulisco view del mob
@@ -34,7 +35,11 @@ main_view::main_view(Game *g, QWidget *parent)
     connect(model, &Game::updateMob, this, &main_view::updateMob);
 
 
+    model->refreshPlayer();
+
+
     sc = new QScrollArea(this);
+
 
     //INVENTARIO
     inventory= new InventoryWidget(this); //lista di widget (inventario)
@@ -57,8 +62,6 @@ main_view::main_view(Game *g, QWidget *parent)
     // connetto i segnali per la mappa dal modello a view e viceversa
     connect(model, &Game::posChanged, mapWidget, &MapWidget::refresh);  // da model a view
     connect(mapWidget, &MapWidget::setMiniMapSize, model, &Game::onSetMiniMapSize); // da view a model
-    //connect(mapWidget, &MapWidget::setMiniMapSize, this, &main_view::onSetMiniMapSize);
-    connect(mapWidget, &MapWidget::showDetailsOf, mob, &PlayerWidget::onShowDetailOf);
 
     mapWidget->syncDimension();
     //TASTI SCELTA
