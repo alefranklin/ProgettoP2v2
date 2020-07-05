@@ -2,6 +2,8 @@
 
 #include "player.h"
 
+#include <QFileDialog>
+#include <QJsonArray>
 #include <QDebug>
 
 EnterGame::EnterGame(Game** g, QWidget* parent): QDialog(parent), gioco(g)
@@ -65,18 +67,81 @@ void EnterGame::createLayoutEnterGame()
 
     bLoadPlayer = new QPushButton("Carica Personaggio");
     layoutEnterGame->addWidget(bLoadPlayer, 4, 0);
-    connect(bLoadPlayer, &QPushButton::clicked, *gioco, &Game::loadPlayerSlot);
-
-    //errore load personaggio da file
-    connect(*gioco, &Game::loadPlayerFromFile, this, &EnterGame::errorLoadPlayer);
+    connect(bLoadPlayer, &QPushButton::clicked, this, &EnterGame::loadPlayerSlot);
 
     connect(bLoadPlayer, SIGNAL(clicked()), this, SLOT(tryEnter()));
 
     setFixedSize(280,110);
 }
 
-void EnterGame::errorLoadPlayer(QJsonParseError jsonError)
+void EnterGame::loadPlayerSlot()
 {
-    QMessageBox::warning(0,"ERROR", jsonError.errorString());
+    QString filePlayer = QFileDialog::getOpenFileName(Q_NULLPTR
+                                                      , "Carica file Personaggio"
+                                                      , "../"
+                                                      , "File Player(*.json)");
+
+
+//    if(filePlayer.isEmpty()) return;
+//    else {
+//        QFile f(filePlayer);
+
+//        if(!f.open(QIODevice::ReadOnly)){
+//            QMessageBox::warning(Q_NULLPTR, "Impossibile aprire il file", f.errorString());
+//            //emit warningFile(f.errorString());
+//            return;
+//        }
+//        QString on_json = f.readAll();
+
+//        QJsonParseError jsonError;
+
+//        QJsonDocument d_json = QJsonDocument::fromJson(on_json.toUtf8(), &jsonError);
+
+//        if(!jsonError.error){
+
+//            QJsonObject json = d_json.object();
+
+//            Player* pg = new Player(json["nome"].toString().toStdString(), json["vita"].toInt(), json["mana"].toInt());
+//            *gioco = new Game(pg);
+//        } else {
+//            QMessageBox::warning(0,"ERROR", jsonError.errorString());
+//        }
+//    }
+
+    if(filePlayer.isEmpty()) return;
+    else {
+        QFile file(filePlayer);
+
+        if(!file.open(QIODevice::ReadOnly)){
+            QMessageBox::warning(Q_NULLPTR, "Impossibile aprire il file", file.errorString());
+            return;
+        }
+
+        QByteArray jsonData = file.readAll();
+
+        file.close();
+
+        QJsonDocument document = QJsonDocument::fromJson(jsonData);
+
+        QJsonObject pg = document.object().value("Caratteristiche").toObject();//.toArray();
+        QJsonObject arma = document.object().value("Arma").toObject();
+        QJsonObject armatura = document.object().value("Armatura").toObject();
+
+        //bool corrotto = false;
+
+//        vector<item*> itemsToLoad;
+//        vector<item*> buildToLoad;
+       if(!pg.isEmpty() && !arma.isEmpty() && !armatura.isEmpty()) {
+            foreach(const QJsonValue& v, pg) {
+                qDebug() << v;
+            }
+
+            Player* p = new Player(pg["nome"].toString().toStdString(), pg["vita"].toInt(), pg["mana"].toInt());
+
+            //p->setWeapon()
+            *gioco = new Game(p);
+       }
+    }
 }
+
 

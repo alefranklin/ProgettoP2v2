@@ -48,12 +48,14 @@ public slots:
     void showLegend();
     void newGameSlot();
     void onDie();
+    void displayHallOfFame();
 
 private slots:
     void showInf();
     void confirmSavePunt();
     void confirmSavePg();
 
+    void savePlayerToJson();
 };
 
 #endif

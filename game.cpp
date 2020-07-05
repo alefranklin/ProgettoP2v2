@@ -26,7 +26,7 @@
 
 const int Game::mapSize = 150;
 
-const QString Game::fileScore = "../Save.txt";
+const QString Game::fileScore = "../Classifica.json";
 
 Game::Game(Character* player, QObject *parent) : QObject(parent)
   , pg(player)
@@ -357,49 +357,24 @@ void Game::onSetMiniMapSize(int s) {
 }
 
 void Game::saveScoreSlot(){
-    QFile file(fileScore);
+    QFile fileSave(fileScore);
 
-    qDebug() << "entro salva file";
+    if(fileSave.open(QIODevice::WriteOnly | QIODevice::Append)){
+        QTextStream outputStream(&fileSave);
 
-    if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append)){
-        QTextStream outputStream(&file);
+        qDebug() << "entro per salvare punteggio";
+        QJsonObject insertScore;
 
-        QString name = QString::fromStdString(pg->getName());
+        insertScore["Giocatore"] = QString::fromStdString(pg->getName());
+        insertScore["Score"] = QString::number(score);
 
-        outputStream << "Giocatore: " << name << "\t Punteggio: " << score << "\n";
+        QJsonDocument doc(insertScore);
 
-        file.close();
-    }
-
-}
-
-void Game::savePlayerSlot()
-{
-    QString filePlayer = QFileDialog::getSaveFileName(Q_NULLPTR, "Save Player", "../", "File Player(*.fpg)");
-
-    if(filePlayer.isEmpty()) return;
-    else {
-        QFile file(filePlayer);
-
-        if(!file.open(QIODevice::WriteOnly)) {
-            QMessageBox::information(nullptr, "Unable to open file", file.errorString());
-            return;
-        }
-
-        QJsonObject json; //= QJsonObject::fromVariantMap(v_map);
-
-        json["pg"] = characterToJson(pg);
-        json["armatura"] = itemToJson(pg->getArmor());
-        json["arma"] = itemToJson(pg->getWeapon());
-
-        QJsonDocument d_json;
-        d_json.setObject(json);
-
-        file.write(d_json.toJson());
-
-        file.close();
+        fileSave.write(doc.toJson());
+        fileSave.close();
     }
 }
+
 
 void Game::loadPlayerSlot(bool)
 {
@@ -414,7 +389,8 @@ void Game::loadPlayerSlot(bool)
         QFile f(filePlayer);
 
         if(!f.open(QIODevice::ReadOnly)){
-            QMessageBox::warning(Q_NULLPTR, "Impossibile aprire il file", f.errorString());
+            //QMessageBox::warning(Q_NULLPTR, "Impossibile aprire il file", f.errorString());
+            emit warningFile(f.errorString());
             return;
         }
         QString on_json = f.readAll();
@@ -432,7 +408,6 @@ void Game::loadPlayerSlot(bool)
             emit loadPlayerFromFile(jsonError);
         }
     }
-
 }
 
 bool Game::isItem(const Entity *e) { return (dynamic_cast<const Item*>(e)) ? true : false; }
