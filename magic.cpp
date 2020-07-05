@@ -25,4 +25,11 @@ int Magic::getMana() const
     return mana;
 }
 
+vector<Entity::Attribute> Magic::getAttributes() const {
+    vector<Attribute> att = Item::getAttributes();
+    att.push_back(Attribute("Effetto", std::to_string(effect)));
+    att.push_back(Attribute("Mana", std::to_string(mana)));
+    return att;
+}
+
 //void Magic::use() { qDebug() << "sto usando Magic " << " subisci " << effect << " danno" << endl; }

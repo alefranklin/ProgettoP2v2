@@ -11,16 +11,19 @@ class Character;
 
 class Item: public Entity {
 private:
-  static unsigned int usedID;
-  unsigned int ID;
-  string nome;
+    static unsigned int usedID;
+    unsigned int ID;
+    string nome;
 protected:
-  Item(string n);
+    Item(string n);
 public:
-  virtual ~Item();
-  unsigned int getID() const;
-  virtual string getNome() const;
-  virtual int use(Character* owner, vector<Character*> target) = 0;
+    virtual ~Item();
+    unsigned int getID() const;
+    virtual string getNome() const;
+    virtual int use(Character* owner, vector<Character*> target) = 0;
+
+    virtual vector<Attribute> getAttributes() const;
+
 
 };
 

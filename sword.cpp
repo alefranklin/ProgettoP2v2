@@ -21,3 +21,10 @@ int Sword::use(Character* owner, vector<Character*> target)
     return 0;
 }
 
+vector<Entity::Attribute> Sword::getAttributes() const {
+    vector<Attribute> att = Weapon::getAttributes();
+    att.push_back(Attribute("Tipo", "Spada"));
+    att.push_back(Attribute("Range", std::to_string(range)));
+    return att;
+}
+

@@ -11,6 +11,8 @@ public:
   MagicWeapon(string n, int d, int e, int m);
   virtual ~MagicWeapon();
   virtual int use(Character* owner, vector<Character*> target = vector<Character*>());
+
+  virtual vector<Attribute> getAttributes() const;
 };
 
 #endif // MAGICWEAPON_H

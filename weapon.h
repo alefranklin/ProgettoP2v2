@@ -15,7 +15,7 @@ public:
   virtual int getDamage() const;
   virtual int use(Character* owner, vector<Character*> target) = 0;
 
-  //virtual vector<Attribute<T>> getAttributes() {}
+  virtual vector<Attribute> getAttributes() const;
 };
 
 #endif // WEAPON_H

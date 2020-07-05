@@ -29,3 +29,9 @@ int Armor::use(Character *owner, vector<Character *> target)
     return 0;
 }
 
+vector<Entity::Attribute> Armor::getAttributes() const {
+    vector<Attribute> att = Item::getAttributes();
+    att.push_back(Attribute("Armatura", std::to_string(armatura)));
+    return att;
+}
+

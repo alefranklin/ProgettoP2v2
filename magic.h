@@ -17,6 +17,7 @@ public:
   int getMana() const;
   virtual int use(Character* owner, vector<Character*> target = vector<Character*>()) = 0;
 
+  virtual vector<Attribute> getAttributes() const;
 };
 
 #endif // MAGIC_H

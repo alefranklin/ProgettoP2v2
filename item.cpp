@@ -3,8 +3,6 @@
 
 #include <iostream>
 #include <QDebug>
-
-
 using namespace std;
 
 unsigned int Item::usedID = 0;
@@ -26,6 +24,13 @@ unsigned int Item::getID() const
 string Item::getNome() const
 {
     return nome;
+}
+
+vector<Entity::Attribute> Item::getAttributes() const {
+    vector<Attribute> att;
+    att.push_back(Attribute("ID", to_string(ID)));
+    att.push_back(Attribute("Nome", nome));
+    return att;
 }
 
 Item::~Item()

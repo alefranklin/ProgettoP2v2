@@ -23,3 +23,11 @@ int MagicWeapon::use(Character* owner, vector<Character*> target)
     qDebug() << " + infliggi " << Weapon::getDamage()*Magic::getEffect() << " danno magico" << endl;
   }
 }
+
+vector<Entity::Attribute> MagicWeapon::getAttributes() const {
+    vector<Attribute> att = Weapon::getAttributes();
+    vector<Attribute> att_m = Magic::getAttributes();
+    //concateno
+    att.insert(att.end(), att_m.begin(), att_m.end());
+    return att;
+}

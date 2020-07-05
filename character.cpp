@@ -115,6 +115,16 @@ bool Character::isAlive() {
 
 }
 
+vector<Entity::Attribute> Character::getAttributes() const {
+    vector<Attribute> att;
+    att.push_back(Attribute("Nome", name));
+    att.push_back(Attribute("Vita", to_string(vita)));
+    att.push_back(Attribute("vitaMax", to_string(vitaMax)));
+    att.push_back(Attribute("manaMax", to_string(manaMax)));
+    att.push_back(Attribute("Mana", to_string(mana)));
+    return att;
+}
+
 int Character::attacca(vector<Character *> target)
 {
     return arma->use(this, target);

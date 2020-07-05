@@ -30,8 +30,8 @@ public:
   /* equipaggia l'item selezionato e mette nell'inventario quello vecchio */
   void equip(Item *i);
 
-private:
   Item *inventoryGetItem(unsigned int id);
+private:
 
   Container<Item*> inventory;
 };
