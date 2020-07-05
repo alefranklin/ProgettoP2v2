@@ -20,7 +20,7 @@ public:
 
   void usePotion(Item* p);
 
-  const Container<Item *>& getInventory() const;
+  const Container<Item *> &getInventory() const;
 
   // aggiungo a inventario
   void inventoryAdd(Item *i);

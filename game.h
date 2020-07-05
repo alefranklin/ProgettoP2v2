@@ -8,6 +8,7 @@
 #include <QJsonObject>
 #include <QJsonParseError>
 
+#include "container.h"
 #include "entity.h"
 #include "map.h"
 #include "mob.h"
@@ -92,7 +93,8 @@ signals:
     //passo errore load player da file
     void loadPlayerFromFile(QJsonParseError);
 
-
+    //segnale refresh Inventario
+    void inventoryRefreshSGNL(const Container<Item*> &);
     
 public slots:
     // slot che gestisce le scelte fatte dal giocatore
@@ -107,6 +109,12 @@ public slots:
     void savePlayerSlot();
     //carico il personaggio
     void loadPlayerSlot(bool);
+    // aggiorno l'inventario
+    void inventoryRefreshSlot();
+    // seleziono Item
+    void onSelectItem(int id);
+    // elimino item
+    void onDeleteItem(int id);
 
 
 //PRIVATE DI GAME

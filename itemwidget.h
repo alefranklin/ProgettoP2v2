@@ -40,7 +40,7 @@ public:
 
 signals:
     void selectedItem(int id);
-    void deleteItem(int id);
+    void deletedItem(int id);
 
 public slots:
     void setItem(vector<Entity::Attribute> attributes);

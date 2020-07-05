@@ -46,6 +46,7 @@ Game::Game(Character* player, QObject *parent) : QObject(parent)
 
     //la grandezza della minimappa è settata quindi aggiorno la view
     emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
+    inventoryRefreshSlot();
 }
 
 Game::~Game()
@@ -300,6 +301,7 @@ void Game::choiceDone(Choice c)
         (dynamic_cast<Player*>(pg))->inventoryAdd(item_preso);
 
         emit dialogOut("Hai preso l'oggetto.\n\n");
+        emit inventoryRefreshSlot();
         t.e = nullptr;
         emit setEnableMove(true);
         break;
@@ -432,6 +434,24 @@ void Game::loadPlayerSlot(bool)
             emit loadPlayerFromFile(jsonError);
         }
     }
+
+}
+
+void Game::inventoryRefreshSlot() {
+    Player* p = dynamic_cast<Player*>(pg);
+    if(p) {
+        emit inventoryRefreshSGNL(p->getInventory());
+    }
+}
+
+void Game::onSelectItem(int id) {
+
+    emit inventoryRefreshSlot();
+}
+
+void Game::onDeleteItem(int id) {
+
+    emit inventoryRefreshSlot();
 
 }
 
