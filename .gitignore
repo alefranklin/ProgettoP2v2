@@ -50,10 +50,12 @@ compile_commands.json
 
 # QtCreator local machine specific files for imported projects
 *creator.user*
-relazione/relazione.pdf
-relazione/relazione.synctex.gz
-relazione/relazione.toc
-relazione/relazione.log
-relazione/relazione.fls
-relazione/relazione.fdb_latexmk
-relazione/relazione.aux
+
+# latex
+*.pdf
+*.synctex.gz
+*.toc
+*.log
+*.fls
+*.fdb_latexmk
+*.aux
