@@ -7,5 +7,6 @@
     </qresource>
     <qresource prefix="/icon">
         <file alias="del_icon">img/icon/del.png</file>
+        <file alias="ok_icon">img/icon/ok.png</file>
     </qresource>
 </RCC>

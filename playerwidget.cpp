@@ -51,8 +51,10 @@ PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     //weapon widget
     weapon = new ItemWidget();
     weapon->setItem(c->getWeapon()->getAttributes());
+    weapon->disable(true);
     armor = new ItemWidget();
     armor->setItem(c->getArmor()->getAttributes());
+    armor->disable(true);
     setFixedWidth(270);
     //setto tutto
     setLayout(layout);
