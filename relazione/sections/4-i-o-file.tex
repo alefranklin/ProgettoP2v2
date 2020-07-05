@@ -1,0 +1,22 @@
+\documentclass[../relazione.tex]{subfiles}
+
+\begin{document}
+\subsection{Utilizzo I/O su file}
+\label{ssec:i-o-file}
+Le funzionalità di input/output su file sono state implementate nel caricamento e nel salvataggio di un personaggio.
+Sarà dunque possibile durante la partita interropere il gioco e salvare il proprio personaggio su un file JSon contenente i seguenti campi:
+\begin{itemize}
+    \item \textbf{Caratteristiche}: contiene le caratteristiche del personaggio, ovvero i suoi punti vita, punti mana e il nome;
+    \item \textbf{Arma}: contiene le caratteristiche dell'arma. Possono variare a seconda del tipo di arma posseduta(arco,spada o arma magica);
+    \item \textbf{Armatura}: contiene le caratteristiche dell'armatura;
+    \item \textbf{Inventario}: è una lista di \textbf{Armi} e \textbf{Armature} formate come citato nei punti precendenti.
+\end{itemize}
+
+Il programma al momento della creazione di una nuova partita permetterà di caricare un file \textit{.fpg} (formato utilizzato anche per il salvataggio).
+Una volta selezionato il file il programma eseguirà i dovuti controlli per verificare che sia ben formato e con contenuti coerenti.
+Se la verifica andrà a buon fine avvierà una nuova partita con il personaggio caricato, altrimenti mostrerà una finestra che avvisa dell'errore durante il caricamento.
+
+L'input su file viene utilizzato pure per salvare il punteggio ottenuto dal giocatore alla fine di ogni partita.
+Verrá salvato su un file .txt con il seguente formato:\\ 
+\textbf{Personaggio: nome   Punteggio: punti}
+\end{document}

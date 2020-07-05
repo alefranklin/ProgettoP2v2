@@ -1,5 +1,16 @@
 \documentclass[../relazione.tex]{subfiles}
 
 \begin{document}
-Ciao a tutti
+\subsection{Utilizzo polimorfico della sotto-gerarchia Item}
+\label{ssec:polimorfismo-item}
+I principali metodi che utilizzano il polimorfismo nella sotto-gerarchia Item sono il metodo \textbf{int use(Character* owner, Character* target)} e 
+\textbf{vector<Attribute> getAttributes()}. La prima definisce come ogni oggetto interagisce con i Character owner e target che vengono passati per riferimento,
+il corpo di questo metodo é ridefinito in ogni classe istanziabile che deriva direttamente o indirettamente da Item.
+Il metodo \textbf{getAttributes()} invece ritorna tutte le statistiche dell'Item chiamante e come \textbf{use()} é stata ridefinita per tutte le classi derivate da Item
+per ritornare le statistiche adeguate ad ogni tipo di oggetto.
+\subsection{Utilizzo polimorfico della sotto-gerarchia Character}
+\label{ssec:polimorfismo-character}
+L'unico metodo che fa utilizzo di polimorfismo nella sotto-gerarchia Character è \textbf{vector<Attribute> getAttributes()} che ha le stesse funzionalità descritte nella
+sezione precendente ma applicate alle caratteristiche di Character. Questo rende \textbf{getAttribute()} il metodo più polimorfo dell'intera gerarchia in quanto
+é implementato in tutte le classi attraverso la stessa firma. 
 \end{document}

@@ -11,7 +11,7 @@ private:
   int mana;
 protected:
   Magic(string n, int e, int m);
-public:
+//public:
   virtual ~Magic();
   int getEffect() const;
   int getMana() const;
