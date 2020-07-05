@@ -65,7 +65,7 @@ void Character::addMana(int m) {
     else mana = manaMax;
 }
 
-void Character::setDamage(int d)
+int Character::setDamageTaken(int d)
 {
     vita = (vita-d >= 0) ? vita-d : 0;
     //isAlive();
@@ -125,7 +125,7 @@ vector<Entity::Attribute> Character::getAttributes() const {
     return att;
 }
 
-int Character::attacca(vector<Character *> target)
+int Character::attacca(Character* target)
 {
     return arma->use(this, target);
 }

@@ -10,7 +10,7 @@ class MagicWeapon: virtual public Weapon, virtual public Magic {
 public:
   MagicWeapon(string n, int d, int e, int m);
   virtual ~MagicWeapon();
-  virtual int use(Character* owner, vector<Character*> target = vector<Character*>());
+  virtual int use(Character* owner, Character* target = nullptr);
 
   virtual vector<Attribute> getAttributes() const;
 };

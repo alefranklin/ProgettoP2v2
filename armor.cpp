@@ -24,7 +24,7 @@ int Armor::absorb(int danno)
     return (armatura > danno) ? 0 : danno-armatura;
 }
 
-int Armor::use(Character *owner, vector<Character *> target)
+int Armor::use(Character *owner, Character* target)
 {
     return 0;
 }

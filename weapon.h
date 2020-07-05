@@ -13,7 +13,7 @@ protected:
 public:
   virtual ~Weapon();
   virtual int getDamage() const;
-  virtual int use(Character* owner, vector<Character*> target) = 0;
+  virtual int use(Character* owner, Character* target) = 0;
 
   virtual vector<Attribute> getAttributes() const;
 };

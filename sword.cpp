@@ -16,20 +16,11 @@ int Sword::getRange() const
     return range;
 }
 
-int Sword::use(Character* owner, vector<Character*> target)
+int Sword::use(Character* owner, Character* target)
 {
     qDebug() << "sto usando SPADA " << endl;
 
-    int i = 0;
-
-    for(auto &elem : target) {
-        danno = elem->setDamage(getDamage());
-        i++;
-        if(i >= range) break;
-
-    }
-
-    return getDamage();
+    return target->setDamageTaken(getDamage());
 }
 
 vector<Entity::Attribute> Sword::getAttributes() const {

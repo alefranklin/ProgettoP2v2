@@ -31,7 +31,7 @@ public:
   virtual int getManaMax() const;
   virtual void setMana(int m);
   virtual void addMana(int m);
-  virtual void setDamage(int d);
+  virtual int setDamageTaken(int d);
   virtual Item* getWeapon();
 
   /* prendo l'arma e metto nullptr */
@@ -71,7 +71,7 @@ public:
   mob.attacca(Charxter player)
   */
 
-  virtual int attacca(vector<Character*> target);
+  virtual int attacca(Character* target);
 
 };
 

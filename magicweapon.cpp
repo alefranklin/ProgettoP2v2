@@ -15,7 +15,7 @@ MagicWeapon::~MagicWeapon()
     qDebug() << "elimino MagicWeapon:" << endl;
 }
 
-int MagicWeapon::use(Character* owner, vector<Character*> target)
+int MagicWeapon::use(Character* owner, Character* target)
 {
   qDebug() << "Arma magica" << endl;
   if(100 >= Magic::getMana()){ //**** AGGGIORNARE CON manaPG

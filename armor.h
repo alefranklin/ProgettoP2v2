@@ -15,7 +15,7 @@ public:
 
     virtual ~Armor();
     int absorb(int danno);
-    virtual int use(Character* owner, vector<Character*> target = vector<Character*>() );
+    virtual int use(Character* owner, Character* target = nullptr );
 
     vector<Attribute> getAttributes() const;
 };

@@ -17,19 +17,15 @@ Player::~Player() {
     inventory.clear();
 }
 
-int Player::useItem(unsigned int id, std::vector<Entity *> e) {
+/*int Player::useItem(unsigned int id, std::vector<Entity *> e) {
     //Item *i = inventoryGetItem(id);
     //if(Game::isPotion(i)) usePotion(i);
     //else exchangeWearable(i);
-}
+}*/
 
-void Player::usePotion(Item *p, std::vector<Entity *> e) {
-    std::vector<Character*> enemies;
-    for( auto &elem : e) {
-        if( Game::isCharacter(elem) )
-            enemies.push_back(dynamic_cast<Character*>(elem));
-    }
-    p->use(this, enemies);
+void Player::usePotion(Item *p) {
+
+    p->use(this, nullptr);
     // ho usato la pozza adesso la elimino dall'inventario
     inventoryDelete( p->getID() );
 }

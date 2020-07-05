@@ -18,7 +18,7 @@ public:
    */
   int useItem(unsigned int id, std::vector<Entity *> e = std::vector<Entity *>());
 
-  void usePotion(Item* p, std::vector<Entity *> e = std::vector<Entity *>());
+  void usePotion(Item* p);
 
   const Container<Item *>& getInventory() const;
 

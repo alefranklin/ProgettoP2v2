@@ -19,7 +19,7 @@ void TileButton::setTile(Tile t)
     tile = t;
 
     //se non ci sono entity disabilito il pulsante
-    if(tile.e.empty()) setDisabled(true);
+    if(tile.e) setDisabled(true);
     else               setDisabled(false);
 
     switch(tile.biome){
@@ -40,13 +40,13 @@ void TileButton::setTile(Tile t)
         break;
     }
 
-    if(!tile.e.empty()){
-        if(Game::isMob(tile.e[0])){
+    if(!tile.e){
+        if(Game::isMob(tile.e)){
             setText("N");
             setStyleSheet("font-weight: bold; color: red; border: 1px solid red;");
         }
 
-        if(Game::isItem(tile.e[0])){
+        if(Game::isItem(tile.e)){
             setText("I");
             setStyleSheet("font-weight: bold; color: purple; border: 1px solid purple;");
         }

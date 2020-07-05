@@ -107,8 +107,9 @@ void Game::usePotionMana() { emit dialogOut("sto usando la pozione del mana"); }
 void Game::usePotionHealth() { emit dialogOut("sto usando la pozione della vita"); }
 
 void Game::startCombat(Tile &t) {
-    if(!t.e.empty() && Game::isMob(t.e[0])) {
-        combat = new CombatState(t.e, pg);
+    if(!t.e && Game::isMob(t.e)) {
+        Character* c = dynamic_cast<Character*>(t.e);
+        combat = new CombatState(c, pg);
         emit dialogOut("Sei entrato in combattimento.\n\n");
         inCombat();
     } else {
@@ -124,7 +125,7 @@ void Game::inCombat(){
         combat->first_turn = false;
         combat->turno_player = Randomizer::randomNumberBetween(0,1);
     }
-    if(dynamic_cast<Mob*>(combat->enemies[0])->isAlive()) {
+    if(dynamic_cast<Mob*>(combat->enemy)->isAlive()) {
         if(combat->turno_player){
                 c << Choice::attack() << Choice::escape();
                 combat->turno_player = false;
@@ -135,7 +136,7 @@ void Game::inCombat(){
                       "Ti infligge "+QString::number(i)+" danni.\n"
                       "Cosa vuoi fare?\n");
             combat->turno_player = true;
-            pg->setDamage(5);
+            combat->enemy->attacca(pg);
             emit updatePlayer(dynamic_cast<Player*>(pg));
             if(!pg->isAlive()){
                 endCombat(false);
@@ -151,8 +152,8 @@ void Game::inCombat(){
 
 void Game::attacca() {
     emit dialogOut("Hai attaccato il nemico.\n\n");
-    Mob* m =  dynamic_cast<Mob*>(combat->enemies[0]);
-    m->setDamage(10);
+    Mob* m =  dynamic_cast<Mob*>(combat->enemy);
+    pg->attacca(combat->enemy);
     emit updateMob(m);
     return;
 }
@@ -179,7 +180,7 @@ void Game::endCombat(bool victory) {
     combat = nullptr;
 
     if(victory){
-        map.getCurrentTile().e.clear();
+        map.getCurrentTile().e = nullptr;
         dialogOut("Hai ucciso il nemico. (+5 punti)\n\n");
         emit clearViewMob();
         setScore(5);
@@ -207,11 +208,11 @@ void Game::pushRandomMob(int range, Coordinate c) {
         Tile &t = map.getTileIn(*it);
 
         // salto il tile se il vettore non è vuoto
-        if( ! t.e.empty())  continue;
+        if( ! t.e)  continue;
 
         //con una certa probabilità aggiungo un mob (30%)
         if( Randomizer::randomNumberBetween(0, 100) < 2 ) {
-            t.e.push_back( Randomizer::getRandomMob() );
+            t.e = Randomizer::getRandomMob();
         }
     }
 
@@ -226,11 +227,11 @@ void Game::pushRandomItem(int range, Coordinate c) {
         Tile &t = map.getTileIn(*it);
 
         // salto il tile se il vettore non è vuoto
-        if( ! t.e.empty() ) continue;
+        if( ! t.e ) continue;
 
         if (Randomizer::randomNumberBetween(0, 200) < 1 ) {
             // 20 % oggetto tra tutti quelli possibili quindi spada, armatura, pozze
-            t.e.push_back( Randomizer::getRandomItem() );
+            t.e = Randomizer::getRandomItem();
 
         } /*else {
                 // solo pozioni
@@ -270,12 +271,12 @@ void Game::choiceDone(Choice c)
     case 5:{
         //aggiungi item all'inventario
         Tile &t = map.getCurrentTile();
-        Item* item_preso = dynamic_cast<Item*>(t.e[0]);
+        Item* item_preso = dynamic_cast<Item*>(t.e);
 
         (dynamic_cast<Player*>(pg))->inventoryAdd(item_preso);
 
         emit dialogOut("Hai preso l'oggetto.\n\n");
-        t.e.clear();
+        t.e = nullptr;
         emit setEnableMove(true);
         break;
     }
@@ -304,16 +305,16 @@ void Game::move(char m) {
     Tile &t = map.getCurrentTile();
     QVector<Choice> c;
 
-    if(!t.e.empty()) {
+    if(!t.e) {
         emit setEnableMove(false);
 
-        if(isMob(t.e[0])){
-            emit mobEncounter(dynamic_cast<Mob*>(t.e[0]));
+        if(isMob(t.e)){
+            emit mobEncounter(dynamic_cast<Mob*>(t.e));
             c << Choice::combat() << Choice::escape();
         }
 
-        if(isItem(t.e[0])){
-            emit dialogOut("Hai trovato "+QString::fromStdString(dynamic_cast<Item*>(t.e[0])->getNome()));
+        if(isItem(t.e)){
+            emit dialogOut("Hai trovato "+QString::fromStdString(dynamic_cast<Item*>(t.e)->getNome()));
             c << Choice::pickItem() << Choice::leaveItem();
         }
 
@@ -432,6 +433,6 @@ void Game::moveBack()
 }
 
 
-Game::CombatState::CombatState(std::vector<Entity *> &e, Character *pg, bool f): first_turn(f)
-  , enemies(e)
+Game::CombatState::CombatState(Character* &e, Character *pg, bool f): first_turn(f)
+  , enemy(e)
   , player(pg) {}

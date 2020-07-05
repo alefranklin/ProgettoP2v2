@@ -11,7 +11,7 @@ private:
 public:
     Sword(string n, int d, int r);
     int getRange() const;
-    virtual int use(Character* owner, vector<Character *> target = vector<Character*>() );
+    virtual int use(Character* owner, Character* target = nullptr );
 
     virtual vector<Attribute> getAttributes() const;
 };

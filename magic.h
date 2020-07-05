@@ -15,7 +15,7 @@ public:
   virtual ~Magic();
   int getEffect() const;
   int getMana() const;
-  virtual int use(Character* owner, vector<Character*> target = vector<Character*>()) = 0;
+  virtual int use(Character* owner, Character* target = nullptr) = 0;
 
   virtual vector<Attribute> getAttributes() const;
 };

@@ -17,7 +17,7 @@ public:
  Potion(string n, int e, bool v, bool m);
  int getEffect() const;
  virtual ~Potion();
- virtual int use(Character* owner, vector<Character*> target = vector<Character*>());
+ virtual int use(Character* owner, Character* target = nullptr);
 
  virtual vector<Attribute> getAttributes() const;
 };

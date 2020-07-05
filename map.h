@@ -28,8 +28,8 @@ struct Coordinate {
 struct Tile {
   bool walkable;
   Biome biome;
-  std::vector<Entity*> e;
-  Tile(bool w = false, Biome b = Null, std::vector<Entity*> en = std::vector<Entity*>()): walkable(w), biome(b), e(en) {}
+  Entity* e;
+  Tile(bool w = false, Biome b = Null, Entity* en = nullptr): walkable(w), biome(b), e(en) {}
 };
 
 class Map {

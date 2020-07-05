@@ -15,7 +15,7 @@ int Bow::getArrow() const
     return arrows;
 }
 
-int Bow::use(Character* owner, vector<Character*> target)
+int Bow::use(Character* owner, Character* target)
 {
     qDebug() << "sto usando ARCO " << endl;
     return 0;

@@ -127,9 +127,9 @@ private:
     struct CombatState {
         bool turno_player;
         bool first_turn;
-        std::vector<Entity*> &enemies;
-        Character *player;
-        CombatState(std::vector<Entity*> &e, Character *pg, bool f = true);
+        Character* &enemy;
+        Character* player;
+        CombatState(Character* &e, Character *pg, bool f = true);
     };
 
     CombatState* combat;
