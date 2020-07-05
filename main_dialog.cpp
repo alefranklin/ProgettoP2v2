@@ -4,6 +4,7 @@
 #include "main_dialog.h"
 #include "main_dialog.h"
 #include "main_dialog.h"
+#include "container.h"
 
 
 main_dialog::main_dialog(bool& refNewGame, Game *g, QWidget *parent)
@@ -141,11 +142,23 @@ void main_dialog::savePlayerToJson()
     if(fileName != "") {
         QFile saveLocation(fileName);
 
+
         QJsonObject insertPlayer;
 
-        insertPlayer["Caratteristiche"] = game->characterToJson(game->getPlayer());
-        insertPlayer["Arma"] = game->itemToJson(game->getPlayer()->getWeapon());
-        insertPlayer["Armatura"] = game->itemToJson(game->getPlayer()->getArmor());
+        insertPlayer["Caratteristiche"] = Game::characterToJson(game->getPlayer());
+        insertPlayer["Arma"] = Game::itemToJson(game->getPlayer()->getWeapon());
+        insertPlayer["Armatura"] = Game::itemToJson(game->getPlayer()->getArmor());
+
+        //creo inventario
+        QJsonArray inventario;
+        Player *p = dynamic_cast<Player*>(game->getPlayer());
+        if (p) {
+            const Container<Item*> &inv = p->getInventory();
+            for(auto it = inv.cbegin(); it != inv.cend(); ++it) {
+                inventario.push_back(Game::itemToJson((*it)));
+            }
+        }
+        insertPlayer.insert(QString("Inventario"), QJsonValue(inventario));
 
         QJsonDocument doc(insertPlayer);
         if(!saveLocation.open(QIODevice::WriteOnly)) {

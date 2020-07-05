@@ -1,6 +1,13 @@
 #include "entergame.h"
 
 #include "player.h"
+#include "item.h"
+#include "weapon.h"
+#include "sword.h"
+#include "bow.h"
+#include "magicweapon.h"
+#include "potion.h"
+#include "armor.h"
 
 #include <QFileDialog>
 #include <QJsonArray>
@@ -8,7 +15,6 @@
 
 EnterGame::EnterGame(Game** g, QWidget* parent): QDialog(parent), gioco(g)
 {
-
     setWindowTitle("D&P2 - Seleziona Nome");
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
@@ -126,17 +132,36 @@ void EnterGame::loadPlayerSlot()
         QJsonObject pg = document.object().value("Caratteristiche").toObject();//.toArray();
         QJsonObject arma = document.object().value("Arma").toObject();
         QJsonObject armatura = document.object().value("Armatura").toObject();
+        QJsonArray inventario = document.object().value("Inventario").toArray();
+
 
         //bool corrotto = false;
 
 //        vector<item*> itemsToLoad;
 //        vector<item*> buildToLoad;
        if(!pg.isEmpty() && !arma.isEmpty() && !armatura.isEmpty()) {
-            foreach(const QJsonValue& v, pg) {
-                qDebug() << v;
+            Player* p = new Player(pg["Nome"].toString().toStdString(), pg["Vita"].toString().toInt(), pg["Mana"].toString().toInt());
+            p->setVitaMax(pg["vitaMax"].toString().toInt());
+            p->setManaMax(pg["manaMax"].toString().toInt());
+
+            Item *n = Game::JsonToItem(arma);
+            Item *old;
+            if(n) {
+                Item *old = p->setWeapon(n);
+                delete old;
+            }
+            n = Game::JsonToItem(armatura);
+            if(n) {
+                old = p->setArmor(n);
+                delete old;
             }
 
-            Player* p = new Player(pg["nome"].toString().toStdString(), pg["vita"].toInt(), pg["mana"].toInt());
+           foreach (const QJsonValue &value, inventario) {
+                QJsonObject obj = value.toObject();
+                Item *i = Game::JsonToItem(obj);
+                if(i) p->inventoryAdd(i);
+            }
+
 
             //p->setWeapon()
             *gioco = new Game(p);

@@ -67,8 +67,9 @@ public:
     //elimino pg e lo setto a nullptr per nuova partita
     void setPgNull();
 
-    QJsonObject characterToJson(Character *c);
-    QJsonObject itemToJson(Item *i);
+    static QJsonObject characterToJson(Character *c);
+    static QJsonObject itemToJson(Item *i);
+    static Item* JsonToItem(QJsonObject &obj);
 
 signals:
     // emetto segnale per il dialogo
@@ -119,6 +120,8 @@ public slots:
     void onSelectItem(int id);
     // elimino item
     void onDeleteItem(int id);
+    //aggiorno player
+    void refreshPlayer();
 
 
 //PRIVATE DI GAME

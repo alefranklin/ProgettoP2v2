@@ -38,6 +38,14 @@ int Character::getVitaMax() const
     return vitaMax;
 }
 
+void Character::setVitaMax(int vx) {
+    vitaMax = vx;
+}
+
+void Character::setManaMax(int mx) {
+    manaMax = mx;
+}
+
 int Character::getManaMax() const
 {
     return manaMax;
