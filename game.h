@@ -31,10 +31,9 @@ public:
         static Choice escape() { return Choice("Scappa", 0); }
         static Choice combat() { return Choice("Combatti", 1); }
         static Choice attack() { return Choice("Attacca", 2); }
-        static Choice useManaPotion() { return Choice("Usa pozione mana", 3); }
-        static Choice useHealthPotion() { return Choice("Usa pozione vita", 4); }
-        static Choice pickItem() { return Choice("Raccogli", 5); }
-        static Choice leaveItem() { return Choice("Lascia", 6); }
+        static Choice usePotion() { return Choice("Usa pozione", 3); }
+        static Choice pickItem() { return Choice("Raccogli", 4); }
+        static Choice leaveItem() { return Choice("Lascia", 5); }
         operator int() const
         {
            return number;

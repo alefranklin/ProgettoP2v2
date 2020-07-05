@@ -125,21 +125,28 @@ void Game::inCombat(){
         combat->first_turn = false;
         combat->turno_player = Randomizer::randomNumberBetween(0,1);
     }
+
+    //controllo se il mostro è vivo
     if(dynamic_cast<Mob*>(combat->enemy)->isAlive()) {
+        //se è il mio turno
         if(combat->turno_player){
                 c << Choice::attack() << Choice::escape();
                 combat->turno_player = false;
                 emit choiceOut(c);
-        } else {
-            //int i = Randomizer::randomNumberBetween(1, 400);
-
+        }
+        else { //turno del nemico
             int dannoFatto = combat->enemy->attacca(pg);
             dialogOut("Il mostro ti attacca.\n"
                       "Ti infligge "+QString::number(dannoFatto)+" danni.\n"
                       "Cosa vuoi fare?\n");
             combat->turno_player = true;
 
+            Mob* m =  dynamic_cast<Mob*>(combat->enemy);
+
+            //aggiorno view
             emit updatePlayer(dynamic_cast<Player*>(pg));
+            emit updateMob(m);
+
             if(!pg->isAlive()){
                 endCombat(false);
                 return;
@@ -154,10 +161,24 @@ void Game::inCombat(){
 
 void Game::attacca() {
     emit dialogOut("Hai attaccato il nemico.\n\n");
-    //Mob* m =  dynamic_cast<Mob*>(combat->enemy);
+
+    Mob* m = dynamic_cast<Mob*>(combat->enemy);
+
     int dannoFatto = pg->attacca(combat->enemy);
-    emit dialogOut("Hai inflitto"+QString::number(dannoFatto)+"danni");
-    emit updateMob(dynamic_cast<Mob*>(combat->enemy));
+
+    if(typeid(*(pg->getWeapon())) == typeid(MagicWeapon) && pg->getMana() == 0){
+        dialogOut("Hai finito il mana. Infliggi +"+QString::number(dannoFatto)+" danno.\nUsa una pozione per ripristinarlo.\n");
+    } else {
+        if (typeid(*(pg->getWeapon())) == typeid(Bow)) {
+            dialogOut("Hai finito le frecce. Infliggi +"+QString::number(dannoFatto)+" danno.\nCambia arma.\n");
+        }
+        else emit dialogOut("Hai inflitto "+QString::number(dannoFatto)+" danni la nemico.\n");
+    }
+
+    //aggiorno view
+    emit updateMob(m);
+    emit updatePlayer(dynamic_cast<Player*>(pg));
+
     return;
 }
 

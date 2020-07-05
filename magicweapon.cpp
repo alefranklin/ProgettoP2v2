@@ -1,5 +1,5 @@
 #include "magicweapon.h"
-#include "character.h";
+#include "character.h"
 
 #include <QDebug>
 
@@ -19,12 +19,17 @@ MagicWeapon::~MagicWeapon()
 int MagicWeapon::use(Character* owner, Character* target)
 {
   qDebug() << "USO ARMA MAGICA" << endl;
-  if(owner->getMana() > getMana()){
+  if(owner->getMana() >= getMana()){
       owner->useMana(getMana());
-      return target->setDamageTaken(getDamage()*(getEffect()/10));
+      return target->setDamageTaken(getDamage()+(getEffect()/2));
   } else {
-      return 0;
+      return target->setDamageTaken(1);
   }
+}
+
+int MagicWeapon::getDamage() const
+{
+    return Weapon::getDamage()+(getEffect()/2);
 }
 
 vector<Entity::Attribute> MagicWeapon::getAttributes() const {

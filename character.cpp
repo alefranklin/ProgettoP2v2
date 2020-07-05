@@ -18,8 +18,9 @@ Character::Character(string n, int v, int m):
 
 {
     qDebug() << "istanzio Character: ";
-    setWeapon(Randomizer::getRandomWeapon());
+    //setWeapon(Randomizer::getRandomWeapon());
     setArmor(Randomizer::getRandomArmor());
+    setWeapon(Randomizer::getRandomMagicWeapon());
 }
 
 string Character::getName()
@@ -68,14 +69,18 @@ void Character::addMana(int m) {
 }
 
 void Character::useMana(int m){
-    mana -= m;
+    mana = mana - m;
 }
 
 int Character::setDamageTaken(int d)
 {
-    vita = (vita-d >= 0) ? vita-d : 0;
-    //isAlive();
-    return d;
+    Armor* armor = dynamic_cast<Armor* >(armatura);
+    int danno_subito = d;
+
+    if(armor) danno_subito = armor->absorb(d);
+
+    vita = (vita-danno_subito  >= 0) ? vita-danno_subito : 0;
+    return danno_subito;
 }
 
 Item* Character::getWeapon()
