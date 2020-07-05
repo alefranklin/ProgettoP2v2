@@ -25,8 +25,11 @@ int MagicWeapon::use(Character* owner, Character* target)
 }
 
 vector<Entity::Attribute> MagicWeapon::getAttributes() const {
+
+    //TODO aggiungere attributo
     vector<Attribute> att = Weapon::getAttributes();
     vector<Attribute> att_m = Magic::getAttributes();
+
     //concateno
     att.insert(att.end(), att_m.begin(), att_m.end());
     return att;

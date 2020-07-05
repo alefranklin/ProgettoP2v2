@@ -4,14 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "item.h"
-#include "armor.h"
-#include "mob.h"
-#include "weapon.h"
-#include "sword.h"
-#include "bow.h"
-#include "potion.h"
-#include "magicweapon.h"
+
 
 using namespace std;
 
@@ -64,7 +57,7 @@ MagicWeapon* Randomizer::getRandomMagicWeapon()
 
 Bow* Randomizer::getRandomBow()
 {
-    return new Bow("Spada di legno", randomNumberBetween(2,8), randomNumberBetween(2,8));
+    return new Bow("Arco di legno", randomNumberBetween(2,8), randomNumberBetween(2,8));
 }
 
 Sword* Randomizer::getRandomSword()

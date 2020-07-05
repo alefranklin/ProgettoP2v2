@@ -40,7 +40,7 @@ void TileButton::setTile(Tile t)
         break;
     }
 
-    if(!tile.e){
+    if(tile.e){
         if(Game::isMob(tile.e)){
             setText("N");
             setStyleSheet("font-weight: bold; color: red; border: 1px solid red;");

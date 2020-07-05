@@ -2,16 +2,26 @@
 #define RANDOMIZER_H
 
 #include <string>
+
+#include "item.h"
+#include "armor.h"
+#include "mob.h"
+#include "weapon.h"
+#include "sword.h"
+#include "bow.h"
+#include "potion.h"
+#include "magicweapon.h"
+
 using namespace std;
 
-class Mob;
-class Item;
-class Armor;
-class Weapon;
-class Sword;
-class Bow;
-class Potion;
-class MagicWeapon;
+//class Mob;
+//class Item;
+//class Armor;
+//class Weapon;
+//class Sword;
+//class Bow;
+//class Potion;
+//class MagicWeapon;
 
 /**
  * classe statica per ottenere valori oppure oggetti random

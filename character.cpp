@@ -3,6 +3,8 @@
 #include <QDebug>
 #include "sword.h"
 #include "armor.h"
+#include "randomizer.h"
+
 using namespace std;
 
 //CLASSE CHARACTER
@@ -15,9 +17,9 @@ Character::Character(string n, int v, int m):
   , mana(m)
 
 {
-    arma = new Sword("nullptr", 100, 1);
-    armatura = new Armor("ARMATURA GROSSSA", 70);
     qDebug() << "istanzio Character: ";
+    setWeapon(Randomizer::getRandomWeapon());
+    setArmor(Randomizer::getRandomArmor());
 }
 
 string Character::getName()
@@ -69,6 +71,7 @@ int Character::setDamageTaken(int d)
 {
     vita = (vita-d >= 0) ? vita-d : 0;
     //isAlive();
+    return d;
 }
 
 Item* Character::getWeapon()

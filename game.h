@@ -127,7 +127,7 @@ private:
     struct CombatState {
         bool turno_player;
         bool first_turn;
-        Character* &enemy;
+        Character* enemy;
         Character* player;
         CombatState(Character* &e, Character *pg, bool f = true);
     };

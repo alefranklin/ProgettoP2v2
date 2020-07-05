@@ -107,7 +107,7 @@ void Game::usePotionMana() { emit dialogOut("sto usando la pozione del mana"); }
 void Game::usePotionHealth() { emit dialogOut("sto usando la pozione della vita"); }
 
 void Game::startCombat(Tile &t) {
-    if(!t.e && Game::isMob(t.e)) {
+    if(t.e && Game::isMob(t.e)) {
         Character* c = dynamic_cast<Character*>(t.e);
         combat = new CombatState(c, pg);
         emit dialogOut("Sei entrato in combattimento.\n\n");
@@ -131,12 +131,14 @@ void Game::inCombat(){
                 combat->turno_player = false;
                 emit choiceOut(c);
         } else {
-            int i = Randomizer::randomNumberBetween(1, 400);
+            //int i = Randomizer::randomNumberBetween(1, 400);
+
+            int dannoFatto = combat->enemy->attacca(pg);
             dialogOut("Il mostro ti attacca.\n"
-                      "Ti infligge "+QString::number(i)+" danni.\n"
+                      "Ti infligge "+QString::number(dannoFatto)+" danni.\n"
                       "Cosa vuoi fare?\n");
             combat->turno_player = true;
-            combat->enemy->attacca(pg);
+
             emit updatePlayer(dynamic_cast<Player*>(pg));
             if(!pg->isAlive()){
                 endCombat(false);
@@ -152,9 +154,9 @@ void Game::inCombat(){
 
 void Game::attacca() {
     emit dialogOut("Hai attaccato il nemico.\n\n");
-    Mob* m =  dynamic_cast<Mob*>(combat->enemy);
+    //Mob* m =  dynamic_cast<Mob*>(combat->enemy);
     pg->attacca(combat->enemy);
-    emit updateMob(m);
+    emit updateMob(dynamic_cast<Mob*>(combat->enemy));
     return;
 }
 
@@ -207,8 +209,8 @@ void Game::pushRandomMob(int range, Coordinate c) {
 
         Tile &t = map.getTileIn(*it);
 
-        // salto il tile se il vettore non è vuoto
-        if( ! t.e)  continue;
+        // salto il tile se è vuoto
+        if(t.e)  continue;
 
         //con una certa probabilità aggiungo un mob (30%)
         if( Randomizer::randomNumberBetween(0, 100) < 2 ) {
@@ -226,8 +228,8 @@ void Game::pushRandomItem(int range, Coordinate c) {
 
         Tile &t = map.getTileIn(*it);
 
-        // salto il tile se il vettore non è vuoto
-        if( ! t.e ) continue;
+        // salto il tile se è vuoto
+        if(t.e) continue;
 
         if (Randomizer::randomNumberBetween(0, 200) < 1 ) {
             // 20 % oggetto tra tutti quelli possibili quindi spada, armatura, pozze
@@ -305,7 +307,7 @@ void Game::move(char m) {
     Tile &t = map.getCurrentTile();
     QVector<Choice> c;
 
-    if(!t.e) {
+    if(t.e) {
         emit setEnableMove(false);
 
         if(isMob(t.e)){

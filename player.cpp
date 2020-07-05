@@ -2,6 +2,7 @@
 
 #include "item.h"
 #include "game.h"
+#include "randomizer.h"
 
 //CLASSE PLAYER
 Player::Player(string n, int v, int m):
