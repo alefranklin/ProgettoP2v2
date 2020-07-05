@@ -40,7 +40,6 @@ private:
     int _size;
 
 public:
-
     class Iterator {
         friend class Container;
 
@@ -115,11 +114,9 @@ public:
     Const_Iterator cbegin() const;
     Const_Iterator cend() const;
 
-
-
 };
 
-#include "container.h"
+/******************************* definizioni **********************************/
 
 // costruttore
 template<typename T>
@@ -253,12 +250,7 @@ typename Container<T>::Iterator Container<T>::erase(Iterator pos) {
 
     // scorro la lista e la copio fino alla posizione da trovare
     while (p !=0 && p != pos.punt ) {
-        q = new nodo(p->info, p->next);class Container
-{
-public:
-    Container();
-};
-
+        q = new nodo(p->info, p->next);
         if (prec == 0) first = q;
         else prec->next = q;
         prec = q;
@@ -363,9 +355,7 @@ typename Container<T>::Const_Iterator Container<T>::cend() const {
 /****** classe annidata iterator ******/
 
 template<typename T>
-Container<T>::Iterator::Iterator(const typename Container<T>::smartp& s): punt(s) {
-
-}
+Container<T>::Iterator::Iterator(const typename Container<T>::smartp& s): punt(s) {}
 
 template<typename T>
 bool Container<T>::Iterator::operator==(const Iterator& i) const {
@@ -405,7 +395,7 @@ T* Container<T>::Iterator::operator->() const {
 /****** classe annidata Const_iterator ******/
 
 template<typename T>
-Container<T>::Const_Iterator::Const_Iterator(const Container<T>::smartp& s): punt(s) {}
+Container<T>::Const_Iterator::Const_Iterator(const typename Container<T>::smartp& s): punt(s) {}
 
 template<typename T>
 bool Container<T>::Const_Iterator::operator==(const Const_Iterator& i) const {
@@ -454,7 +444,7 @@ Container<T>::nodo::nodo(const T& t, const smartp& s): info(t), next(s), riferim
 
 
 
-/************************ classe annidata smartp ******************************/
+/****** classe annidata smartp ******/
 
 // costruttore e convertitore di tipo
 template<typename T>

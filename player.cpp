@@ -1,49 +1,81 @@
 #include "player.h"
 
 #include "item.h"
-#include "sword.h"
+#include "game.h"
 
 //CLASSE PLAYER
 Player::Player(string n, int v, int m):
     Character(n, v, m)
 {
-    Item *s =  new Sword("ciao", 100, 1);
-    inventory.push_back( s );
+    //Item *s =  new Sword("ciao", 100, 1);
+    //inventory.push_back( s );
 }
 
 Player::~Player() {
     if(getWeapon()) delete getWeapon();
     if(getArmor()) delete getArmor();
+    inventory.clear();
 }
 
 int Player::useItem(unsigned int id, std::vector<Entity *> e) {
-    Item *i = inventoryGetItem(id);
+    //Item *i = inventoryGetItem(id);
     //if(Game::isPotion(i)) usePotion(i);
     //else exchangeWearable(i);
 }
 
 void Player::usePotion(Item *p, std::vector<Entity *> e) {
-    //Character *c = dynamic_cast<Character*>(this);
-    //p->use(c, e);
-    //delete p;
+    std::vector<Character*> enemies;
+    for( auto &elem : e) {
+        if( Game::isCharacter(elem) )
+            enemies.push_back(dynamic_cast<Character*>(elem));
+    }
+    p->use(this, enemies);
+    // ho usato la pozza adesso la elimino dall'inventario
+    inventoryDelete( p->getID() );
 }
 
-void Player::exchangeWearable(Item *item) {
-    /*if(Game::isWeapon(item)) {
-        Weapon *w = dynamic_cast<Weapon *>(item);
-        setWeapon(w);
+void Player::equip(Item *i) {
+    Item *old = nullptr;
+    if( Game::isWeapon(i) )
+    {
+        old = setWeapon(i);
     }
-    if(Game::isArmor(item)) {
-
-    }*/
-
+    else if( Game::isArmor(i) )
+    {
+        old = setArmor(i);
+    }
+    if(old) inventory.push_front(old);
 }
 
 const Container<Item *>& Player::getInventory() const
 {
-    //return inventory;
+    return inventory;
+}
+
+void Player::inventoryAdd(Item *i)
+{
+    inventory.push_front(i);
+}
+
+void Player::inventoryDelete(unsigned int id)
+{
+    for(auto it = inventory.begin(); it != inventory.end(); ++it) {
+        if((*it)->getID() == id ) {
+            inventory.erase(it);
+            break;
+        }
+    }
 }
 
 Item *Player::inventoryGetItem(unsigned int id) {
+    for(auto it = inventory.begin(); it != inventory.end(); ++it) {
+        if((*it)->getID() == id ) {
+            Item *i = (*it);
+            inventory.erase(it);
+            return (i);
+        }
+    }
 
+    // se non trovo niente
+    return nullptr;
 }

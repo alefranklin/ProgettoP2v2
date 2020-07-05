@@ -33,9 +33,15 @@ public:
   virtual void setDamage(int d);
   virtual Item* getWeapon();
 
+  /* prendo l'arma e metto nullptr */
+  virtual Item* removeWeapon();
+
   /*ritorna la vecchia arma */
   virtual Item* setWeapon(Item *w);
   virtual Item* getArmor();
+
+  /*prendo l'armatura e metto nullptr */
+  virtual Item* removeArmor();
 
   /* ritorna la vecchia armatura */
   virtual Item* setArmor(Item *a);
