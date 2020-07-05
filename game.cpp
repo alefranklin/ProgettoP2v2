@@ -381,36 +381,36 @@ void Game::saveScoreSlot(){
 
 void Game::loadPlayerSlot(bool)
 {
-    QString filePlayer = QFileDialog::getOpenFileName(Q_NULLPTR
-                                                      , "Carica file Personaggio"
-                                                      , "../"
-                                                      , "File Player(*.fpg);;All files(*)");
+//    QString filePlayer = QFileDialog::getOpenFileName(Q_NULLPTR
+//                                                      , "Carica file Personaggio"
+//                                                      , "../"
+//                                                      , "File Player(*.fpg);;All files(*)");
 
 
-    if(filePlayer.isEmpty()) return;
-    else {
-        QFile f(filePlayer);
+//    if(filePlayer.isEmpty()) return;
+//    else {
+//        QFile f(filePlayer);
 
-        if(!f.open(QIODevice::ReadOnly)){
-            //QMessageBox::warning(Q_NULLPTR, "Impossibile aprire il file", f.errorString());
-            emit warningFile(f.errorString());
-            return;
-        }
-        QString on_json = f.readAll();
+//        if(!f.open(QIODevice::ReadOnly)){
+//            //QMessageBox::warning(Q_NULLPTR, "Impossibile aprire il file", f.errorString());
+//            emit warningFile(f.errorString());
+//            return;
+//        }
+//        QString on_json = f.readAll();
 
-        QJsonParseError jsonError;
+//        QJsonParseError jsonError;
 
-        QJsonDocument d_json = QJsonDocument::fromJson(on_json.toUtf8(), &jsonError);
+//        QJsonDocument d_json = QJsonDocument::fromJson(on_json.toUtf8(), &jsonError);
 
-        if(!jsonError.error){
+//        if(!jsonError.error){
 
-            QJsonObject json = d_json.object();
+//            QJsonObject json = d_json.object();
 
-            pg = new Player(json["nome"].toString().toStdString(), json["vita"].toInt(), json["mana"].toInt());
-        } else {
-            emit loadPlayerFromFile(jsonError);
-        }
-    }
+//            pg = new Player(json["nome"].toString().toStdString(), json["vita"].toInt(), json["mana"].toInt());
+//        } else {
+//            emit loadPlayerFromFile(jsonError);
+//        }
+//    }
 }
 
 void Game::inventoryRefreshSlot() {
