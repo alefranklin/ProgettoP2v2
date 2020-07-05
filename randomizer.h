@@ -59,7 +59,8 @@ public:
   static MagicWeapon* getRandomMagicWeapon();
   //ecc ecc per ogni arma
 
-  static Potion* getRandomPotion();
+  static Potion* getRandomPotionMana();
+  static Potion* getRandomPotionVita();
 
   static Armor* getRandomArmor();
 

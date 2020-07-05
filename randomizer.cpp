@@ -26,13 +26,14 @@ int Randomizer::randomNumberBetween(int min, int max) {
 
 Item* Randomizer::getRandomItem()
 {/*chiamare casualmente o randomWeapon o randonArmor o potion o altri item istanziabili*/
-    int i = randomNumberBetween(1,3);
+    int i = randomNumberBetween(1,4);
 
     switch (i) {
         case 1: return getRandomWeapon(); break;
-        case 2: return getRandomPotion(); break;
-        case 3: return getRandomArmor(); break;
-        default: return getRandomPotion(); break;
+        case 2: return getRandomPotionMana(); break;
+        case 3: return getRandomPotionVita(); break;
+        case 4: return getRandomArmor(); break;
+        default: return getRandomPotionMana(); break;
     }
 }
 
@@ -70,16 +71,21 @@ Armor* Randomizer::getRandomArmor()
     return new Armor("Armatura", randomNumberBetween(2,7));
 }
 
-Potion* Randomizer::getRandomPotion()
+Potion* Randomizer::getRandomPotionMana()
 {
-    return new Potion("Pozione", randomNumberBetween(10,20), randomNumberBetween(0,1), randomNumberBetween(0,1));
+    return new Potion("Pozione", randomNumberBetween(10,20), randomNumberBetween(0,1), true);
+}
+
+Potion* Randomizer::getRandomPotionVita()
+{
+    return new Potion("Pozione", randomNumberBetween(10,20), true, randomNumberBetween(0,1));
 }
 
 //static Armor* getRandomArmor(int livello);
 
 Mob* Randomizer::getRandomMob()
 {
-    return new Mob(getRandomMobName(), randomNumberBetween(10,20), randomNumberBetween(0,5));
+    return new Mob(getRandomMobName(), randomNumberBetween(10,20), randomNumberBetween(7,15));
 }
 
 //TODO mettere nomi random

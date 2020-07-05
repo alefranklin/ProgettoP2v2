@@ -427,13 +427,13 @@ void Game::onSelectItem(int id) {
         if(i){
             if( Game::isWeapon(i) || Game::isArmor(i)) {
                 p->equip(i);
-                emit updatePlayer(p);
              }
             else {
                 Potion *consumable = dynamic_cast<Potion*>(i);
                 if(consumable) consumable->use(pg);
             }
         }
+        emit updatePlayer(p);
         emit inventoryRefreshSlot();
     }
 }
