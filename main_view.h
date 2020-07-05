@@ -70,7 +70,7 @@ public slots:
     void onSetMiniMapSize(int dim);
 
     //setto la vita aggiornata del giocatore
-    void setPlayerHealth(int d);
+    void updatePlayer(Player* p);
 
     //setto il nuovo score
     void setNewScore(int s);
@@ -79,7 +79,7 @@ public slots:
     //pulisco mob
     void clearEnemy();
 
-    void setMobHealth(int d);
+    void updateMob(Mob* m);
 private:
     void createMenu();
     void createMusicSliderBox();
@@ -95,7 +95,7 @@ private:
     QGridLayout* grid;
     QListWidget *inventory;
 
-    PlayerWidget *charachter;
+    PlayerWidget *character;
     PlayerWidget *mob;
 
     QLabel *score;

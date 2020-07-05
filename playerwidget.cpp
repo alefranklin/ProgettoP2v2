@@ -109,10 +109,13 @@ void PlayerWidget::setArmor(Item *i)
 
 void PlayerWidget::setFields(Character *c){
    nome->setText(QString::fromStdString(c->getName()));
+   
    int h = c->getVita();
+   
    hp->setMaximum(c->getVitaMax());
    hp->setValue(h);
    hpLabel->setText(QString::number(h));
+   
    int m = c->getMana();
 
    mp->setMaximum(c->getManaMax());

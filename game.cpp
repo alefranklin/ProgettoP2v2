@@ -143,7 +143,7 @@ void Game::inCombat(){
                       "Cosa vuoi fare?\n");
             combat->turno_player = true;
             pg->setDamage(5);
-            emit dannoPlayer(5);
+            emit updatePlayer(dynamic_cast<Player*>(pg));
             if(!pg->isAlive()){
                 endCombat(false);
                 return;
@@ -158,8 +158,9 @@ void Game::inCombat(){
 
 void Game::attacca() {
     emit dialogOut("Hai attaccato il nemico.\n\n");
-    dynamic_cast<Mob*>(combat->enemies[0])->setDamage(10);
-    emit dannoMob(10);
+    Mob* m =  dynamic_cast<Mob*>(combat->enemies[0]);
+    m->setDamage(10);
+    emit updateMob(m);
     return;
 }
 
@@ -431,3 +432,7 @@ void Game::moveBack()
     emit setEnableMove(true);
 }
 
+
+Game::CombatState::CombatState(std::vector<Entity *> &e, Character *pg, bool f): enemies(e)
+  , player(pg)
+  , first_turn(f) {}

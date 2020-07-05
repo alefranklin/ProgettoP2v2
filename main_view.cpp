@@ -9,7 +9,7 @@ main_view::main_view(Game *g, QWidget *parent)
     mapWidget = new MapWidget(this,19);
     choiceWidget = new ChoiceWidget(this);
     moveWidget = new MoveWidget(this);
-    charachter = new PlayerWidget(model->getPlayer(), this);
+    character = new PlayerWidget(model->getPlayer(), this);
     grid = new QGridLayout(this);
     setLayout(grid);
 
@@ -31,8 +31,8 @@ main_view::main_view(Game *g, QWidget *parent)
     connect(model, &Game::mobEncounter, this, &main_view::setEnemy);
 
     //aggiorno vita giocatore/mob
-    connect(model, &Game::dannoPlayer, this, &main_view::setPlayerHealth);
-    connect(model, &Game::dannoMob, this, &main_view::setMobHealth);
+    connect(model, &Game::updatePlayer, this, &main_view::updatePlayer);
+    connect(model, &Game::updateMob, this, &main_view::updateMob);
 
     //INVENTARIO
     inventory= new QListWidget(); //lista di widget (inventario)
@@ -68,7 +68,7 @@ main_view::main_view(Game *g, QWidget *parent)
     connect(model, &Game::newScore, this, &main_view::setNewScore);
 
     //prima colonna (col = 0)
-    grid->addWidget(charachter, 0, 0);
+    grid->addWidget(character, 0, 0);
     grid->addWidget(inventory, 1, 0);
     grid->addWidget(musicSlider, 2, 0, Qt::AlignLeft);
 
@@ -169,14 +169,14 @@ void main_view::onMute() {
     volumeSlider->setValue(0);
 }
 
-void main_view::setPlayerHealth(int d)
+void main_view::updatePlayer(Player* p)
 {
-    charachter->setHealth(d);
+    character->setFields(p);
 }
 
-void main_view::setMobHealth(int d)
+void main_view::updateMob(Mob* m)
 {
-    mob->setHealth(d);
+    mob->setFields(m);
 }
 
 void main_view::setNewScore(int s)

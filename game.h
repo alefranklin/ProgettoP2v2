@@ -82,8 +82,8 @@ signals:
     //sei morto chiudo la finestra
     void youDied();
     //invio il danno inferto al player/mob
-    void dannoPlayer(int);
-    void dannoMob(int);
+    void updatePlayer(Player*);
+    void updateMob(Mob*);
     //aggiorno punteggio
     void newScore(int);
     //aggiorno mob incontrato
@@ -126,9 +126,7 @@ private:
         bool first_turn;
         std::vector<Entity*> &enemies;
         Character *player;
-        CombatState(std::vector<Entity*> &e, Character *pg, bool f = true): enemies(e)
-                                                                        , player(pg)
-                                                                        , first_turn(f) {}
+        CombatState(std::vector<Entity*> &e, Character *pg, bool f = true);
     };
 
     CombatState* combat;
