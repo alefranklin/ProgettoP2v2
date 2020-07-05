@@ -21,14 +21,14 @@ public:
         scroll = new QScrollArea(this);
         layout = new QVBoxLayout(this);
 
-        QPushButton *p;
-        for (int i =0 ; i < 20; i++) {
-            p = new QPushButton(QString::number(i), this);
-            layout->addWidget(p);
-        }
+//        QPushButton *p;
+//        for (int i =0 ; i < 20; i++) {
+//            p = new QPushButton(QString::number(i), this);
+//            layout->addWidget(p);
+//        }
 
-        //setLayout(layout);
-        scroll->setLayout(layout);
+        setLayout(layout);
+        //scroll->setLayout(layout);
     }
 
 signals:
@@ -55,13 +55,14 @@ public slots:
             connect(i, &ItemWidget::deletedItem, this, &InventoryWidget::onDeletedItem);
 
             itemsW.push_back(i);
-            scroll->setWidget(i);
+            //scroll->setWidget(i);
+            layout->addWidget(i);
         }
     }
 
     void clear() {
         for (auto &elem : itemsW ) {
-            delete elem;
+            if(elem) delete elem;
         }
         itemsW.clear();
     }

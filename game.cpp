@@ -446,14 +446,30 @@ void Game::inventoryRefreshSlot() {
 }
 
 void Game::onSelectItem(int id) {
-
-    emit inventoryRefreshSlot();
+    Player *p = dynamic_cast<Player*>(pg);
+    if (p) {
+        Item *i = p->inventoryGetItem(id);
+        if(i){
+            if( Game::isWeapon(i) || Game::isArmor(i)) {
+                p->equip(i);
+                emit updatePlayer(p);
+             }
+            else {
+                Potion *consumable = dynamic_cast<Potion*>(i);
+                if(consumable) consumable->use(pg);
+            }
+        }
+        emit inventoryRefreshSlot();
+    }
 }
 
 void Game::onDeleteItem(int id) {
-
-    emit inventoryRefreshSlot();
-
+    Player *p = dynamic_cast<Player*>(pg);
+    if (p) {
+        p->inventoryDelete(id);
+        emit inventoryRefreshSlot();
+        emit dialogOut("Hai eliminato il tuo prezioso oggetto!");
+    }
 }
 
 bool Game::isItem(const Entity *e) { return (dynamic_cast<const Item*>(e)) ? true : false; }
