@@ -4,6 +4,7 @@
 #include "entity.h"
 #include <vector>
 #include <string>
+#include <QJsonObject>
 using namespace std;
 
 class Item;
@@ -67,6 +68,7 @@ public:
 
   mob.attacca(Charxter player)
   */
+
   virtual int attacca(vector<Character*> target);
 
 };

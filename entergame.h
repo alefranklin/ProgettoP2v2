@@ -25,6 +25,7 @@ public:
 public slots:
     // lista degli slot
     void tryEnter();
+    void errorLoadPlayer(QJsonParseError jsonError);
 
 signals:
 

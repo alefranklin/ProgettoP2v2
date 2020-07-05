@@ -6,6 +6,7 @@
 #include <vector>
 #include <QVector>
 #include <QJsonObject>
+#include <QJsonParseError>
 
 #include "entity.h"
 #include "map.h"
@@ -60,8 +61,6 @@ public:
 
     void dialog(QString s);
 
-    QJsonObject itemToJson(Item *i);
-
     unsigned int getScore() const;
 
     //DEBUG
@@ -90,6 +89,10 @@ signals:
     void mobEncounter(Mob*);
     //pulisco la view del mostro
     void clearViewMob();
+
+    //passo errore load player da file
+    void loadPlayerFromFile(QJsonParseError);
+
 
     
 public slots:
@@ -150,6 +153,7 @@ private:
 
     void setScore(unsigned int s);
 
-
+    QJsonObject characterToJson(Character *c);
+    QJsonObject itemToJson(Item *i);
 };
 #endif // GAME_H

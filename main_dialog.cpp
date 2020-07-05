@@ -62,6 +62,7 @@ void main_dialog::setMenuBar()
     connect(mShowInfo, SIGNAL(triggered(bool)), this, SLOT(showInf()));
 
     connect(mLegend, SIGNAL(triggered(bool)), this, SLOT(showLegend()));
+
 }
 
 void main_dialog::newGameSlot()
@@ -108,7 +109,6 @@ void main_dialog::confirmSavePunt()
 
 }
 
-
 void main_dialog::confirmSavePg()
 {
     QMessageBox salvaPg;
@@ -120,3 +120,5 @@ void main_dialog::confirmSavePg()
         game->savePlayerSlot();
     }
 }
+
+

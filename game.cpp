@@ -15,6 +15,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QJsonDocument>
+#include <QJsonArray>
 #include <QDebug>
 
 
@@ -62,6 +63,16 @@ void Game::dialog(QString s)
     emit dialogOut(s);
     //emit choiceOut(Choice::escape());
 
+}
+
+QJsonObject Game::characterToJson(Character* c)
+{
+  QJsonObject j;
+  j["nome"] = QString::fromStdString(c->getName());
+  j["vita"] = c->getVita();
+  j["mana"] = c->getMana();
+
+  return j;
 }
 
 QJsonObject Game::itemToJson(Item *i){
@@ -119,11 +130,12 @@ void Game::usePotionMana() { emit dialogOut("sto usando la pozione del mana"); }
 void Game::usePotionHealth() { emit dialogOut("sto usando la pozione della vita"); }
 
 void Game::startCombat(Tile &t) {
-    if(t.e[0] && Game::isMob(t.e[0])) {
+    if(!t.e.empty() && Game::isMob(t.e[0])) {
         combat = new CombatState(t.e, pg);
         emit dialogOut("Sei entrato in combattimento.\n\n");
         inCombat();
     } else {
+        emit dialogOut("Provi a combattare ti accorgi che il mostro non è più lì.\n\n");
         emit setEnableMove(true);
     }
 }
@@ -371,9 +383,7 @@ void Game::savePlayerSlot()
 
         QJsonObject json; //= QJsonObject::fromVariantMap(v_map);
 
-        json["nome"] = QString::fromStdString(pg->getName());
-        json["vita"] = pg->getVita();
-        json["mana"] = pg->getMana();
+        json["pg"] = characterToJson(pg);
         json["armatura"] = itemToJson(pg->getArmor());
         json["arma"] = itemToJson(pg->getWeapon());
 
@@ -393,6 +403,7 @@ void Game::loadPlayerSlot(bool)
                                                       , "../"
                                                       , "File Player(*.fpg);;All files(*)");
 
+
     if(filePlayer.isEmpty()) return;
     else {
         QFile f(filePlayer);
@@ -403,14 +414,18 @@ void Game::loadPlayerSlot(bool)
         }
         QString on_json = f.readAll();
 
-        QJsonDocument d_json = QJsonDocument::fromJson(on_json.toUtf8());
-        QJsonObject json = d_json.object();
+        QJsonParseError jsonError;
 
+        QJsonDocument d_json = QJsonDocument::fromJson(on_json.toUtf8(), &jsonError);
 
-        //qDebug() << json["nome"].toString();
+        if(!jsonError.error){
 
+            QJsonObject json = d_json.object();
 
-        pg = new Player(json["nome"].toString().toStdString(), json["vita"].toInt(), json["mana"].toInt());
+            pg = new Player(json["nome"].toString().toStdString(), json["vita"].toInt(), json["mana"].toInt());
+        } else {
+            emit loadPlayerFromFile(jsonError);
+        }
     }
 
 }
@@ -437,6 +452,6 @@ void Game::moveBack()
 }
 
 
-Game::CombatState::CombatState(std::vector<Entity *> &e, Character *pg, bool f): enemies(e)
-  , player(pg)
-  , first_turn(f) {}
+Game::CombatState::CombatState(std::vector<Entity *> &e, Character *pg, bool f): first_turn(f)
+  , enemies(e)
+  , player(pg) {}
