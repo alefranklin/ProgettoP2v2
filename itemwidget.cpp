@@ -9,6 +9,7 @@ ItemWidget::ItemWidget(QWidget *parent): QWidget(parent)
 {
     layout = new QGridLayout(this);
     setLayout(layout);
+    setFixedSize(300, 100);
 
     lbl_name = new QLabel(this);
 
@@ -25,7 +26,7 @@ ItemWidget::ItemWidget(QWidget *parent): QWidget(parent)
 
     btn_del = new IDButton(this);
     btn_del->setToolTip("elimina Item");
-    btn_del->setIcon(QIcon("qrc:/ico/ico_del"));
+    btn_del->setIcon(QIcon(":/icon/del_icon"));
 
     //mettere
     layout->addWidget(lbl_img, 0, 0, 0, 3);
@@ -85,16 +86,16 @@ void ItemWidget::onClickDelete(int id) {
     emit deleteItem(id);
 }
 
-ItemWidget::IDButton::IDButton(QWidget *parent): QPushButton(parent)
+IDButton::IDButton(QWidget *parent): QPushButton(parent)
 {
     connect(this, &QPushButton::clicked, this, &IDButton::handleClick);
 }
 
-void ItemWidget::IDButton::setID(int id)
+void IDButton::setID(int id)
 {
-    id = _id;
+    _id = id;
 }
 
-void ItemWidget::IDButton::handleClick(){
+void IDButton::handleClick(){
     emit buttonClicked(_id);
 }

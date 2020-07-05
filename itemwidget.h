@@ -13,9 +13,28 @@
 /* questa classe serve per definire il widget per visualizzare
  * gli item di gioco nell'interfaccia grafica
  */
+
+class IDButton: public QPushButton {
+    Q_OBJECT
+public:
+    explicit IDButton(QWidget *parent = nullptr);
+    void setID(int id);
+
+ signals:
+    void buttonClicked(int id);
+
+ private slots:
+    void handleClick();
+
+ private:
+    int _id;
+};
+
+
 class ItemWidget : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit ItemWidget(QWidget *parent = nullptr);
 
@@ -34,22 +53,6 @@ private slots:
 
 private:
 
-    class IDButton: public QPushButton {
-        Q_OBJECT
-    public:
-        explicit IDButton(QWidget *parent = nullptr);
-        void setID(int id);
-
-     signals:
-        void buttonClicked(int id);
-
-     private slots:
-        void handleClick();
-
-     private:
-        int _id;
-    };
-
     QGridLayout *layout;
     QLabel *lbl_name;       // nome oggetto
     QLabel *lbl_img;        // label che mostra l'immagine
@@ -57,8 +60,6 @@ private:
     IDButton *btn_sel;      // pulsante per selezionare
     IDButton *btn_del;      // pulsante per eliminare
     QPixmap pix;            // immagine
-
-
 };
 
 #endif // ITEMWIDGET_H
