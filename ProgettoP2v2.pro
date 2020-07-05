@@ -38,6 +38,7 @@ SOURCES += \
     mapwidget.cpp \
     mob.cpp \
     movewidget.cpp \
+    musicwidget.cpp \
     player.cpp \
     playerwidget.cpp \
     potion.cpp \
@@ -69,6 +70,7 @@ HEADERS += \
     mapwidget.h \
     mob.h \
     movewidget.h \
+    musicwidget.h \
     player.h \
     playerwidget.h \
     potion.h \

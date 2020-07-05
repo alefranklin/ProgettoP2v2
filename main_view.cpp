@@ -11,9 +11,9 @@ main_view::main_view(Game *g, QWidget *parent)
     moveWidget = new MoveWidget(this);
     character = new PlayerWidget(this);
     grid = new QGridLayout(this);
+    music = new MusicWidget(this);
     setLayout(grid);
 
-    createMusicSliderBox();
 
     dialogOutBox = new QTextEdit(this);
     dialogOutBox->setReadOnly(true);
@@ -21,6 +21,7 @@ main_view::main_view(Game *g, QWidget *parent)
 
 
     mob = new PlayerWidget(this); //TODO dichiararlo sul .h
+
 
 
     //pulisco view del mob
@@ -33,11 +34,21 @@ main_view::main_view(Game *g, QWidget *parent)
     connect(model, &Game::updatePlayer, this, &main_view::updatePlayer);
     connect(model, &Game::updateMob, this, &main_view::updateMob);
 
+
     model->refreshPlayer();
 
+
+    sc = new QScrollArea(this);
+
+
     //INVENTARIO
-    inventory= new InventoryWidget(); //lista di widget (inventario)
+    inventory= new InventoryWidget(this); //lista di widget (inventario)
     inventory->setFixedWidth(270);
+
+    sc->setWidget(inventory);
+
+    sc->setWidgetResizable(true);
+
     // connetto il refresh dell'inventario
     connect(model, &Game::inventoryRefreshSGNL, inventory, &InventoryWidget::refresh);
     model->inventoryRefreshSlot();
@@ -75,8 +86,8 @@ main_view::main_view(Game *g, QWidget *parent)
 
     //prima colonna (col = 0)
     grid->addWidget(character, 0, 0);
-    grid->addWidget(inventory, 1, 0);
-    grid->addWidget(musicSlider, 2, 0, Qt::AlignLeft);
+    grid->addWidget(sc, 1, 0);
+    grid->addWidget(music, 2, 0, Qt::AlignLeft);
 
     //seconda colonna (col = 1)
     grid->addWidget(mapWidget, 0, 1);
@@ -97,29 +108,6 @@ void main_view::printString(QString s)
     dialogOutBox->append(s);
 }
 
-void main_view::createMusicSliderBox(){
-
-    musicSlider = new QGroupBox(this);
-    QHBoxLayout *layout = new QHBoxLayout;
-
-    // controllo il volume
-    volumeSlider = new QSlider(Qt::Horizontal, this);
-    volumeSlider->setMinimum(0);
-    volumeSlider->setMaximum(100);
-    volumeSlider->setValue(50);
-
-    connect(volumeSlider, &QSlider::valueChanged, this, &main_view::onVolumeChanged);
-
-    // bottone per il muto
-    muteButton = new QPushButton("Mute", this);
-    connect(muteButton, &QPushButton::clicked, this, &main_view::onMute);
-
-    layout->addWidget(muteButton);
-    layout->addWidget(volumeSlider);
-    musicSlider->setLayout(layout);
-
-    musicSlider->setFixedSize(200, 65);
-}
 
 void main_view::onPosChanged(const std::vector<std::vector<Tile>> &miniMap, Coordinate relativePos) {
     MapWidget *mapwidget = mapWidget;
@@ -161,18 +149,6 @@ void main_view::choicePressed(Game::Choice c)
 {
     choiceWidget->cleanGrid();
     emit emitChoice(c);
-}
-
-void main_view::onVolumeChanged(int volume) {
-    // se il volume è a zero mute è disabilitato
-    if(volume == 0) muteButton->setDisabled(true);
-    else muteButton->setDisabled(false);
-    // emetto il segnale verso il controller
-    emit volumeChanged(volume);
-}
-
-void main_view::onMute() {
-    volumeSlider->setValue(0);
 }
 
 void main_view::updatePlayer(Player* p)
