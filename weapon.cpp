@@ -16,3 +16,9 @@ int Weapon::getDamage() const
 {
     return damage;
 }
+
+vector<Entity::Attribute> Weapon::getAttributes() const {
+    vector<Attribute> att = Item::getAttributes();
+    att.push_back(Attribute("Danno", std::to_string(damage)));
+    return att;
+}

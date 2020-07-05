@@ -20,3 +20,10 @@ int Bow::use(Character* owner, vector<Character*> target)
     qDebug() << "sto usando ARCO " << endl;
     return 0;
 }
+
+vector<Entity::Attribute> Bow::getAttributes() const {
+    vector<Attribute> att = Weapon::getAttributes();
+    att.push_back(Attribute("Tipo", "Arco"));
+    att.push_back(Attribute("Frecce", std::to_string(arrows)));
+    return att;
+}

@@ -61,7 +61,9 @@ void Player::inventoryDelete(unsigned int id)
 {
     for(auto it = inventory.begin(); it != inventory.end(); ++it) {
         if((*it)->getID() == id ) {
+            Item *i = *it;
             inventory.erase(it);
+            delete i;
             break;
         }
     }

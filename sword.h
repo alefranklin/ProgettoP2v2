@@ -13,6 +13,7 @@ public:
     int getRange() const;
     virtual int use(Character* owner, vector<Character *> target = vector<Character*>() );
 
+    virtual vector<Attribute> getAttributes() const;
 };
 
 #endif // SWORD_H

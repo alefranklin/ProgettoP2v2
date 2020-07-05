@@ -23,6 +23,7 @@ SOURCES += \
     choicewidget.cpp \
     controller.cpp \
     entergame.cpp \
+    entity.cpp \
     game.cpp \
     inventorywidget.cpp \
     item.cpp \

@@ -7,8 +7,6 @@
 class Mob: public Character {
 public:
   Mob(string n, int v, int m);
-  void info();
-  bool isAlive();
 };
 
 #endif // MOB_H

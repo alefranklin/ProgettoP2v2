@@ -47,6 +47,8 @@ public:
   virtual Item* setArmor(Item *a);
   virtual bool isAlive();
 
+  virtual vector<Entity::Attribute> getAttributes() const;
+
 
    /*
    mini modello di come funziona il sistema di danno e benefici
