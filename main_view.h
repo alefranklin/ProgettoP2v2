@@ -15,6 +15,7 @@
 
 
 #include "game.h"
+#include "player.h"
 #include "choicebutton.h"
 #include "playerwidget.h"
 #include "movewidget.h"
