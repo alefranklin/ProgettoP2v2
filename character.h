@@ -73,6 +73,7 @@ public:
 
   virtual int attacca(Character* target);
 
+  void useMana(int m);
 };
 
 #endif

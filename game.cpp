@@ -155,7 +155,8 @@ void Game::inCombat(){
 void Game::attacca() {
     emit dialogOut("Hai attaccato il nemico.\n\n");
     //Mob* m =  dynamic_cast<Mob*>(combat->enemy);
-    pg->attacca(combat->enemy);
+    int dannoFatto = pg->attacca(combat->enemy);
+    emit dialogOut("Hai inflitto"+QString::number(dannoFatto)+"danni");
     emit updateMob(dynamic_cast<Mob*>(combat->enemy));
     return;
 }

@@ -67,6 +67,10 @@ void Character::addMana(int m) {
     else mana = manaMax;
 }
 
+void Character::useMana(int m){
+    mana -= m;
+}
+
 int Character::setDamageTaken(int d)
 {
     vita = (vita-d >= 0) ? vita-d : 0;

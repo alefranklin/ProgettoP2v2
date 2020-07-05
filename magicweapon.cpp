@@ -1,4 +1,5 @@
 #include "magicweapon.h"
+#include "character.h";
 
 #include <QDebug>
 
@@ -17,10 +18,12 @@ MagicWeapon::~MagicWeapon()
 
 int MagicWeapon::use(Character* owner, Character* target)
 {
-  qDebug() << "Arma magica" << endl;
-  if(100 >= Magic::getMana()){ //**** AGGGIORNARE CON manaPG
-    //settare nuovo mana disponibile nel personaggio
-    qDebug() << " + infliggi " << Weapon::getDamage()*Magic::getEffect() << " danno magico" << endl;
+  qDebug() << "USO ARMA MAGICA" << endl;
+  if(owner->getMana() > getMana()){
+      owner->useMana(getMana());
+      return target->setDamageTaken(getDamage()*(getEffect()/10));
+  } else {
+      return 0;
   }
 }
 

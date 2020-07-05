@@ -14,6 +14,7 @@ public:
     virtual int use(Character* owner, Character* target = nullptr);
 
     virtual vector<Attribute> getAttributes() const;
+    void useArrow();
 };
 
 #endif // BOW_H
