@@ -21,7 +21,6 @@ SOURCES += \
     character.cpp \
     choicebutton.cpp \
     choicewidget.cpp \
-    controller.cpp \
     entergame.cpp \
     entity.cpp \
     game.cpp \
@@ -54,7 +53,6 @@ HEADERS += \
     choicebutton.h \
     choicewidget.h \
     container.h \
-    controller.h \
     entergame.h \
     entity.h \
     game.h \

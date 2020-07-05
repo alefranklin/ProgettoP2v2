@@ -14,8 +14,9 @@ private:
     static unsigned int usedID;
     unsigned int ID;
     string nome;
+    string img;
 protected:
-    Item(string n);
+    Item(string n, string img = "");
 public:
     virtual ~Item();
     unsigned int getID() const;

@@ -52,6 +52,8 @@ public:
 
   static int randomNumberBetween(int min = 0, int max = 1);
 
+  static ScrapedInfo getRandomImgBow();
+
   static Item* getRandomItem();
   static Weapon* getRandomWeapon();
   static Sword* getRandomSword();
@@ -67,7 +69,6 @@ public:
   static Mob* getRandomMob();
 
   static string getRandomMobName();
-  //static string getrandomNpcName();
 };
 
 #endif

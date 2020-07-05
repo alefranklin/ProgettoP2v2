@@ -35,6 +35,13 @@ struct Tile {
 class Map {
 public:
   Map(int d = 0);
+  ~Map() {
+      for(auto &riga : map ) {
+          for(auto &colonna : riga) {
+              if(colonna.e) delete colonna.e;
+          }
+      }
+  }
 
   void moveUP();
   void moveDOWN();

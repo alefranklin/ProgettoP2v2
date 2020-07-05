@@ -54,6 +54,15 @@ ItemWidget::ItemWidget(QWidget *parent): QWidget(parent)
 
 }
 
+void ItemWidget::disable(bool disable){
+    btn_del->setDisabled(disable);
+    btn_sel->setDisabled(disable);
+    btn_del->setIcon(QIcon());
+    btn_sel->setIcon(QIcon());
+    btn_del->setFlat(disable);
+    btn_sel->setFlat(disable);
+}
+
 void ItemWidget::setItem(vector<Entity::Attribute> attributes) {
 
     clear();
@@ -61,7 +70,7 @@ void ItemWidget::setItem(vector<Entity::Attribute> attributes) {
 
     for(auto &att : attributes) {
         if(att.name == "Immagine") {
-                lbl_img->setIcon(QIcon(QString::fromStdString(att.name)));
+            lbl_img->setIcon(QIcon(QString::fromStdString(att.name)));
         } else if(att.name == "Nome")
         {
             nome = QString::fromStdString(att.val);

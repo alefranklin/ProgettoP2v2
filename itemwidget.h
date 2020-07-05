@@ -37,14 +37,7 @@ class ItemWidget : public QWidget
 
 public:
     explicit ItemWidget(QWidget *parent = nullptr);
-    void disable(bool disable){
-        btn_del->setDisabled(disable);
-        btn_sel->setDisabled(disable);
-        btn_del->setIcon(QIcon());
-        btn_sel->setIcon(QIcon());
-        btn_del->setFlat(disable);
-        btn_sel->setFlat(disable);
-    }
+    void disable(bool disable);
 
 signals:
     void selectedItem(int id);

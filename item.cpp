@@ -7,9 +7,10 @@ using namespace std;
 
 unsigned int Item::usedID = 0;
 
-Item::Item(string n):
+Item::Item(string n, string img):
     Entity()
   , nome(n)
+  , img(img)
 {
     ID = usedID;
     usedID++;
@@ -30,6 +31,7 @@ vector<Entity::Attribute> Item::getAttributes() const {
     vector<Attribute> att;
     att.push_back(Attribute("ID", to_string(ID)));
     att.push_back(Attribute("Nome", nome));
+    att.push_back(Attribute("Immagine", img));
     return att;
 }
 

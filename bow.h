@@ -9,7 +9,7 @@ class Bow : virtual public Weapon {
 private:
     int arrows;
 public:
-    Bow(string n, int d, int r);
+    Bow(string n, string img, int d, int r);
     int getArrow() const;
     virtual int use(Character* owner, Character* target = nullptr);
 

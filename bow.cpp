@@ -3,8 +3,8 @@
 
 #include <QDebug>
 
-Bow::Bow(string n, int d, int a):
-    Item(n)
+Bow::Bow(string n, string img, int d, int a):
+    Item(n, img)
   , Weapon(n, d)
   , arrows(a)
 {

@@ -102,6 +102,7 @@ Item *Game::JsonToItem(QJsonObject &obj){
 
     if(obj["Tipo"].toString() == "Arco") {
         i = new Bow(obj["Nome"].toString().toStdString(),
+                    obj["Immagine"].toString().toStdString(),
                     obj["Danno"].toString().toInt(),
                     obj["Frecce"].toString().toInt());
     }

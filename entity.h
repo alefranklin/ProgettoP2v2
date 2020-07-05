@@ -21,9 +21,9 @@ public:
 
     virtual vector<Attribute> getAttributes() const =0 ;
 
+    virtual ~Entity() = default;
 protected:
     Entity() = default;
-    virtual ~Entity() = default;
 };
 
 #endif
