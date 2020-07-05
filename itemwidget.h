@@ -37,6 +37,14 @@ class ItemWidget : public QWidget
 
 public:
     explicit ItemWidget(QWidget *parent = nullptr);
+    void disable(bool disable){
+        btn_del->setDisabled(disable);
+        btn_sel->setDisabled(disable);
+        btn_del->setIcon(QIcon());
+        btn_sel->setIcon(QIcon());
+        btn_del->setFlat(disable);
+        btn_sel->setFlat(disable);
+    }
 
 signals:
     void selectedItem(int id);
@@ -53,13 +61,12 @@ private slots:
 
 private:
 
-    QGridLayout *layout;
+    QVBoxLayout *layout;
     QLabel *lbl_name;       // nome oggetto
-    QLabel *lbl_img;        // label che mostra l'immagine
+    QPushButton *lbl_img;        // label che mostra l'immagine
     QTextEdit *lbl_info;    // info dell'item
     IDButton *btn_sel;      // pulsante per selezionare
     IDButton *btn_del;      // pulsante per eliminare
-    QPixmap pix;            // immagine
 };
 
 #endif // ITEMWIDGET_H
