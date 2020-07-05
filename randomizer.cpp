@@ -11,6 +11,8 @@
 #include "sword.h"
 #include "bow.h"
 #include "potion.h"
+#include "magicweapon.h"
+
 using namespace std;
 
 unsigned int Randomizer::seed = 1; //valore di default di srand
@@ -43,16 +45,22 @@ Item* Randomizer::getRandomItem()
 
 Weapon* Randomizer::getRandomWeapon()
 {/*chiamare casualmente uno dei metodi sotto*/
-    int i = randomNumberBetween(1,2);
+    int i = randomNumberBetween(1,3);
 
     switch (i) {
         case 1: return getRandomBow(); break;
         case 2: return getRandomSword(); break;
+        case 3: return getRandomMagicWeapon(); break;
         default: return getRandomSword(); break;
     }
 }
 
 //TODO randomizzare i nomi
+
+MagicWeapon* Randomizer::getRandomMagicWeapon()
+{
+    return new MagicWeapon("Bastone della morte", randomNumberBetween(2,9), randomNumberBetween(2,8), randomNumberBetween(2,5));
+}
 
 Bow* Randomizer::getRandomBow()
 {

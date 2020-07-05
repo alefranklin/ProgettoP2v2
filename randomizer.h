@@ -11,6 +11,7 @@ class Weapon;
 class Sword;
 class Bow;
 class Potion;
+class MagicWeapon;
 
 /**
  * classe statica per ottenere valori oppure oggetti random
@@ -45,6 +46,7 @@ public:
   static Weapon* getRandomWeapon();
   static Sword* getRandomSword();
   static Bow* getRandomBow();
+  static MagicWeapon* getRandomMagicWeapon();
   //ecc ecc per ogni arma
 
   static Potion* getRandomPotion();

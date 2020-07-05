@@ -1,4 +1,5 @@
 #include "sword.h"
+#include "character.h"
 
 #include <QDebug>
 
@@ -18,7 +19,17 @@ int Sword::getRange() const
 int Sword::use(Character* owner, vector<Character*> target)
 {
     qDebug() << "sto usando SPADA " << endl;
-    return 0;
+
+    int i = 0;
+
+    for(auto &elem : target) {
+        danno = elem->setDamage(getDamage());
+        i++;
+        if(i >= range) break;
+
+    }
+
+    return getDamage();
 }
 
 vector<Entity::Attribute> Sword::getAttributes() const {
@@ -27,4 +38,6 @@ vector<Entity::Attribute> Sword::getAttributes() const {
     att.push_back(Attribute("Range", std::to_string(range)));
     return att;
 }
+
+
 
