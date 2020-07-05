@@ -19,7 +19,6 @@ main_view::main_view(Game *g, QWidget *parent)
     dialogOutBox->setReadOnly(true);
     //dialogOutBox->setDisabled(true);
 
-
     mob = new PlayerWidget(Randomizer::getRandomMob(), this); //TODO dichiararlo sul .h
     mob->clear();
 
@@ -34,9 +33,17 @@ main_view::main_view(Game *g, QWidget *parent)
     connect(model, &Game::updatePlayer, this, &main_view::updatePlayer);
     connect(model, &Game::updateMob, this, &main_view::updateMob);
 
+
+    sc = new QScrollArea(this);
+
     //INVENTARIO
-    inventory= new InventoryWidget(); //lista di widget (inventario)
+    inventory= new InventoryWidget(this); //lista di widget (inventario)
     inventory->setFixedWidth(270);
+
+    sc->setWidget(inventory);
+
+    sc->setWidgetResizable(true);
+
     // connetto il refresh dell'inventario
     connect(model, &Game::inventoryRefreshSGNL, inventory, &InventoryWidget::refresh);
     model->inventoryRefreshSlot();
@@ -76,7 +83,7 @@ main_view::main_view(Game *g, QWidget *parent)
 
     //prima colonna (col = 0)
     grid->addWidget(character, 0, 0);
-    grid->addWidget(inventory, 1, 0);
+    grid->addWidget(sc, 1, 0);
     grid->addWidget(musicSlider, 2, 0, Qt::AlignLeft);
 
     //seconda colonna (col = 1)

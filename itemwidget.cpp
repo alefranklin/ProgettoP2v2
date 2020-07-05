@@ -7,40 +7,6 @@
 
 ItemWidget::ItemWidget(QWidget *parent): QWidget(parent)
 {
-    /*layout = new QGridLayout(this);
-    setLayout(layout);
-    setFixedSize(270, 100);
-
-    lbl_name = new QLabel(this);
-
-    lbl_img = new QLabel(this);
-    lbl_img->setAlignment(Qt::AlignCenter);
-
-    lbl_info = new QTextEdit(this);
-    lbl_info->setReadOnly(true);
-    lbl_info->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    lbl_info->setFrameStyle(QFrame::NoFrame);   // tolgo il bordo
-
-    QVBoxLayout *layoutBottoni = new QVBoxLayout(nullptr);
-
-
-    btn_sel = new IDButton(this);
-    btn_sel->setToolTip("usa Item");
-
-    btn_del = new IDButton(this);
-    btn_del->setToolTip("elimina Item");
-    btn_del->setIcon(QIcon(":/icon/del_icon"));
-
-    layoutBottoni->addWidget(btn_sel);
-    layoutBottoni->addWidget(btn_del);
-    //mettere
-    layout->addWidget(lbl_img, 0, 0, 0, 3);
-    layout->addWidget(lbl_name, 0, 1, 2, 0);
-    layout->addWidget(lbl_info, 1, 1, 2, 2);
-    layout->addLayout(layoutBottoni,1,3);
-    //layout->addWidget(btn_sel, 1, 3);
-    //layout->addWidget(btn_del, 1, 4);
-*/
     layout = new QVBoxLayout(this);
     QHBoxLayout *bodyLayout = new QHBoxLayout(nullptr);
     QVBoxLayout *btnLayout = new QVBoxLayout(nullptr);

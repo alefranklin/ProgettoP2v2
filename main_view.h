@@ -120,6 +120,8 @@ private:
     //finestra di dialogo con il gioco
     QTextEdit *dialogOutBox;
 
+    QScrollArea* sc;
+
 
 };
 
