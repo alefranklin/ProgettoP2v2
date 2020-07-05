@@ -293,8 +293,9 @@ void Game::choiceDone(Choice c)
         inCombat();
         break;
     }
-    case 5:{
+    case 4:{
         //aggiungi item all'inventario
+        emit setEnableMove(true);
         Tile &t = map.getCurrentTile();
         Item* item_preso = dynamic_cast<Item*>(t.e);
 
@@ -303,10 +304,10 @@ void Game::choiceDone(Choice c)
         emit dialogOut("Hai preso l'oggetto.\n\n");
         emit inventoryRefreshSlot();
         t.e = nullptr;
-        emit setEnableMove(true);
+
         break;
     }
-    case 6:{
+    case 5:{
         emit dialogOut("Hai lasciato l'oggetto.\n\n");
         emit setEnableMove(true);
         break;
