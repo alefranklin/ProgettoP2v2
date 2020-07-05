@@ -5,6 +5,8 @@
 PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     layout = new QVBoxLayout(this);
     layout->setMargin(0);
+
+
     //nome
     nome = new QLabel(QString::fromStdString(c->getName()));
     int hpNum = c->getVitaMax();
@@ -47,8 +49,10 @@ PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     mpLabel->setFixedWidth(25);
     mpLayout->addWidget(mpLabel);
     //weapon widget
-    weapon = new ItemWidget(c->getWeapon());
-    armor = new ItemWidget(c->getArmor());
+    weapon = new ItemWidget();
+    weapon->setItem(c->getWeapon()->getAttributes());
+    armor = new ItemWidget();
+    armor->setItem(c->getArmor()->getAttributes());
     setFixedWidth(270);
     //setto tutto
     setLayout(layout);
@@ -99,12 +103,12 @@ void PlayerWidget::onShowDetailOf(std::vector<Entity *> e){
 
 void PlayerWidget::setWeapon(Item *i)
 {
-    weapon->setItem(i);
+    weapon->setItem(i->getAttributes());
 }
 
 void PlayerWidget::setArmor(Item *i)
 {
-    armor->setItem(i);
+    armor->setItem(i->getAttributes());
 }
 
 void PlayerWidget::setFields(Character *c){
