@@ -129,7 +129,7 @@ void ItemWidget::onClickSelect(int id) {
 }
 
 void ItemWidget::onClickDelete(int id) {
-    emit deleteItem(id);
+    emit deletedItem(id);
 }
 
 IDButton::IDButton(QWidget *parent): QPushButton(parent)

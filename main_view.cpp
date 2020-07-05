@@ -35,8 +35,15 @@ main_view::main_view(Game *g, QWidget *parent)
     connect(model, &Game::updateMob, this, &main_view::updateMob);
 
     //INVENTARIO
-    inventory= new QListWidget(); //lista di widget (inventario)
+    inventory= new InventoryWidget(); //lista di widget (inventario)
     inventory->setFixedWidth(270);
+    // connetto il refresh dell'inventario
+    connect(model, &Game::inventoryRefreshSGNL, inventory, &InventoryWidget::refresh);
+    model->inventoryRefreshSlot();
+    //connetto segnali selezione e cancellazione
+    connect(inventory, &InventoryWidget::selectItem, model, &Game::onSelectItem);
+    connect(inventory, &InventoryWidget::deleteItem, model, &Game::onDeleteItem);
+
 
     //MAPPA
 

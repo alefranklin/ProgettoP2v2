@@ -46,6 +46,7 @@ Game::Game(Character* player, QObject *parent) : QObject(parent)
 
     //la grandezza della minimappa è settata quindi aggiorno la view
     emit posChanged(map.getMiniMap(miniMapSize), map.getRelativePos());
+    inventoryRefreshSlot();
 }
 
 Game::~Game()
@@ -301,6 +302,7 @@ void Game::choiceDone(Choice c)
         (dynamic_cast<Player*>(pg))->inventoryAdd(item_preso);
 
         emit dialogOut("Hai preso l'oggetto.\n\n");
+        emit inventoryRefreshSlot();
         t.e = nullptr;
 
         break;
@@ -408,6 +410,40 @@ void Game::loadPlayerSlot(bool)
         } else {
             emit loadPlayerFromFile(jsonError);
         }
+    }
+}
+
+void Game::inventoryRefreshSlot() {
+    Player* p = dynamic_cast<Player*>(pg);
+    if(p) {
+        emit inventoryRefreshSGNL(p->getInventory());
+    }
+}
+
+void Game::onSelectItem(int id) {
+    Player *p = dynamic_cast<Player*>(pg);
+    if (p) {
+        Item *i = p->inventoryGetItem(id);
+        if(i){
+            if( Game::isWeapon(i) || Game::isArmor(i)) {
+                p->equip(i);
+                emit updatePlayer(p);
+             }
+            else {
+                Potion *consumable = dynamic_cast<Potion*>(i);
+                if(consumable) consumable->use(pg);
+            }
+        }
+        emit inventoryRefreshSlot();
+    }
+}
+
+void Game::onDeleteItem(int id) {
+    Player *p = dynamic_cast<Player*>(pg);
+    if (p) {
+        p->inventoryDelete(id);
+        emit inventoryRefreshSlot();
+        emit dialogOut("Hai eliminato il tuo prezioso oggetto!");
     }
 }
 

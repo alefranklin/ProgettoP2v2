@@ -24,6 +24,7 @@
 #include "randomizer.h"
 #include "mob.h"
 #include "map.h"
+#include "inventorywidget.h"
 
 class main_view : public QWidget
 {
@@ -95,7 +96,7 @@ private:
     Game* model;
 
     QGridLayout* grid;
-    QListWidget *inventory;
+    InventoryWidget *inventory;
 
     PlayerWidget *character;
     PlayerWidget *mob;
