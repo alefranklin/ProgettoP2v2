@@ -1,22 +1,21 @@
 #include "playerwidget.h"
 
+#include "item.h"
 
-
-PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
+PlayerWidget::PlayerWidget(QWidget *parent) : QWidget(parent){
+    setHidden(true);
     layout = new QVBoxLayout(this);
     layout->setMargin(0);
+
     //nome
-    nome = new QLabel(c->getName());
-    int hpNum = c->getVita();
-    int mpNum = c->getMana();
+    nome = new QLabel(this);
     nome->setStyleSheet("font-weight: bold; text-decoration: underline;");
+
     //hp
     QHBoxLayout *hpLayout = new QHBoxLayout(nullptr);
     hpLayout->addWidget(new QLabel("HP"));
     hp = new QProgressBar(this);
     hp->setOrientation(Qt::Orientation::Horizontal);
-    hp->setRange(0,hpNum);
-    hp->setValue(hp->maximum());
     hp->setFixedHeight(20);
     hp->setFixedWidth(200);
     hp->setTextVisible(false);
@@ -25,16 +24,14 @@ PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     hp->setPalette(hpPalette);
     hpLayout->addWidget(hp);
     hpLabel = new QLabel(this);
-    hpLabel->setText(QString::number(hpNum));
     hpLabel->setFixedWidth(25);
     hpLayout->addWidget(hpLabel);
+
     //mp
     QHBoxLayout *mpLayout = new QHBoxLayout(nullptr);
     mpLayout->addWidget(new QLabel("MP"));
     mp = new QProgressBar(this);
     mp->setOrientation(Qt::Orientation::Horizontal);
-    mp->setRange(0,mpNum);
-    mp->setValue(mp->maximum());
     mp->setFixedHeight(20);
     mp->setFixedWidth(200);
     mp->setTextVisible(false);
@@ -43,12 +40,12 @@ PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     mp->setPalette(mpPalette);
     mpLayout->addWidget(mp);
     mpLabel = new QLabel(this);
-    mpLabel->setText(QString::number(mpNum));
     mpLabel->setFixedWidth(25);
     mpLayout->addWidget(mpLabel);
     //weapon widget
-    weapon = new ItemWidget(c->getWeapon());
-    armor = new ItemWidget(c->getArmor());
+    weapon = new ItemWidget();
+    armor = new ItemWidget();
+
     setFixedWidth(270);
     //setto tutto
     setLayout(layout);
@@ -59,29 +56,8 @@ PlayerWidget::PlayerWidget(Character *c, QWidget *parent) : QWidget(parent){
     layout->addWidget(armor);
 }
 
-void PlayerWidget::setHealth(int h){
-    hp->setValue(h);
-    hpLabel->setText(QString::fromStdString(std::to_string(h)));
-}
-
-void PlayerWidget::setMana(int m){
-    mp->setValue(m);
-    mpLabel->setText(QString::fromStdString(std::to_string(m)));
-}
-
-void PlayerWidget::setMaximumHealth(int maxhp){
-    hp->setMaximum(maxhp);
-}
-
-void PlayerWidget::setMaximumMana(int maxmp){
-    mp->setMaximum(maxmp);
-}
-
-void PlayerWidget::setNome(QString name){
-    nome->setText(name);
-}
-
 void PlayerWidget::clear(){
+    setHidden(true);
     nome->clear();
     hp->setValue(hp->maximum());
     mp->setValue(hp->maximum());
@@ -91,6 +67,29 @@ void PlayerWidget::clear(){
     armor->clear();
 }
 
-void PlayerWidget::onShowDetailOf(std::vector<Entity *> e){
+void PlayerWidget::setFields(Character *c){
+    clear();
 
+    setHidden(false);
+
+    //nome
+    nome->setText(QString::fromStdString(c->getName()));
+
+    //hp
+    int hpNum = c->getVitaMax();
+    hp->setRange(0,hpNum);
+    hp->setValue(c->getVita());
+    hpLabel->setText(QString::number(c->getVita()));
+
+    //mp
+    int mpNum = c->getManaMax();
+    mp->setRange(0,mpNum);
+    mp->setValue(c->getMana());
+    mpLabel->setText(QString::number(c->getVita()));
+
+    //equip widget
+    weapon->setItem(c->getWeapon()->getAttributes());
+    weapon->disable(true);
+    armor->setItem(c->getArmor()->getAttributes());
+    armor->disable(true);
 }

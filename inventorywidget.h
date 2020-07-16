@@ -2,33 +2,37 @@
 #define INVENTORYWIDGET_H
 
 #include <QWidget>
+#include <QVector>
+#include "itemwidget.h"
+
+#include "container.h"
+#include "item.h"
 
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QScrollArea>
+#include <QListWidget>
 
 class InventoryWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit InventoryWidget(QWidget *parent = nullptr): QWidget(parent)
-    {
-        layout = new QVBoxLayout();
-
-        QPushButton *p;
-        for (int i =0 ; i < 20; i++) {
-            p = new QPushButton(QString::number(i), this);
-            layout->addWidget(p);
-        }
-
-        setLayout(layout);
-    }
+    explicit InventoryWidget(QWidget *parent = nullptr);
 
 signals:
+    void selectItem(int id);
+    void deleteItem(int id);
+private slots:
+    void onSelectedItem(int id);
+    void onDeletedItem(int id);
 
 public slots:
+    void refresh(const Container<Item*> &inv);
+
+    void clear();
 
 private:
-
+    QVector<ItemWidget*> itemsW;
     QVBoxLayout *layout;
 
 };

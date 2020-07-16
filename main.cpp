@@ -1,6 +1,5 @@
 #include "mainview.h"
 #include "main_view.h"
-#include "controller.h"
 #include "game.h"
 #include "main_dialog.h"
 #include "entergame.h"
@@ -60,8 +59,7 @@ int main(int argc, char *argv[])
 
             //Randomizer::setup();
 
-            Main_dialog w(new_game, game);
-            //Controller c2(&w, game);
+            main_dialog w(new_game, game);
             //partita iniziata -> se decido di uscire non aprirà di nuovo
 
             w.setWindowModality(Qt::ApplicationModal);

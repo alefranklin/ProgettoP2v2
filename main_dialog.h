@@ -12,16 +12,14 @@
 
 #include <string>
 
-class Main_dialog : public QMainWindow {
+class main_dialog : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit Main_dialog(bool& refNewGame, Game* g, QWidget *parent = nullptr);
-    ~Main_dialog(){}
+    explicit main_dialog(bool& refNewGame, Game* g, QWidget *parent = nullptr);
+    ~main_dialog(){}
 
 private:
-
-
     Game* game;
 
     main_view* mainWidget;
@@ -47,11 +45,14 @@ signals:
 public slots:
     void showLegend();
     void newGameSlot();
+    void onDie();
 
 private slots:
     void showInf();
-    void confirmSave();
+    void confirmSavePunt();
+    void confirmSavePg();
 
+    void savePlayerToJson();
 };
 
 #endif

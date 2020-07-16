@@ -1,26 +1,30 @@
 #ifndef GAME_H
 #define GAME_H
-#include "map.h"
-#include "character.h"
-#include "item.h"
-#include "randomizer.h"
+
 #include <QObject>
 #include <QString>
-#include <QSaveFile>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QDebug>
-#include <QVector>
 #include <vector>
+#include <QVector>
+#include <QJsonObject>
+#include <QJsonParseError>
+
+#include "container.h"
+#include "entity.h"
+#include "map.h"
+#include "mob.h"
+
+class Player;
+class Character;
+class Item;
 
 class Game: public QObject
 {
     Q_OBJECT
 public:
-    explicit Game(Player* player, QObject *parent = nullptr);
+    explicit Game(Character *player, QObject *parent = nullptr);
     ~Game();
+
+    static const QString fileScore;
 
     class Choice {
     public:
@@ -30,8 +34,9 @@ public:
         static Choice escape() { return Choice("Scappa", 0); }
         static Choice combat() { return Choice("Combatti", 1); }
         static Choice attack() { return Choice("Attacca", 2); }
-        static Choice useManaPotion() { return Choice("Usa pozione mana", 3); }
-        static Choice useHealthPotion() { return Choice("Usa pozione vita", 4); }
+        static Choice usePotion() { return Choice("Usa pozione", 3); }
+        static Choice pickItem() { return Choice("Raccogli", 4); }
+        static Choice leaveItem() { return Choice("Lascia", 5); }
         operator int() const
         {
            return number;
@@ -51,20 +56,53 @@ public:
     static bool isSword(const Entity *e);
     static bool isBow(const Entity *e);
     static bool isMagicWeapon(const Entity *e);
+
     Character* getPlayer();
-    void moveBack() { 
-        //map.moveBack(); 
-        emit dialogOut("sono fuggito"); 
-    }
+
+    void moveBack();
+
     void dialog(QString s);
-    QJsonObject itemToJson(Item *i);
+
+    unsigned int getScore() const;
+
+    //DEBUG
+    //elimino pg e lo setto a nullptr per nuova partita
+    void setPgNull();
+
+    static QJsonObject characterToJson(Character *c);
+    static QJsonObject itemToJson(Item *i);
+    static Item* JsonToItem(QJsonObject &obj);
+
 signals:
     // emetto segnale per il dialogo
     void dialogOut(QString s);
     // emetto segnale per inviare le scelte
-    void choiceOut(Choice c);
+    void choiceOut(QVector<Choice> c);
     // il giocatore si è spostato, emetto la nuova minimappa
+
     void posChanged(const std::vector<std::vector<Tile>> &miniMap, Coordinate relativePos);
+
+    //cambio lo stato dei pulsanti di movimento
+    void setEnableMove(bool);
+    //sei morto chiudo la finestra
+    void youDied();
+    //invio il danno inferto al player/mob
+    void updatePlayer(Player*);
+    void updateMob(Mob*);
+    //aggiorno punteggio
+    void newScore(int);
+    //aggiorno mob incontrato
+    void mobEncounter(Mob*);
+    //pulisco la view del mostro
+    void clearViewMob();
+
+    //passo errore load player da file
+    void loadPlayerFromFile(QJsonParseError);
+
+    //segnale refresh Inventario
+    void inventoryRefreshSGNL(const Container<Item*> &);
+
+    
 public slots:
     // slot che gestisce le scelte fatte dal giocatore
     void choiceDone(Choice c);
@@ -75,39 +113,40 @@ public slots:
     //salvo il punteggio
     void saveScoreSlot();
     //salvo il personaggio
-    void savePlayerSlot();
+    //void savePlayerSlot();
     //carico il personaggio
     void loadPlayerSlot(bool);
+    // aggiorno l'inventario
+    void inventoryRefreshSlot();
+    // seleziono Item
+    void onSelectItem(int id);
+    // elimino item
+    void onDeleteItem(int id);
+    //aggiorno player
+    void refreshPlayer();
 
-    //DEBUG
-    //elimino pg e lo setto a nullptr per nuova partita
-    void setPgNull()
-    {
-        delete pg;
-        pg = nullptr;
-    }
 
 //PRIVATE DI GAME
 private:
 
-    Player *pg;
+    Character *pg;
     Map map;
     unsigned int score = 0;
 
 
-    static const QString fileScore;
     static const int mapSize;
     int miniMapSize;
 
 
     // struttura per memorizzare lo stato del combattimento in corso
     struct CombatState {
-        unsigned int numero_turno;
         bool turno_player;
-        std::vector<Entity*> &enemies;
-        Player *player;
-        CombatState(std::vector<Entity*> &e, Player *pg): enemies(e), player(pg) {}
+        bool first_turn;
+        Character* enemy;
+        Character* player;
+        CombatState(Character* &e, Character *pg, bool f = true);
     };
+
     CombatState* combat;
 
 
@@ -117,60 +156,16 @@ private:
     void usePotionHealth();
     void startCombat(Tile &t);
     void attacca();
-    void endCombat();
+    void inCombat();
+    void endCombat(bool);
     int randInt(int low, int high);
 
-    void pushRandomMob(int range, Coordinate c) {
-        std::vector<Coordinate> t = map.getWalkableTile(range, c);
+    /* creo mob random */
+    void pushRandomMob(int range, Coordinate c);
 
-        // aggiungo i mob
-        for(auto it = t.begin(); it != t.end(); ++it) {
+    /* creo item random */
+    void pushRandomItem(int range, Coordinate c);
 
-            Tile &t = map.getTileIn(*it);
-            
-            // salto il tile se il vettore non è vuoto
-            if( ! t.e.empty())  continue;
-
-            //con una certa probabilità aggiungo un mob (30%)
-            if( Randomizer::randomNumberBetween(0, 100) < 30 ) {
-                t.e.push_back( Randomizer::getRandomMob() );
-            }
-        }
-
-    }
-
-    void pushRandomItem(int range, Coordinate c) {
-        std::vector<Coordinate> t = map.getWalkableTile(range, c);
-
-        // aggiungo i mob
-        for(auto it = t.begin(); it != t.end(); ++it) {
-
-            Tile &t = map.getTileIn(*it);
-            
-            // salto il tile se il vettore non è vuoto
-            if( ! t.e.empty() ) continue;
-
-            if (Randomizer::randomNumberBetween(0, 100) < 20 ) {
-                    // 20 % oggetto tra tutti quelli possibili quindi spada, armatura, pozze
-                    t.e.push_back( Randomizer::getRandomItem() );
-
-            } else {
-                // solo pozioni
-
-                // TODO sistemare sto pezzo in base a come facciomo la generazione delle pozze
-
-                if ( Randomizer::randomNumberBetween(0, 100) < 65 ) {
-                    // 65 % vita
-                    t.e.push_back( Randomizer::getRandomPotion() );
-                } else {
-                    // 35% mana
-                    t.e.push_back( Randomizer::getRandomPotion() );
-                }
-            }
-        }
-
-    }
-
-
+    void setScore(unsigned int s);
 };
 #endif // GAME_H

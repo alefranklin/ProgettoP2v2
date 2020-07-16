@@ -17,7 +17,7 @@ ostream& operator<<(ostream& out, const Coordinate &c) {
 }
 
 
-Map::Map(int d): pos() {
+Map::Map(int d): pos(), lastPos(pos){
   //la mappa deve avere una dimensione minima
   dim = (d < minDim) ? minDim : d;
 
@@ -148,6 +148,7 @@ Coordinate Map::RandomPos() const {
 
 // cambio la posizione e aggiorno la visibilità
 void Map::changePos(Coordinate newPos) {
+  lastPos = pos;
   pos = newPos;
 }
 
@@ -179,6 +180,11 @@ void Map::moveRIGHT() {
   if(isValid(newPos) && isWalkable(newPos)) changePos(newPos);
 }
 
+void Map::moveBack()
+{
+    pos = lastPos;
+}
+
 // restituisce la tile corrent in modo da poter controllare esternamente cosa contiene
 // non è const perche Tile potrebbe essere modificato esternamente e a cascata anche getTileIn() non può essere const
 Tile& Map::getCurrentTile() {
@@ -193,7 +199,7 @@ std::vector<Coordinate> Map::getWalkableTile(int range, Coordinate c) {
     // filtro e tengo solo quelle camminabili
     for (auto it = circle.begin(); it != circle.end(); ++it)
     {
-        if( isWalkable(*it) ) {
+        if( ! isWalkable(*it) ) {
             it = circle.erase(it);
             --it;
         }
@@ -360,9 +366,8 @@ float Map::calcSpawnRate(const Tile& t) const {
   float rate = 0.1;
   switch (t.biome)
   {
-    case Valley:    rate = 0.1;  break;
+    case Valley:    rate = 0.2;  break;
     case Desert:    rate = 0.2;  break;
-    case Doungeon:  rate = 0.4;  break;
     case Street:    rate = 0.05; break;
     default:        rate = 0.1;  break;
   }

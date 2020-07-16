@@ -1,76 +1,152 @@
 #include "character.h"
-#include "entity.h"
-#include <QVector>
 
 #include <QDebug>
-
+#include "sword.h"
+#include "armor.h"
+#include "randomizer.h"
 
 using namespace std;
 
 //CLASSE CHARACTER
-Character::Character(QString n, int v, int m):
+Character::Character(string n, int v, int m):
     Entity()
   , name(n)
   , vita(v)
+  , vitaMax(v)
+  , manaMax(m)
   , mana(m)
+
 {
-    arma = new Sword("nullptr", 100, 1);
-    armatura = new Armor("ARMATURA GROSSSA", 70);
     qDebug() << "istanzio Character: ";
+    //setWeapon(Randomizer::getRandomWeapon());
+    setArmor(Randomizer::getRandomArmor());
+    setWeapon(Randomizer::getRandomMagicWeapon());
 }
 
-QString Character::getName()
+string Character::getName()
 {
     return name;
 }
 
-int Character::getVita()
+int Character::getVita() const
 {
     return vita;
 }
 
-int Character::getMana()
+int Character::getVitaMax() const
+{
+    return vitaMax;
+}
+
+void Character::setVitaMax(int vx) {
+    vitaMax = vx;
+}
+
+void Character::setManaMax(int mx) {
+    manaMax = mx;
+}
+
+int Character::getManaMax() const
+{
+    return manaMax;
+}
+
+void Character::setVita(int v) {
+    if(v < vitaMax) vita = v;
+    else vita = vitaMax;
+}
+
+void Character::addVita(int v) {
+    if( vita+v < vitaMax) vita += v;
+    else vita = vitaMax;
+}
+
+int Character::getMana() const
 {
     return mana;
 }
 
-void Character::setDamage(int d)
-{
-    vita = (vita-d >= 0) ? vita-d : 0;
-    isAlive();
+void Character::setMana(int m) {
+    if(m < manaMax) mana = m;
+    else mana = manaMax;
 }
 
-Weapon *Character::getWeapon()
+void Character::addMana(int m) {
+    if( mana+m < manaMax) mana += m;
+    else mana = manaMax;
+}
+
+void Character::useMana(int m){
+    mana = mana - m;
+}
+
+int Character::setDamageTaken(int d)
+{
+    Armor* armor = dynamic_cast<Armor* >(armatura);
+    int danno_subito = d;
+
+    if(armor) danno_subito = armor->absorb(d);
+
+    vita = (vita-danno_subito  >= 0) ? vita-danno_subito : 0;
+    return danno_subito;
+}
+
+Item* Character::getWeapon()
 {
     return arma;
 }
 
-Armor *Character::getArmor()
+Item *Character::removeWeapon() {
+    Item *i = arma;
+    arma = nullptr;
+    return i;
+}
+
+Item *Character::setWeapon(Item *w) {
+    if(w) {
+        Item *aus = arma;
+        arma = w;
+        return aus;
+    } else return nullptr;
+}
+
+Item* Character::getArmor()
 {
     return armatura;
 }
 
-Character::~Character(){
-  qDebug() << "distruggo character";
-  if(arma) delete arma;
-  if(armatura) delete armatura;
+Item *Character::removeArmor() {
+    Item *i = armatura;
+    armatura = nullptr;
+    return i;
 }
 
-int Character::attacca(QVector<Character*> target) { return arma->use(this, target);}
-
-//CLASSE PLAYER
-Player::Player(QString n, int v, int m): Character(n, v, m) {}
-void Player::info() { qDebug() << "sono Player " << " con " << getVita() << " di vita e " << getMana() << " di mana" << endl;}
-bool Player::isAlive() {
-if(getVita()) { qDebug() << "non sono ancora morto bastardo!" << endl; return true;}
-else { qDebug() << "Player " << " è morto" << endl; return false;}
+Item* Character::setArmor(Item *a) {
+    if(a) {
+        Item *aus = armatura;
+        armatura = a;
+        return aus;
+    } else return nullptr;
 }
 
+bool Character::isAlive() {
+    if(getVita()) return true;
+    else return false;
 
-//CLASSE MOB
-Mob::Mob(QString n, int v, int m): Character(n, v, m) {}
-void Mob::info() { qDebug() << "sono Mob " << " con " << getVita() << " di vita e " << getMana() << " di mana" << endl;}
-bool Mob::isAlive() {
-if(getVita()) { qDebug() << "non sono ancora morto bastardo!" << endl; return true;}
-else { qDebug() << "Mob " << " è morto" << endl; return false;}
 }
+
+vector<Entity::Attribute> Character::getAttributes() const {
+    vector<Attribute> att;
+    att.push_back(Attribute("Nome", name));
+    att.push_back(Attribute("Vita", to_string(vita)));
+    att.push_back(Attribute("vitaMax", to_string(vitaMax)));
+    att.push_back(Attribute("manaMax", to_string(manaMax)));
+    att.push_back(Attribute("Mana", to_string(mana)));
+    return att;
+}
+
+int Character::attacca(Character* target)
+{
+    return arma->use(this, target);
+}
+

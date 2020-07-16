@@ -11,7 +11,7 @@ ChoiceWidget::ChoiceWidget(QWidget *parent) : QWidget(parent)
 
     for(int i = 0; i < 6; i++){
         buttons.append(new ChoiceButton());
-        connect(buttons[i], &ChoiceButton::buttonClicked, this, &ChoiceWidget::choicePressed);
+        connect(buttons[i], &ChoiceButton::buttonClicked, this, &ChoiceWidget::onChoicePressed);
         buttons[i]->setFixedSize(70,30);
         buttons[i]->setEnabled(false);
         grid->addWidget(buttons[i],i/3,i%3);
@@ -36,8 +36,17 @@ void ChoiceWidget::setChoices(QVector<Game::Choice> choices){
     }
 }
 
-void ChoiceWidget::choicePressed(Game::Choice c){
+void ChoiceWidget::onChoicePressed(Game::Choice c){
     emit sendChoice(c);
+}
+
+void ChoiceWidget::clearWidgets(QLayout *layout) {
+    if (! layout)
+        return;
+    while (auto item = layout->takeAt(0)) {
+        delete item->widget();
+        clearWidgets(item->layout());
+    }
 }
 
 

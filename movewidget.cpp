@@ -3,27 +3,29 @@
 
 MoveWidget::MoveWidget(QWidget *parent) : QWidget(parent)
 {
-
     //creo griglia e imposto layout
     grid = new QGridLayout(this);
 
-
     //creo bottoni e li connetto allo slot di MoveWidget
-    UP = new MoveButton('W',this);
+    UP = new QPushButton(this);
+    LEFT = new QPushButton(this);
+    DOWN = new QPushButton(this);
+    RIGHT = new QPushButton(this);
+
+    UP->setText("W");
+    LEFT->setText("A");
+    DOWN->setText("S");
+    RIGHT->setText("D");
+
     UP->setShortcut(QKeySequence(Qt::Key_W));
-    connect(UP, &MoveButton::buttonClicked, this, &MoveWidget::dirPressed);
-
-    LEFT = new MoveButton('A',this);
     LEFT->setShortcut(QKeySequence(Qt::Key_A));
-    connect(LEFT, &MoveButton::buttonClicked, this, &MoveWidget::dirPressed);
-
-    DOWN = new MoveButton('S',this);
     DOWN->setShortcut(QKeySequence(Qt::Key_S));
-    connect(DOWN, &MoveButton::buttonClicked, this, &MoveWidget::dirPressed);
-
-    RIGHT = new MoveButton('D',this);
     RIGHT->setShortcut(QKeySequence(Qt::Key_D));
-    connect(RIGHT, &MoveButton::buttonClicked, this, &MoveWidget::dirPressed);
+
+    connect(UP, &QPushButton::clicked, this, &MoveWidget::clickedUP);
+    connect(LEFT, &QPushButton::clicked, this, &MoveWidget::clickedLEFT);
+    connect(DOWN, &QPushButton::clicked, this, &MoveWidget::clickedDOWN);
+    connect(RIGHT, &QPushButton::clicked, this, &MoveWidget::clickedRIGHT);
 
     //inserisco i bottoni creati sopra nel layout
     grid->addWidget(UP,0,1);
@@ -38,14 +40,11 @@ MoveWidget::MoveWidget(QWidget *parent) : QWidget(parent)
 
 MoveWidget::~MoveWidget()
 {
+    delete grid;
     delete UP;
     delete DOWN;
     delete LEFT;
     delete RIGHT;
-}
-
-void MoveWidget::dirPressed(char dir) {
-    emit emitDir(dir);
 }
 
 void MoveWidget::setEnabled(bool enable){
@@ -53,4 +52,20 @@ void MoveWidget::setEnabled(bool enable){
     DOWN->setEnabled(enable);
     RIGHT->setEnabled(enable);
     LEFT->setEnabled(enable);
+}
+
+void MoveWidget::clickedUP() {
+    emit emitDir('W');
+}
+
+void MoveWidget::clickedDOWN() {
+    emit emitDir('S');
+}
+
+void MoveWidget::clickedRIGHT() {
+    emit emitDir('D');
+}
+
+void MoveWidget::clickedLEFT() {
+    emit emitDir('A');
 }

@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QPicture>
 #include <QMessageBox>
+#include <regex>
 
 //#include "character.h"
 #include "game.h"
@@ -24,12 +25,15 @@ public:
 public slots:
     // lista degli slot
     void tryEnter();
+//    void errorLoadPlayer(QJsonParseError jsonError);
+//    void errorOpenFile(QString s);
 
 signals:
 
 
 private:
     void createLayoutEnterGame();
+    void loadPlayerSlot();
 
     //Player**pg;
 

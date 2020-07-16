@@ -1,138 +1,122 @@
 #include "itemwidget.h"
 
-ItemWidget::ItemWidget(QString n, QString t, int s1, int s2, int s3, QWidget *parent) : QWidget(parent)
+#include <QIcon>
+#include <iostream>
+#include <string>
+#include <sstream>
+
+ItemWidget::ItemWidget(QWidget *parent): QWidget(parent)
 {
-    nome = new QLabel(n);
-    tipo = new QLabel(t);
-    stat1Name = new QLabel("Stat 1");
-    stat1 = new QLabel(QString::number(s1));
-    stat2Name = new QLabel("Stat 2");
-    stat2 = new QLabel(QString::number(s2));
-    stat3Name = new QLabel("Stat 3");
-    stat3 = new QLabel(QString::number(s3));
+    layout = new QVBoxLayout(this);
+    QHBoxLayout *bodyLayout = new QHBoxLayout(nullptr);
+    QVBoxLayout *btnLayout = new QVBoxLayout(nullptr);
 
-    QVBoxLayout *main = new QVBoxLayout(this);
-    setMinimumWidth(200);
-    setLayout(main);
-    nome->setStyleSheet("font-weight: bold;");
-    main->addWidget(nome);
+    setFixedSize(270, 100);
+    //setStyleSheet("border: solid 1px red;");
 
-    QHBoxLayout *body = new QHBoxLayout(nullptr);
-    main->addLayout(body);
-    body->addWidget(tipo);
-    tipo->setMaximumWidth(70);
+    lbl_name = new QLabel(this);
+    lbl_name->setStyleSheet("font-weight: bold; text-decoration: underline");
+    lbl_name->setFixedHeight(20);
 
-    QVBoxLayout *stats = new QVBoxLayout(nullptr);
-    body->addLayout(stats);
+    lbl_img = new QPushButton(this);
+    lbl_img->setFlat(true);
+    lbl_img->setEnabled(true);
+    lbl_img->setFixedSize(50,50);
 
-    QHBoxLayout *s1Layout = new QHBoxLayout(nullptr);
-    s1Layout->addWidget(stat1Name);
-    s1Layout->addWidget(stat1);
+    lbl_info = new QTextEdit(this);
+    lbl_info->setFixedHeight(100);
+    lbl_info->setReadOnly(true);
+    lbl_info->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    lbl_info->setFrameStyle(QFrame::NoFrame);// tolgo il bordo
 
-    QHBoxLayout *s2Layout = new QHBoxLayout(nullptr);
-    s2Layout->addWidget(stat2Name);
-    s2Layout->addWidget(stat2);
+    btn_sel = new IDButton(this);
+    btn_sel->setToolTip("usa Item");
+    btn_sel->setIcon(QIcon(":/icon/ok_icon"));
 
-    QHBoxLayout *s3Layout = new QHBoxLayout(nullptr);
-    s3Layout->addWidget(stat3Name);
-    s3Layout->addWidget(stat3);
+    btn_del = new IDButton(this);
+    btn_del->setToolTip("elimina Item");
+    btn_del->setIcon(QIcon(":/icon/del_icon"));
 
-    stats->addLayout(s1Layout);
-    stats->addLayout(s2Layout);
-    stats->addLayout(s3Layout);
+    btnLayout->addWidget(btn_sel);
+    btnLayout->addWidget(btn_del);
+
+    bodyLayout->addWidget(lbl_img);
+    bodyLayout->addWidget(lbl_info);
+    bodyLayout->addLayout(btnLayout);
+
+    layout->addWidget(lbl_name);
+    layout->addLayout(bodyLayout);
+
+
+
+    connect(btn_del, &IDButton::buttonClicked, this, &ItemWidget::onClickDelete);
+    connect(btn_sel, &IDButton::buttonClicked, this, &ItemWidget::onClickSelect);
+
+}
+
+void ItemWidget::disable(bool disable){
+    btn_del->setDisabled(disable);
+    btn_sel->setDisabled(disable);
+    btn_del->setIcon(QIcon());
+    btn_sel->setIcon(QIcon());
+    btn_del->setFlat(disable);
+    btn_sel->setFlat(disable);
+}
+
+void ItemWidget::setItem(vector<Entity::Attribute> attributes) {
+
+    clear();
+    QString nome;
+
+    for(auto &att : attributes) {
+        if(att.name == "Immagine") {
+            lbl_img->setIcon(QIcon(QString::fromStdString(att.name)));
+        } else if(att.name == "Nome")
+        {
+            nome = QString::fromStdString(att.val);
+            lbl_name->setText(nome);
+        } else if(att.name == "Tipo")
+        {
+            nome += "["+QString::fromStdString(att.val)+"]";
+        } else if(att.name == "ID")
+        {
+            int i;
+            std::istringstream(att.val) >> i;
+            btn_del->setID(i);
+            btn_sel->setID(i);
+        }
+        else {
+            lbl_info->append(QString::fromStdString(att.name)+": "+QString::fromStdString(att.val));
+        }
+    }
+
+    lbl_name->setText(nome);
 }
 
 void ItemWidget::clear(){
-    nome->clear();
-    tipo->clear();
-    stat1Name->clear();
-    stat2Name->clear();
-    stat3Name->clear();
-    stat1->clear();
-    stat2->clear();
-    stat3->clear();
+    lbl_name->clear();
+    lbl_img->setIcon(QIcon());
+    lbl_info->clear();
 }
 
+void ItemWidget::onClickSelect(int id) {
+    emit selectedItem(id);
+}
 
-//aggiunta per gui dinamica
+void ItemWidget::onClickDelete(int id) {
+    emit deletedItem(id);
+}
 
-ItemWidget::ItemWidget(Item *i, QWidget *parent) : QWidget(parent){
-    if(Game::isArmor(i)){
-        const Armor *a = dynamic_cast<const Armor*>(i);
-        nome = new QLabel(QString::fromStdString(a->getNome()));
-        tipo = new QLabel("Armatura");
-        stat1Name = new QLabel("Difesa");
-        stat1 = new QLabel(QString::number((a->getArmatura())));
-        stat2Name = new QLabel("");
-        stat2 = new QLabel("");
-        stat3Name = new QLabel("");
-        stat3 = new QLabel("");
-    }
-    if(Game::isBow(i)){
-        const Bow *b = dynamic_cast<const Bow*>(i);
-        nome = new QLabel(QString::fromStdString(b->getNome()));
-        tipo = new QLabel("Arco");
-        stat1Name = new QLabel("Danno");
-        stat1 = new QLabel(QString::number(b->getDamage()));
-        stat2Name = new QLabel("Frecce");
-        stat2 = new QLabel(QString::number(b->getArrow()));
-        stat3Name = new QLabel("");
-        stat3 = new QLabel("");
-    }
-    if(Game::isSword(i)){
-        const Sword *s = dynamic_cast<const Sword*>(i);
-        nome = new QLabel(QString::fromStdString(s->getNome()));
-        tipo = new QLabel("Spada");
-        stat1Name = new QLabel("Danno");
-        stat1 = new QLabel(QString::number(s->getDamage()));
-        stat2Name = new QLabel("Range");
-        stat2 = new QLabel(QString::number(s->getRange()));
-        stat3Name = new QLabel("");
-        stat3 = new QLabel("");
-    }
-    if(Game::isMagicWeapon(i)){
-        const MagicWeapon *mw = dynamic_cast<const MagicWeapon*>(i);
-        nome = new QLabel(QString::fromStdString(mw->getNome()));
-        tipo = new QLabel("Arma Magica");
-        stat1Name = new QLabel("Danno");
-        stat1 = new QLabel(QString::number(mw->getDamage()));
-        stat2Name = new QLabel("Effetto");
-        stat2 = new QLabel(QString::number(mw->getEffect()));
-        stat3Name = new QLabel("Mana");
-        stat3 = new QLabel(QString::number(mw->getMana()));
-    }
-    if(Game::isPotion(i)){
-        const Potion *p = dynamic_cast<const Potion*>(i);
-        nome = new QLabel(QString::fromStdString(p->getNome()));
-        tipo = new QLabel("Pozione");
-        stat1Name = new QLabel("Effetto");
-        stat1 = new QLabel(QString::number((p->getEffect())));
-        stat2Name = new QLabel("");
-        stat2 = new QLabel("");
-        stat3Name = new QLabel("");
-        stat3 = new QLabel("");
-    }
-    QVBoxLayout *main = new QVBoxLayout(this);
-    setMinimumWidth(200);
-    setLayout(main);
-    nome->setStyleSheet("font-weight: bold;");
-    main->addWidget(nome);
-    QHBoxLayout *body = new QHBoxLayout(nullptr);
-    main->addLayout(body);
-    body->addWidget(tipo);
-    tipo->setMaximumWidth(70);
-    QVBoxLayout *stats = new QVBoxLayout(nullptr);
-    body->addLayout(stats);
-    QHBoxLayout *s1Layout = new QHBoxLayout(nullptr);
-    s1Layout->addWidget(stat1Name);
-    s1Layout->addWidget(stat1);
-    QHBoxLayout *s2Layout = new QHBoxLayout(nullptr);
-    s2Layout->addWidget(stat2Name);
-    s2Layout->addWidget(stat2);
-    QHBoxLayout *s3Layout = new QHBoxLayout(nullptr);
-    s3Layout->addWidget(stat3Name);
-    s3Layout->addWidget(stat3);
-    stats->addLayout(s1Layout);
-    stats->addLayout(s2Layout);
-    stats->addLayout(s3Layout);
+IDButton::IDButton(QWidget *parent): QPushButton(parent)
+{
+    connect(this, &QPushButton::clicked, this, &IDButton::handleClick);
+}
+
+void IDButton::setID(int id)
+{
+    _id = id;
+}
+
+void IDButton::handleClick(){
+    emit buttonClicked(_id);
 }

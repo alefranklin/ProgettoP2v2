@@ -15,12 +15,17 @@
 
 
 #include "game.h"
+#include "player.h"
 #include "choicebutton.h"
 #include "playerwidget.h"
 #include "movewidget.h"
 #include "choicewidget.h"
 #include "mapwidget.h"
+#include "randomizer.h"
+#include "mob.h"
 #include "map.h"
+#include "inventorywidget.h"
+#include "musicwidget.h"
 
 class main_view : public QWidget
 {
@@ -32,32 +37,30 @@ public:
 
 signals:
     // invio il segnale con la scelta fatta
-    //void emitChoice(Game::Choice c);
+    void emitChoice(Game::Choice c);
 
     // emetto il segnale per far partire il dialogo al controller
 //    void emitDialog();
 
 //    // segnale di volume changed
-//    void volumeChanged(int volume);
 
     void setMiniMapSize(int dim);
+    
     void newGameSlot();
 
 public slots:
     // printo su textedit
-    //void printString(QString s);
+    void printString(QString s);
 
 //    // gestisco e mostro le varie scelte diponibili
-//    void showChoice(QVector<Game::Choice> c);
+    void showChoice(QVector<Game::Choice> c);
 //    // gestisco la pressione del pulsante di scelta
-//    void choicePressed(Game::Choice c);
+    void choicePressed(Game::Choice c);
 
 //    //gestisco il click del pulsante di dialogo
 //    void onDialogPressed();
 
 //    // slot per gestire lo slider del volume
-//    void onVolumeChanged(int volume);
-//    void onMute();
 
     void movePressed(char dir);
     // gestisco il refresh della mapppa
@@ -66,7 +69,17 @@ public slots:
     // gestisco il segnale di cambio di dimensione proveniente da MapWidget
     void onSetMiniMapSize(int dim);
 
+    //setto la vita aggiornata del giocatore
+    void updatePlayer(Player* p);
 
+    //setto il nuovo score
+    void setNewScore(int s);
+    //aggiorno mob
+    void setEnemy(Mob* t);
+    //pulisco mob
+    void clearEnemy();
+
+    void updateMob(Mob* m);
 private:
     void createMenu();
     void createMusicSliderBox();
@@ -77,38 +90,31 @@ private:
     void createMapBox();
     void createEnemyBox();
 
+
+    Game* model;
+
     QGridLayout* grid;
-    QListWidget *inventory;
+    InventoryWidget *inventory;
 
-    PlayerWidget *charachter;
+    PlayerWidget *character;
+    PlayerWidget *mob;
 
-    QLabel *info;
-
-    QPushButton* bottone;
-
-    //menu
-    QMenuBar *menubar;
-    QMenu *fileMenu;
-    QAction *exitAction;
-    QAction *saveAction;
+    QLabel *score;
 
     MapWidget *mapWidget;
 
-    Game* model;
     MoveWidget *moveWidget;
 
     //widget scelte personaggio
     ChoiceWidget *choiceWidget;
 
-    // slider musica
-    QSlider *volumeSlider;
+    // widget musica
+    MusicWidget *music;
 
-    //widget move
-    QPushButton *muteButton;
-
-    QGroupBox *musicSlider;
-
+    //finestra di dialogo con il gioco
     QTextEdit *dialogOutBox;
+
+    QScrollArea* sc;
 
 
 };

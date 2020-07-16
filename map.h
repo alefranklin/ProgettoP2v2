@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-enum Biome {Valley, Desert, Doungeon, Street, Water, Null};
+enum Biome {Valley, Desert, Street, Water, Null};
 
 struct Coordinate {
   int row;
@@ -28,18 +28,26 @@ struct Coordinate {
 struct Tile {
   bool walkable;
   Biome biome;
-  std::vector<Entity*> e;
-  Tile(bool w = false, Biome b = Null, std::vector<Entity*> en = std::vector<Entity*>()): walkable(w), biome(b), e(en) {}
+  Entity* e;
+  Tile(bool w = false, Biome b = Null, Entity* en = nullptr): walkable(w), biome(b), e(en) {}
 };
 
 class Map {
 public:
   Map(int d = 0);
+  ~Map() {
+      for(auto &riga : map ) {
+          for(auto &colonna : riga) {
+              if(colonna.e) delete colonna.e;
+          }
+      }
+  }
 
   void moveUP();
   void moveDOWN();
   void moveLEFT();
   void moveRIGHT();
+  void moveBack();
   Tile& getCurrentTile();
   Tile& getTileIn(Coordinate p);
   std::vector<Coordinate> getWalkableTile(int range, Coordinate c);
@@ -53,13 +61,14 @@ public:
   std::vector<std::vector<Tile> > getMiniMap(int size);
 
   static void printMap(std::vector<std::vector<Tile>> m, Coordinate pos);
-//qui giace la funzione pronta
+    //qui giace la funzione pronta
 
 private:
   static int minDim;
   int dim;
   std::vector<std::vector<Tile>> map;
   Coordinate pos;
+  Coordinate lastPos;
   Coordinate relativePos;
 
   Coordinate RandomPos() const;

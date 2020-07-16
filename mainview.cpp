@@ -1,5 +1,4 @@
 #include "mainview.h"
-#include "movebutton.h"
 
 #include <QObject>
 #include <QTextEdit>
@@ -7,6 +6,7 @@
 #include <QDebug>
 #include <QDialogButtonBox>
 #include <QLayout>
+#include <QGroupBox>
 
 
 MainView::MainView(Game *g, QWidget *parent)
